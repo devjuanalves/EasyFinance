@@ -1,0 +1,12 @@
+import express from 'express';
+import cors from 'cors';
+import { env } from './config/env.js';
+import { healthRouter } from './routes/health.js';
+import { notFound, errorHandler } from './middleware/errors.js';
+export const app = express();
+app.disable('x-powered-by');
+app.use(cors({ origin: env.webOrigin }));
+app.use(express.json({ limit: '100kb' }));
+app.use(healthRouter);
+app.use(notFound);
+app.use(errorHandler);

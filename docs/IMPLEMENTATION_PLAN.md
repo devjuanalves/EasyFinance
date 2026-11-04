@@ -1,0 +1,14 @@
+# Implementation plan
+
+| Block                        | Scope                                                                   | Entry/exit expectations                                                                                                                                    |
+| ---------------------------- | ----------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 0 — Project Foundation       | Monorepo, preserved references, tooling, health endpoint, documentation | Install, lint, format, tests and build verified; no functional screens                                                                                     |
+| 1 — Authentication           | F01–F04                                                                 | Confirm onboarding references and schema conflicts; implement reviewed identity/workspace schema as needed, session security, validation and browser tests |
+| 2 — AI Home & Dashboard      | F05–F06                                                                 | Obtain mobile dashboard; sources/periods explicit; AI changes require review                                                                               |
+| 3 — Income & Invoices        | F07–F11                                                                 | Approved creation states; issuance/payment separation and reconciliation                                                                                   |
+| 4 — Expenses                 | F12–F15                                                                 | Guided import/review, idempotency, transfer exclusion and categories                                                                                       |
+| 5 — Investments              | F16–F18                                                                 | Manual positions/movements/valuations; no invented live feeds                                                                                              |
+| 6 — Settings & Collaboration | F19–F21                                                                 | Workspace permissions, profile, reviewed automations and notifications                                                                                     |
+| 7 — Integration & QA         | Cross-module                                                            | Desktop/mobile, accessibility, security, data integrity, migrations and deployment validation                                                              |
+
+Resolve database design in a separately reviewed schema implementation step before persistence-dependent features. Expand shared components from approved references; do not implement all screens ahead of their blocks. Block 1 is next and has not begun.

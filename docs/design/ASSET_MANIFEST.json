@@ -1,0 +1,314 @@
+[
+  {
+    "original": ".DS_Store",
+    "sha256": "2b5dfb40992ac2352a20b86c8d04f3f5c3c6a591dd009e1e273dc65d32e9e21c",
+    "bytes": 8196,
+    "current": ".DS_Store"
+  },
+  {
+    "original": "EasyFinance_V1_Blueprint_Completo.pdf",
+    "sha256": "df91fe794149985db30dd312ea84dd63efaf523fa6d19fd9e21a1903e13a8090",
+    "bytes": 1465148,
+    "current": "docs/blueprint/EasyFinance_V1_Blueprint_Completo.pdf"
+  },
+  {
+    "original": "blueprint_drawio/EasyFinance_V1_Blueprint_Complete.drawio",
+    "sha256": "352aacdcf9bbeb4f3c6384df5bda83d2f949f98d0885269beeae1be85008dc1f",
+    "bytes": 294395,
+    "current": "docs/blueprint/EasyFinance_V1_Blueprint_Complete.drawio"
+  },
+  {
+    "original": "frames_SVG/.DS_Store",
+    "sha256": "5be6438d0968e6b126ae9bacafc550e2728d318e08058a88ef2d9766c133422a",
+    "bytes": 10244,
+    "current": "frames_SVG/.DS_Store"
+  },
+  {
+    "original": "frames_SVG/04. Ganhos e Invoices (home)-1.svg",
+    "sha256": "da5cdb23f2e38f0d0d772fc2545639b5ad66b3ddfcb9a3dea7ec9a67264a4995",
+    "bytes": 1200283,
+    "current": "docs/design/frames/03-income-invoices/04. Ganhos e Invoices (home)-1.svg"
+  },
+  {
+    "original": "frames_SVG/04. Ganhos e Invoices (home).svg",
+    "sha256": "fc3ff7b141e2748fbca24f8ac29c1c1f8867ccfc48a0dba1c6abf3a43a63992c",
+    "bytes": 2265199,
+    "current": "docs/design/frames/03-income-invoices/04. Ganhos e Invoices (home).svg"
+  },
+  {
+    "original": "frames_SVG/05. Controle de Gastos (home)-1.svg",
+    "sha256": "4ba43985bd8776937c7315e40d9394e84b71e08b32c679e1c5768a859cb93a4a",
+    "bytes": 1082722,
+    "current": "docs/design/frames/04-expenses/05. Controle de Gastos (home)-1.svg"
+  },
+  {
+    "original": "frames_SVG/05. Controle de Gastos (home).svg",
+    "sha256": "d251eaabad0e173ecc7dc210e99c8d0b822053d821d45809881218a70c9a59f8",
+    "bytes": 2638439,
+    "current": "docs/design/frames/04-expenses/05. Controle de Gastos (home).svg"
+  },
+  {
+    "original": "frames_SVG/3. Dashboard financeiro com insights.svg",
+    "sha256": "347521b3ff83e8d2f1d20fa446003ac1948bc0d90d289cf4e3ed4bd0733cde02",
+    "bytes": 2622399,
+    "current": "docs/design/frames/02-home-dashboard/3. Dashboard financeiro com insights.svg"
+  },
+  {
+    "original": "frames_SVG/4. Detalhes da invoice e pagamentos-1.svg",
+    "sha256": "1f4ebebedcd4fe32c8f855704f30e90c3d02bf6e5bc81c13d089145089d8f68a",
+    "bytes": 2210034,
+    "current": "docs/design/frames/03-income-invoices/4. Detalhes da invoice e pagamentos-1.svg"
+  },
+  {
+    "original": "frames_SVG/4. Detalhes da invoice e pagamentos.svg",
+    "sha256": "450b45bf2107fa72ef765c3224ec818c72077457f9a4e27da917f90750ead35c",
+    "bytes": 635899,
+    "current": "docs/design/frames/03-income-invoices/4. Detalhes da invoice e pagamentos.svg"
+  },
+  {
+    "original": "frames_SVG/4. Vis\u00e3o geral de ganhos + Listagem de invoices-1.svg",
+    "sha256": "a97db7d107baee4e9770baaf76655fdd681c35a401207d89a4079549cb16db26",
+    "bytes": 728701,
+    "current": "docs/design/frames/03-income-invoices/4. Vis\u00e3o geral de ganhos + Listagem de invoices-1.svg"
+  },
+  {
+    "original": "frames_SVG/4. Vis\u00e3o geral de ganhos + Listagem de invoices.svg",
+    "sha256": "81abb97d024b95ff992ff15965b116e80acdcc5a759411880f5884d7eee3de15",
+    "bytes": 1607882,
+    "current": "docs/design/frames/03-income-invoices/4. Vis\u00e3o geral de ganhos + Listagem de invoices.svg"
+  },
+  {
+    "original": "frames_SVG/4. editar invoice-1.svg",
+    "sha256": "509ad64fcc0e507fc6b55a1d26d6a742a307f5e277c346461b33820babc5245e",
+    "bytes": 520948,
+    "current": "docs/design/frames/03-income-invoices/4. editar invoice-1.svg"
+  },
+  {
+    "original": "frames_SVG/4. editar invoice.svg",
+    "sha256": "e5365da5a4a7e5e42a1aa61fb59448d5a6bcc39b9af5de30e89728e76756148d",
+    "bytes": 2130672,
+    "current": "docs/design/frames/03-income-invoices/4. editar invoice.svg"
+  },
+  {
+    "original": "frames_SVG/4. empregadores-1.svg",
+    "sha256": "59a6f9a8f3cae32ab6fbb9ad56a726e44b202e1e8ad8529993069e4522835d5a",
+    "bytes": 1719450,
+    "current": "docs/design/frames/03-income-invoices/4. empregadores-1.svg"
+  },
+  {
+    "original": "frames_SVG/4. empregadores.svg",
+    "sha256": "80243e60e03239dcdb4a987730d7c77c9b9aa9b968101be72631a8304b06e76d",
+    "bytes": 791630,
+    "current": "docs/design/frames/03-income-invoices/4. empregadores.svg"
+  },
+  {
+    "original": "frames_SVG/5. Categorias e regras de gastos-1.svg",
+    "sha256": "63cf656cd954bd3405364d0495351a1ac53fd896e04680424e095adb5e3195fc",
+    "bytes": 475342,
+    "current": "docs/design/frames/04-expenses/5. Categorias e regras de gastos-1.svg"
+  },
+  {
+    "original": "frames_SVG/5. Categorias e regras de gastos.svg",
+    "sha256": "1f860c1df6bee5e0442bba72fbe8e074b597668ed1cb5603a235050afd873e25",
+    "bytes": 2174570,
+    "current": "docs/design/frames/04-expenses/5. Categorias e regras de gastos.svg"
+  },
+  {
+    "original": "frames_SVG/5. Importar e revisar extrato banc\u00e1rio-1.svg",
+    "sha256": "7cae19ca078d751bd1388ee305a19e219755a73228e8ad36ab9ad4deabaef19d",
+    "bytes": 1765029,
+    "current": "docs/design/frames/04-expenses/5. Importar e revisar extrato banc\u00e1rio-1.svg"
+  },
+  {
+    "original": "frames_SVG/5. Importar e revisar extrato banc\u00e1rio.svg",
+    "sha256": "54f761cfb4eda38cb600bca3cee250c030be797c4fbf12d0c30b422ab823faf7",
+    "bytes": 823847,
+    "current": "docs/design/frames/04-expenses/5. Importar e revisar extrato banc\u00e1rio.svg"
+  },
+  {
+    "original": "frames_SVG/5. Lista e detalhes das transa\u00e7\u00f5es-1.svg",
+    "sha256": "bf3a70b294f38a43b0ea8f41e898b542d48bda022722b6d80f9120cda022fe13",
+    "bytes": 684054,
+    "current": "docs/design/frames/04-expenses/5. Lista e detalhes das transa\u00e7\u00f5es-1.svg"
+  },
+  {
+    "original": "frames_SVG/5. Lista e detalhes das transa\u00e7\u00f5es.svg",
+    "sha256": "bfba59dfb08e972cef2ca62e32849f18714f11dcdd4fa4d63d3c5bf70b6eaddc",
+    "bytes": 1751473,
+    "current": "docs/design/frames/04-expenses/5. Lista e detalhes das transa\u00e7\u00f5es.svg"
+  },
+  {
+    "original": "frames_SVG/6. Dashboard de investimentos-1.svg",
+    "sha256": "acd9719ad637eb5518b422679394b026712c55a38f2ae84d97bdd704b1e0388b",
+    "bytes": 2838620,
+    "current": "docs/design/frames/05-investments/6. Dashboard de investimentos-1.svg"
+  },
+  {
+    "original": "frames_SVG/6. Dashboard de investimentos.svg",
+    "sha256": "ab93d6c41559598b5ca68b09ef9e899793a24a833dc8384fe5ea0eeb22dc16ce",
+    "bytes": 1276262,
+    "current": "docs/design/frames/05-investments/6. Dashboard de investimentos.svg"
+  },
+  {
+    "original": "frames_SVG/6. Detalhes e hist\u00f3rico de investimento-1.svg",
+    "sha256": "572f8f0149e05595985cf17e172acdc0a0d0b2cda5939c395e422aa44756bf4c",
+    "bytes": 823839,
+    "current": "docs/design/frames/05-investments/6. Detalhes e hist\u00f3rico de investimento-1.svg"
+  },
+  {
+    "original": "frames_SVG/6. Detalhes e hist\u00f3rico de investimento.svg",
+    "sha256": "552ed4fc60a9b5664a2eee3ccac3d2864d71f83c94328fb8d81431b8d10a2191",
+    "bytes": 2120178,
+    "current": "docs/design/frames/05-investments/6. Detalhes e hist\u00f3rico de investimento.svg"
+  },
+  {
+    "original": "frames_SVG/6. editar investimento-1.svg",
+    "sha256": "470b7ac8ac59bd96dfa55bf67a145c654ed49fda523530e6380d521701bea341",
+    "bytes": 1709804,
+    "current": "docs/design/frames/05-investments/6. editar investimento-1.svg"
+  },
+  {
+    "original": "frames_SVG/6. editar investimento.svg",
+    "sha256": "a8097e70834674bd92557c06b29a5df6f663ae05f155183f5ff1a30f8a256fd1",
+    "bytes": 569827,
+    "current": "docs/design/frames/05-investments/6. editar investimento.svg"
+  },
+  {
+    "original": "frames_SVG/7. Automa\u00e7\u00f5es e notifica\u00e7\u00f5es-1.svg",
+    "sha256": "81ee383b641a929903888290d592898d13fa3de46660778224091c4197445e26",
+    "bytes": 3548850,
+    "current": "docs/design/frames/06-settings/7. Automa\u00e7\u00f5es e notifica\u00e7\u00f5es-1.svg"
+  },
+  {
+    "original": "frames_SVG/7. Automa\u00e7\u00f5es e notifica\u00e7\u00f5es.svg",
+    "sha256": "3348d6c8d1daa913990611f8c6747affd815227eb576c870cd320f24752212a4",
+    "bytes": 888275,
+    "current": "docs/design/frames/06-settings/7. Automa\u00e7\u00f5es e notifica\u00e7\u00f5es.svg"
+  },
+  {
+    "original": "frames_SVG/7. Compartilhamento de conta e permiss\u00f5es-1.svg",
+    "sha256": "78416c104c78598ce017b585c3bcbd48484c6f692c21fa7a9431f46c52cc3451",
+    "bytes": 1031335,
+    "current": "docs/design/frames/06-settings/7. Compartilhamento de conta e permiss\u00f5es-1.svg"
+  },
+  {
+    "original": "frames_SVG/7. Compartilhamento de conta e permiss\u00f5es.svg",
+    "sha256": "486f2af9889d56bb5ce353e621d07a0081d63102394eb61c5688e674834f6774",
+    "bytes": 2308308,
+    "current": "docs/design/frames/06-settings/7. Compartilhamento de conta e permiss\u00f5es.svg"
+  },
+  {
+    "original": "frames_SVG/7. Perfil e configura\u00e7\u00f5es-1.svg",
+    "sha256": "84ad871edf4e909189163824a039b8c6d660241c3f5de7877b722ce8f93a702c",
+    "bytes": 896738,
+    "current": "docs/design/frames/06-settings/7. Perfil e configura\u00e7\u00f5es-1.svg"
+  },
+  {
+    "original": "frames_SVG/7. Perfil e configura\u00e7\u00f5es.svg",
+    "sha256": "7d3e08a4fa16fdd7865f9c7397df834e96e42b63b6777efcd2c73b6fcc304b5e",
+    "bytes": 2378437,
+    "current": "docs/design/frames/06-settings/7. Perfil e configura\u00e7\u00f5es.svg"
+  },
+  {
+    "original": "frames_SVG/Aside.svg",
+    "sha256": "16c595db39952cd64a63ad1bc7d86e174421aa5477acdfc30e1eaa311a3bfb71",
+    "bytes": 240290,
+    "current": "docs/design/frames/unclassified/Aside.svg"
+  },
+  {
+    "original": "frames_SVG/Home com IA-1.svg",
+    "sha256": "44bce56754eb9643bd6d90fe7e4be8ca4bf8d1cd4ae6dec5aa0f99528c0a2de3",
+    "bytes": 825302,
+    "current": "docs/design/frames/02-home-dashboard/Home com IA-1.svg"
+  },
+  {
+    "original": "frames_SVG/Home com IA.svg",
+    "sha256": "eafb7b88942132114b257173f6365ac9d6ee852176bd0c6d2d9f61eaa3375d9a",
+    "bytes": 1529835,
+    "current": "docs/design/frames/02-home-dashboard/Home com IA.svg"
+  },
+  {
+    "original": "frames_SVG/Login-1.svg",
+    "sha256": "509702f3c8d6ab2cb9d7116b9f98067fad57d6228cc0613bf1d2103d41d180c2",
+    "bytes": 211677,
+    "current": "docs/design/frames/01-authentication/Login-1.svg"
+  },
+  {
+    "original": "frames_SVG/Login.svg",
+    "sha256": "3cb4c32f8d33088b20da67de8c6c5b4ae69741ddad6f022e21a26511e690e60a",
+    "bytes": 537100,
+    "current": "docs/design/frames/01-authentication/Login.svg"
+  },
+  {
+    "original": "frames_SVG/Recuperar senha-1.svg",
+    "sha256": "8c684a923e500da0863f351791552a8d3019358caa24b72522a7624d04926a3c",
+    "bytes": 300824,
+    "current": "docs/design/frames/01-authentication/Recuperar senha-1.svg"
+  },
+  {
+    "original": "frames_SVG/Recuperar senha.svg",
+    "sha256": "622280841ad58c7c443c13528cbec535b95ec5d22f9e594d2ef8693b5c1238b0",
+    "bytes": 714755,
+    "current": "docs/design/frames/01-authentication/Recuperar senha.svg"
+  },
+  {
+    "original": "frames_SVG/[ ] Criar conta (Sign Up)-1.svg",
+    "sha256": "d6b74568118b737ff8ce0e9a5ed5521cbb559c2a2a265b5a7598c22ba0d9d71f",
+    "bytes": 432426,
+    "current": "docs/design/frames/01-authentication/[ ] Criar conta (Sign Up)-1.svg"
+  },
+  {
+    "original": "frames_SVG/[ ] Criar conta (Sign Up).svg",
+    "sha256": "34efe6047b19d4f29bf25d18dc358514712e3a354c2d9318dcdad5091c471d96",
+    "bytes": 769302,
+    "current": "docs/design/frames/01-authentication/[ ] Criar conta (Sign Up).svg"
+  },
+  {
+    "original": "id/.DS_Store",
+    "sha256": "b690ef147f9e0502c7d4cd2e87222015aa2013c63dde6e3cab22615e6e454968",
+    "bytes": 6148,
+    "current": "id/.DS_Store"
+  },
+  {
+    "original": "id/colors.svg",
+    "sha256": "8cf438e3d4e52a564d76eb7c573455b93bdbad58269c9bea32798c1c52aa11ea",
+    "bytes": 268,
+    "current": "docs/design/brand/colors.svg"
+  },
+  {
+    "original": "id/logo/Layer 2.svg",
+    "sha256": "5bcda430d30e599817fc98a8eead7d986cf964f87528d2a017e59f3bef94c629",
+    "bytes": 14052,
+    "current": "docs/design/brand/logo/Layer 2.svg"
+  },
+  {
+    "original": "id/logo/black.svg",
+    "sha256": "1d9873e451b2291d224b3c3e0fa588b4439dd28dc992f4b6f482d5ac1a7a998f",
+    "bytes": 14037,
+    "current": "docs/design/brand/logo/black.svg"
+  },
+  {
+    "original": "id/logo/color.svg",
+    "sha256": "653656890d888ba0bda8704920394e89ef78e099a5ff1d9ff9af44a7b86d69d6",
+    "bytes": 14015,
+    "current": "docs/design/brand/logo/color.svg"
+  },
+  {
+    "original": "id/logo/color2.svg",
+    "sha256": "ec12903134c552fe9b62960bf3e86282d88be64480313f8f256463205a928775",
+    "bytes": 14018,
+    "current": "docs/design/brand/logo/color2.svg"
+  },
+  {
+    "original": "id/logo/orange.svg",
+    "sha256": "f0be6a0457f301b84e0d3a4c469591130b99e0d3bda8118cc0c7f5ebb58fc81a",
+    "bytes": 14037,
+    "current": "docs/design/brand/logo/orange.svg"
+  },
+  {
+    "original": "id/logo/white.svg",
+    "sha256": "eae3d0f8fcf88197d1b6b4fa31b500ec8014806e434fdf328b006efca7867e86",
+    "bytes": 14009,
+    "current": "docs/design/brand/logo/white.svg"
+  }
+]

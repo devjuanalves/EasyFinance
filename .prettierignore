@@ -1,0 +1,8 @@
+node_modules/
+dist/
+coverage/
+package-lock.json
+docs/blueprint/
+docs/design/frames/
+docs/design/brand/
+apps/web/src/assets/brand/

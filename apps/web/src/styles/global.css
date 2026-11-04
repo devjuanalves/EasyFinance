@@ -1,0 +1,21 @@
+@import 'tailwindcss';
+/* Values extracted from official SVGs; semantic roles are provisional. */
+@theme {
+  --color-brand: #e43900;
+  --color-brand-neutral: #eaeaea;
+  --color-surface: #ffffff;
+  --color-foreground: #191919;
+}
+/* System font and spacing are development defaults, not approved UI tokens. */
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  background: var(--color-surface);
+}
+h1 {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+p {
+  margin-block: 1rem;
+}
