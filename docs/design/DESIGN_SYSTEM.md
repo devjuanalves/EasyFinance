@@ -23,3 +23,19 @@ Typography is outlined as SVG paths: no font-family metadata is available. The s
 - Responsive behavior: paired exports confirm distinct narrow/wide layouts; breakpoints, collapsing navigation and intermediate widths require verification. Blueprint requests 1440×900 and 390×844; exported widths differ.
 
 ApplicationShell, Sidebar, Header, PageContainer and shared UI are planned boundaries, not implemented designs. Review the reference pair for each component before coding it. Preserve official branding and support focus, keyboard, contrast and reduced motion without inventing product behavior.
+
+## Block 1 implementation observations
+
+The authentication module now shares AuthLayout, native labeled fields, password toggles, primary/secondary actions and feedback. It preserves each reference's desktop side-panel variant: orange login, pale signup, dark recovery. Narrow layouts omit desktop marketing content, use the official logo, and use 24px login / 16px signup-recovery gutters. Input heights are 44px desktop and 48px mobile. The layout collapses at 900px as an implementation choice; no Figma breakpoint metadata was supplied.
+
+SVG geometry confirms login mobile input radii near 12px, signup near 8px and recovery near 4px. Desktop form columns are constrained to 440px and main columns use roughly the reference 52/48 or 50/50 proportions. Original exports have different canvas sizes from the required target viewports, so geometry is responsively adapted rather than stretched.
+
+The font still cannot be identified from outlined paths. A system sans fallback is used consistently; exact font metrics and visual sign-off remain pending. Onboarding reuses these components and is **provisional**, not Figma-approved.
+
+Accessibility adjustment: white on official `#E43900` is approximately 4.30:1. Small white action labels use a 95% brand / 5% black mix to exceed 4.5:1; small text links use the existing darker `#AE2900`. The base brand token and original logo assets are unchanged. Focus rings, error descriptions, 44px password toggles and reduced-motion behavior are added where static exports cannot specify interaction.
+
+Prototype state-selector strips were omitted; state changes are driven by real form interaction. Unavailable OAuth buttons are disabled and explained. Unsupported certification/encryption claims and legal acceptance are replaced with honest demo information, retaining the visual region. See [visual review](BLOCK1_VISUAL_REVIEW.md) for detailed differences.
+
+## Block 2 application components
+
+The authenticated shell and finance styles live in `apps/web/src/components/layout/workspace.css`, scoped under application classes. F05/F06 retain warm neutral surfaces, orange actions, rounded metric/response cards and compact native filters. SVG charts expose full data in expandable tables. At widths up to 900px the desktop sidebar becomes a modal history/navigation drawer and bottom navigation; charts stack and recent transactions become cards. This breakpoint and the missing mobile Dashboard composition remain provisional. No change was made to the Block 1 global auth stylesheet. See BLOCK2_VISUAL_REVIEW.md for source mapping and screenshots.

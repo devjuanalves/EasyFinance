@@ -27,4 +27,18 @@
 | @easyfinance/api | dotenv                      | 18.0.9        |
 | @easyfinance/api | express                     | 5.3.0         |
 
-Resolved versions are locked in `package-lock.json`. PostgreSQL server and Playwright are intentionally not provisioned in Block 0. ESLint 10 performs native JSX reference analysis; see [official migration notes](https://eslint.org/docs/latest/use/migrate-to-10.0.0). Prisma CLI/client are installed but client generation and database operations are deferred.
+Resolved versions are locked in `package-lock.json`. PostgreSQL server remains unprovisioned. Block 1 adds React testing utilities and Playwright for the implemented frontend flows. ESLint 10 performs native JSX reference analysis; see [official migration notes](https://eslint.org/docs/latest/use/migrate-to-10.0.0). Prisma CLI/client are installed but client generation and database operations are deferred.
+
+## Block 1 testing additions
+
+| Package                     | Exact version |
+| --------------------------- | ------------- |
+| @testing-library/react      | 16.3.3        |
+| @testing-library/user-event | 14.6.8        |
+| @testing-library/jest-dom   | 7.0.1         |
+| jsdom                       | 30.1.3        |
+| @playwright/test            | 1.64.1        |
+
+## Block 2 verification
+
+No packages or lockfile changes were needed. `npm ls --depth=0` passed on 6 November 2026. The registry audit was rerun; its current result is recorded in PROGRESS.md. Charts use React-rendered SVG with data-table alternatives.

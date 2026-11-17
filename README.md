@@ -1,10 +1,10 @@
 # EasyFinance
 
-A personal finance application planned around an AI home, financial dashboard, income/invoices, expenses, manual investments and workspace collaboration. Block 0 establishes the development foundation only: no functional screens, authentication, financial endpoints or database models have been implemented.
+A personal finance application planned around an AI home, financial dashboard, income/invoices, expenses, manual investments and workspace collaboration. Block 0 provides the development foundation. Block 1 implements Login, Sign Up, Password Recovery and provisional Onboarding with an in-memory mock service. Block 2 implements a deterministic sample-data Home assistant and financial Dashboard. Block 3 implements Income & Invoices with a shared in-memory ledger, clients and payment allocation. No production authentication, financial endpoints or database models have been implemented.
 
 ## Stack and requirements
 
-JavaScript ESM/JSX, React, Vite, Tailwind CSS, React Router, TanStack Query, Node.js, Express, PostgreSQL and Prisma. npm workspaces, ESLint, Prettier, Vitest, Supertest and GitHub Actions support development. Use Node **24.19.0** (`.nvmrc`) and npm **11**. Exact dependency versions are pinned in workspace manifests and `package-lock.json`. PostgreSQL is not needed for this block. Playwright will be configured with the first functional browser flow.
+JavaScript ESM/JSX, React, Vite, Tailwind CSS, React Router, TanStack Query, Node.js, Express, PostgreSQL and Prisma. npm workspaces, ESLint, Prettier, Vitest, Supertest and GitHub Actions support development. Use Node **24.19.0** (`.nvmrc`) and npm **11**. Exact dependency versions are pinned in workspace manifests and `package-lock.json`. PostgreSQL is not needed for this block. Playwright tests all 21 frontend screens and cross-module workflows at desktop and mobile sizes.
 
 ## Repository
 
@@ -30,7 +30,7 @@ cp .env.example .env
 npm run dev
 ```
 
-After the initial install, use `npm ci` for reproducible installation from the lockfile. `npm run dev` starts both processes and stops the other if either exits. Open <http://localhost:5173>. The page is an infrastructure placeholder, not approved EasyFinance UI.
+After the initial install, use `npm ci` for reproducible installation from the lockfile. `npm run dev` starts both processes and stops the other if either exits. Open <http://localhost:5173>. Unauthenticated sessions open Login. Sign in with `alex@example.com` / `EasyFinanceDemo!`, or complete a simulated registration and onboarding. The successful destination is the Home assistant; Dashboard is available through navigation. The development foundation remains at `/development`. Refreshing ends the demo session.
 
 Separate terminals are also supported:
 
@@ -65,7 +65,7 @@ npm run format:check
 npm run check
 ```
 
-`npm run format` formats code/documentation while excluding original assets. `npm run test:watch` runs interactive tests. `npm run preview --workspace @easyfinance/web` serves the built SPA locally. CI runs `npm ci` and `npm run check`; it requires neither database credentials nor external providers.
+`npm run format` formats code/documentation while excluding original assets. `npm run test:watch` runs interactive tests. `npm run preview --workspace @easyfinance/web` serves the built SPA locally. Run `npx playwright install chromium` once, then `npm run test:e2e` for browser tests. They start and stop both development servers and capture layouts under ignored `test-results/auth-layouts/` and block-specific directories. Use localhost, matching the configured CORS origin. CI runs `npm ci`, `npm run check`, installs Chromium and runs the browser suite; it requires neither database credentials nor external providers.
 
 ## Sources and next steps
 
@@ -75,14 +75,22 @@ npm run check
 - [21-screen inventory](docs/SCREEN_INVENTORY.md), [implementation plan](docs/IMPLEMENTATION_PLAN.md), [progress and validation](docs/PROGRESS.md).
 - [Database workflow](database/README.md) and [database conflicts](docs/architecture/DATABASE.md).
 
-Next: **Block 1 — Authentication**, after reviewing its missing onboarding references and required schema decisions. No Block 1 work is included here.
+Block 1 is implemented as a frontend demo; see [authentication behavior and limitations](docs/AUTHENTICATION.md). Blocks 2–6 are also implemented as session-only frontend demonstrations; see [Settings & Collaboration](docs/SETTINGS_COLLABORATION.md). All 21 functional screens are implemented. **Block 7 — Integration & QA** is documented in the [frontend audit](docs/FRONTEND_AUDIT.md); production readiness is not claimed. Onboarding visual approval and the original font remain pending. Schema and real authentication are separate future work.
 
-## First commit (manual)
+## Review and commit (manual)
 
-The repository is local on `main`; nothing is staged or committed and no remote is configured. Review `git status --short`, especially ignored local files, before running:
+Block 1 changes are on `feat/authentication`. Nothing was staged, committed or pushed by this implementation task. Review `git status --short` and `git diff` before staging the files you intend to include.
 
-```sh
-git add .
-git diff --cached --stat
-git commit -m "chore: initialize EasyFinance project foundation"
-```
+Suggested commit message: `feat: implement responsive mock authentication and onboarding`.
+
+## Mock authentication boundary
+
+Vite development enables the mock automatically. Production builds disable it by default; the forms explain this. To deliberately exercise a local production preview, set `VITE_AUTH_MODE=mock` at build time. This public flag is not a security control and must never be mistaken for production authentication. The mock creates no persistent records, stores no submitted passwords, and sends no emails. Do not enter real personal information. See [demo scenarios](docs/AUTHENTICATION.md).
+
+## Home and Dashboard
+
+See [Block 2 behavior and calculation conventions](docs/HOME_DASHBOARD.md) and [visual review](docs/design/BLOCK2_VISUAL_REVIEW.md). Both screens share one fictional ledger and session-scoped filters. No external AI or financial integrations are active.
+
+## Income & Invoices demonstration
+
+F07–F11 provide invoice editing/preview, client management, partial payments, reviewed bank matches and recurring draft preparation. All financial views share one session ledger; reload resets changes. See [behavior and financial rules](docs/INCOME_INVOICES.md) and [ten-layout visual review](docs/design/BLOCK3_VISUAL_REVIEW.md). PDF uses the browser print dialog; email and recurring jobs are not live integrations.

@@ -15,7 +15,7 @@ export default [
     rules: { 'no-unused-vars': ['error', { argsIgnorePattern: '^_' }] },
   },
   {
-    files: ['apps/web/src/**/*.{js,jsx}'],
+    files: ['apps/web/src/**/*.{js,jsx}', 'apps/web/e2e/**/*.js'],
     languageOptions: {
       globals: globals.browser,
       parserOptions: { ecmaFeatures: { jsx: true } },

@@ -1,0 +1,205 @@
+.investment-filters {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 14px;
+}
+.investment-page .income-kpis .kpi-card:nth-child(1) {
+  background: #e9f0fc;
+}
+.investment-page .income-kpis .kpi-card:nth-child(2) {
+  background: #f0eded;
+}
+.investment-page .income-kpis .kpi-card:nth-child(3) {
+  background: #eaf5f0;
+}
+.investment-page .income-kpis .kpi-card:nth-child(4) {
+  background: #fceee9;
+}
+.investment-chart {
+  width: 100%;
+  min-height: 200px;
+  margin-top: 20px;
+}
+.investment-chart text {
+  font-size: 11px;
+  fill: #727272;
+}
+.value-point {
+  fill: #08864e;
+  stroke: white;
+  stroke-width: 2;
+}
+.basis-point {
+  fill: #e43900;
+}
+.chart-key {
+  display: flex;
+  gap: 18px;
+  font-size: 12px;
+  flex-wrap: wrap;
+}
+.chart-key span:first-child {
+  color: #08864e;
+}
+.chart-key span:last-child {
+  color: #ae2900;
+}
+.allocation-donut {
+  width: 220px;
+  max-width: 100%;
+  display: block;
+  margin: 10px auto 20px;
+  font-size: 12px;
+  fill: #727272;
+}
+.allocation-bar {
+  display: none;
+  height: 14px;
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 20px 0;
+}
+.investment-insights {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  margin: 24px 0;
+}
+.investment-insights article {
+  background: #fcf9f8;
+}
+.investment-table td {
+  overflow-wrap: anywhere;
+  vertical-align: top;
+}
+.investment-table td strong,
+.investment-table td small {
+  display: block;
+  margin: 6px 0;
+}
+.investment-table td .income-actions {
+  margin-top: 8px;
+}
+.investment-editor-grid,
+.investment-detail-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(260px, 1fr);
+  gap: 24px;
+  align-items: start;
+}
+.investment-editor-grid section,
+.investment-detail-grid section {
+  margin-bottom: 24px;
+}
+.investment-summary {
+  position: sticky;
+  top: 20px;
+}
+.investment-summary dl div {
+  border-bottom: 1px solid #eaeaea;
+  padding: 14px 0;
+}
+.investment-summary dd {
+  margin: 8px 0 0;
+  font-size: 20px;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+.investment-form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 24px;
+}
+.investment-dialog .form-grid {
+  margin: 20px 0;
+}
+.investment-dialog .income-actions {
+  margin-top: 20px;
+}
+.investment-page .income-tabs a {
+  color: #ae2900;
+}
+.investment-meta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  font-size: 14px;
+}
+.investment-meta dd {
+  margin: 6px 0 12px;
+  overflow-wrap: anywhere;
+}
+@media (max-width: 900px) {
+  .investment-filters {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .investment-filters .income-field:first-child {
+    grid-column: 1/-1;
+  }
+  .investment-editor-grid,
+  .investment-detail-grid {
+    grid-template-columns: 1fr;
+  }
+  .investment-summary {
+    position: static;
+  }
+  .investment-insights {
+    grid-template-columns: 1fr;
+  }
+  .allocation-donut {
+    display: none;
+  }
+  .allocation-bar {
+    display: flex;
+  }
+  .investment-page .income-kpis {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .investment-table {
+    display: block;
+  }
+  .investment-table thead {
+    display: none;
+  }
+  .investment-table tbody {
+    display: grid;
+    gap: 12px;
+  }
+  .investment-table tr {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    border: 1px solid #eaeaea;
+    border-radius: 16px;
+    padding: 12px;
+  }
+  .investment-table td {
+    border: 0;
+    display: block;
+    padding: 8px;
+    min-width: 0;
+  }
+  .investment-table td:before {
+    content: attr(data-label);
+    display: block;
+    font-size: 10px;
+    color: #727272;
+    margin-bottom: 8px;
+  }
+  .investment-table td:last-child {
+    grid-column: 1/-1;
+  }
+  .investment-dialog .form-grid {
+    grid-template-columns: 1fr;
+  }
+  .investment-meta {
+    grid-template-columns: 1fr;
+  }
+}
+.investment-audit {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: 11px;
+  max-height: 320px;
+  overflow: auto;
+}
