@@ -73,3 +73,7 @@ The mock combines some template/rule concepts, derives invoice overdue/partial s
 ## Recommended sequence
 
 Resolve dictionary and API contracts first; then implement identity/workspaces and server authorization, accounts/ledger with atomic commands, imports, clients/invoices/payments, investment history, notifications/automation and finally external providers/AI. Each stage needs contract, authorization, concurrency and migration tests plus frontend regression coverage. Current mocks are useful behavioral examples, not production repositories or security controls.
+
+## Block 8 structural decisions
+
+The later authorized database foundation now represents all 34 detailed dictionary entities. [Database architecture](DATABASE_ARCHITECTURE.md) resolves the alternate page-42 names, maps preferences/import review data without extra tables, and documents integer money, exact decimals, lifecycle mappings and composite ownership/currency keys. [Setup](DATABASE_SETUP.md) records successful Prisma/client/offline checks and live PostgreSQL 18.7 execution. [Frontend mapping](DATABASE_FRONTEND_MAPPING.md) proposes future endpoint/service boundaries; none were implemented. The earlier readiness assessment above remains historical. Schema/migration structure exists, but live migration and scoped allocation concurrency validation passed; production integration controls remain outstanding.

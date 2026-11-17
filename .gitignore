@@ -19,3 +19,5 @@ Thumbs.db
 *.swp
 playwright-report/
 test-results/
+
+database/generated/

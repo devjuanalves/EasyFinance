@@ -1,6 +1,6 @@
 # Progress
 
-Current block: **Block 7 — frontend audit and refinement, completed and validated**. All 21 session-only screens are implemented and reviewed; final evidence is recorded below and in FRONTEND_AUDIT.md. Production readiness and Block 8 are not authorized.
+Current block: **Block 8 — PostgreSQL/Prisma foundation prepared; live database validation blocked**. All prior frontend work is preserved. See DATABASE_SETUP.md for the environment blocker; Block 9 is not started.
 
 ## Completed
 
@@ -112,3 +112,27 @@ Final `npm run check` passed: ESLint, Prettier, **209 Vitest tests in 12 files**
 See [frontend audit](FRONTEND_AUDIT.md), [visual evidence](design/BLOCK7_VISUAL_AUDIT.md) and [backend readiness](FRONTEND_BACKEND_READINESS.md). Financial regressions cover shared-ledger updates, invoice allocation/rounding, imports/splits/transfers/exclusions, investment cost basis and automation idempotency. Missing onboarding desktop/mobile and Dashboard mobile references remain provisional; exact font, real-device/multi-browser/CI, formal accessibility and production integration remain pending. CSV safety is byte-tested; spreadsheet application execution was not exercised.
 
 Earlier uncommitted work is preserved on `feat/authentication`; no pre-existing baseline file was deleted, no source assets or old block visual reviews changed, and nothing is staged or committed. No branch, push, merge, reset or cleanup operation occurred. Block 7 ends here; Block 8 is not started.
+
+## Block 8 — 17 November 2026 (Australia/Sydney)
+
+Prepared the authorized PostgreSQL/Prisma foundation, then resumed the existing implementation without rebuilding it. The actual Draw.io DB01–DB09 dictionary enumerates 34 tables; all 34 have mapped Prisma models, scoped relationships, restrictive deletion and indexes. Root JavaScript configuration uses Prisma CLI/Client/adapter 7.10.1 and pg 8.23.1. Financial money uses BIGINT minor units; invoice/investment fractional fields retain exact NUMERIC scales. The unchanged frontend continues using its shared session ledger.
+
+One initial versioned migration was generated and statically reviewed, including normalized identity checks, workspace/currency composite keys, uniqueness, bounded values, invoice rounding/totals, receipt/allocation integrity, exact splits, transfer consistency, owner protection and deferred final-state validation. A workspace write fence is intended to prevent concurrent aggregate write skew; this has **not** been proven on PostgreSQL. Integration tests explicitly cover separate connections at ReadCommitted and Serializable. Final service comparison added optional transaction client and invoice participant references needed by existing filters; no models were added or removed during resumed review.
+
+Executed: Prisma format and validate passed; JavaScript Client generation passed; **13 offline database tests passed**. Complete `npm run check` passed: ESLint, Prettier, **209 Vitest tests in 12 files**, production build (main JS unchanged at 372.11 kB / 116.61 kB gzip). Complete Playwright: **50 passed**, 25 per viewport. Installed dependency integrity passed. API health returned actual HTTP 200 with `status: ok`, `service: easyfinance-api`. `git diff --check` passed. All 49 authoritative assets match manifest hashes. No frontend file changed and no baseline file was deleted.
+
+**Blocked live validation:** no PostgreSQL/Docker/Podman tools or configured database were available. Homebrew exists outside PATH but fails with unsupported macOS 26.6.1 and has an empty Cellar. No system software was installed/updated. `db:test` was attempted and stopped at the explicit disposable-database safety guard, before connecting or executing test bodies; it is not a passing database run. No migration was applied, no live table/index/trigger inspection or seed/rerun occurred, and no migration replay/concurrency result is claimed. These remain release gates, not waived checks.
+
+See [database architecture/34-model matrix](DATABASE_ARCHITECTURE.md), [safe setup and blocker](DATABASE_SETUP.md) and [future frontend/API mapping](DATABASE_FRONTEND_MAPPING.md). The deterministic fictional seed uses a disabled user with no password; live writes require a designated disposable loopback database and explicit acknowledgement. Production authorization, finalized-record correction workflows, investment replay enforcement, recurrence policy, retention and deployment remain future work. No production endpoint or Block 9 was started.
+
+Git remains `feat/authentication`. Unlike the earlier Block 7 report, the actual working tree at the start of Block 8 was clean; a fresh hash baseline was recorded. All existing application source and prior visual reviews were preserved. Block 8 changes remain unstaged/uncommitted; no branch change, stage, commit, push, merge, reset or cleanup was performed.
+
+### Block 8 live PostgreSQL validation — 17 November 2026
+
+Supersedes the missing-server blocker recorded above. The user configured ignored root `.env` and explicitly designated `easyfinance_block8_test` disposable. Read-only inspection verified PostgreSQL 18.7 at 127.0.0.1:5432, role postgres, local data directory, and no preexisting non-system relations/functions before writes. The guard now permits this exact database name while retaining acknowledgement, loopback, production and query-override restrictions; its additional offline test passed.
+
+The existing versioned migration deployed without SQL changes; migration status is current. Catalogs verify 34 domain tables plus migration history, 84 validated foreign keys (31 composite), 60 CHECK constraints, 198 valid indexes and 11 initially deferred constraint triggers (nine financial, two owner). Two explicit fictional seed runs and the seed idempotency test passed; no credentials were created. All **31 live integration tests passed**, including cross-workspace/currency rejection, invoice rounding/discount/tax, allocation limits and duplicate prevention, imports/Keep Both, exact splits, paired transfers, investment precision/relationships, automation idempotency and notification identity. Actual-COMMIT failure and separate-connection ReadCommitted/Serializable allocation races passed: one winner per race and no over-allocation.
+
+Preservation checks: all 49 authoritative assets match SHA-256; frontend file hashes remain unchanged from both Block 8 and live-validation baselines, with no baseline deletions. Dependency integrity and `git diff --check` passed; `.env` remains ignored and the Git index is empty.
+
+Current regression: **14 offline database tests, 209 Vitest tests and 50 Playwright tests passed**. Production build, ESLint and formatting passed; API health returned HTTP 200 / ok. Frontend services remain in-memory and all 21 screens are preserved. See DATABASE_SETUP.md for scope and remaining limits: second fresh-database replay, other PostgreSQL versions, least-privilege roles, production authorization, workload benchmarking and backup/restore remain future work. No database reset/drop or Block 9 work occurred. All changes remain unstaged and uncommitted on feat/authentication.

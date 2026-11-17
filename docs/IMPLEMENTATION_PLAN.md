@@ -22,3 +22,7 @@ Block 6 frontend validation is complete: 196 Vitest and 42 Playwright tests pass
 ## Block 7 completion
 
 See [frontend audit](FRONTEND_AUDIT.md), [42-target visual audit](design/BLOCK7_VISUAL_AUDIT.md) and [backend readiness](FRONTEND_BACKEND_READINESS.md). Targeted fixes preserve the existing modules and design system. Production contracts/schema decisions and final visual approval remain pending. Stop before Block 8; no database or production integration work was performed.
+
+## Block 8 — PostgreSQL/Prisma persistence foundation
+
+Authorized after Block 7. The existing 34-model schema, versioned migration, guarded seed and tests are prepared without replacing frontend services. See [database architecture](DATABASE_ARCHITECTURE.md), [setup and results](DATABASE_SETUP.md) and [future API mapping](DATABASE_FRONTEND_MAPPING.md). Prisma/offline validation is distinct from live PostgreSQL validation. Live PostgreSQL 18.7 migration application, seed reruns and all 31 integrity tests passed, including allocation races on independent connections. Production service authorization, deployment roles and performance validation remain required. No production API work or Block 9 has started.

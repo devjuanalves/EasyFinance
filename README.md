@@ -94,3 +94,7 @@ See [Block 2 behavior and calculation conventions](docs/HOME_DASHBOARD.md) and [
 ## Income & Invoices demonstration
 
 F07–F11 provide invoice editing/preview, client management, partial payments, reviewed bank matches and recurring draft preparation. All financial views share one session ledger; reload resets changes. See [behavior and financial rules](docs/INCOME_INVOICES.md) and [ten-layout visual review](docs/design/BLOCK3_VISUAL_REVIEW.md). PDF uses the browser print dialog; email and recurring jobs are not live integrations.
+
+## PostgreSQL/Prisma foundation (Block 8)
+
+The 34-model persistence structure, reviewed versioned migration and guarded fictional seed are in `database/`; existing frontend services remain unchanged. Run `npm run db:validate`, `npm run db:generate` and `npm run db:test:offline` for checks without a database. See [database setup](docs/DATABASE_SETUP.md) for the explicit disposable-database safeguards, live validation results and migration commands. The migration, seed reruns and 31 live database tests passed on disposable local PostgreSQL 18.7; no production financial API is implemented.

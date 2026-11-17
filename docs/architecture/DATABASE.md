@@ -20,3 +20,7 @@ Important specified constraints include unique normalized email; workspace membe
 Page 42 is a conceptual overview and introduces alternative names/additional concepts: `sessions` versus `auth_sessions`, `accounts` versus `financial_accounts`, `invoice_payments` versus `payments`/`payment_allocations`, asset positions versus `investments`, and `ai_conversations` versus `conversations`. It also lists preferences, queues, snapshots and audit concepts beyond the 34-table dictionary. Do not silently merge these into a larger schema or choose one without documenting the resolution. DB01–DB09 provide the detailed proposed dictionary, not a finalized implementation.
 
 Database server version, infrastructure, retention, backup schedule, object storage, AI/email providers and production deployment remain decisions for later blocks. No live database verification has been attempted because no schema or database was requested in Block 0.
+
+## Block 8 resolution record
+
+The subsequent authorized schema block retains the 34 DB01–DB09 entities and names. See [current database architecture](../DATABASE_ARCHITECTURE.md) for explicit page-42 mappings, frontend refinements, types, SQL constraints and unresolved production decisions. These supersede the earlier no-schema status; original blueprint files and the historical review above are preserved. PostgreSQL 18.7 execution, seed reruns and live integrity/concurrency tests passed as documented in [setup](../DATABASE_SETUP.md).

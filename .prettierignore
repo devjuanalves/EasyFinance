@@ -6,3 +6,7 @@ docs/blueprint/
 docs/design/frames/
 docs/design/brand/
 apps/web/src/assets/brand/
+
+database/generated/
+database/prisma/schema.prisma
+database/prisma/migrations/
