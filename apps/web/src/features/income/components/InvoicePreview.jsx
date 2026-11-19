@@ -37,7 +37,12 @@ export function InvoiceTotals({ totals, currency, paid, cancelled = false }) {
     </dl>
   );
 }
-export default function InvoicePreview({ invoice, client, items }) {
+export default function InvoicePreview({
+  invoice,
+  client,
+  items,
+  persistent = false,
+}) {
   let totals;
   try {
     totals = invoiceTotals(items, invoice.discount);
@@ -58,7 +63,7 @@ export default function InvoicePreview({ invoice, client, items }) {
       <header>
         <img src={logo} alt="EasyFinance" />
         <div>
-          <span>INVOICE · DEMO</span>
+          <span>{persistent ? 'INVOICE · DEVELOPMENT' : 'INVOICE · DEMO'}</span>
           <h2>{invoice.number || 'Unnumbered draft'}</h2>
           <p>
             Issue: {dateLabel(invoice.issuedDate)}
@@ -135,8 +140,9 @@ export default function InvoicePreview({ invoice, client, items }) {
         />
       </div>
       <footer>
-        Fictional demonstration document · Not proof of payment or email
-        delivery
+        {persistent
+          ? 'Development invoice · Not proof of payment or email delivery'
+          : 'Fictional demonstration document · Not proof of payment or email delivery'}
       </footer>
     </article>
   );

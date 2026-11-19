@@ -30,3 +30,7 @@ Authorized after Block 7. The existing 34-model schema, versioned migration, gua
 ## Block 9A — real backend and first persistent slice
 
 Implemented real identity/session services, database membership authorization, scoped financial account/transaction reads and versioned manual ledger writes, plus authenticated Expense Overview. React API mode is separate from the preserved demo services. The 34-model schema and initial migration are unchanged. See [integration evidence and limits](BLOCK9A_INTEGRATION.md). Production security/deployment remains unapproved; stop before Block 9B domains.
+
+### Block 9B.1 persistence slice
+
+Income, invoices, clients and receipt allocation use existing models and the Block 9A security/data boundary. F07–F11 are connected in API mode; remaining demonstration modules are unchanged. Refer to BLOCK9B1_INVOICES_PAYMENTS.md for completion evidence and explicitly deferred delivery, corrections and recurring workflows. Block 9B.2 is not started.

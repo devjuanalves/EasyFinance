@@ -92,3 +92,7 @@ Missing generated client: run db:generate. Missing URL/acknowledgement: establis
 Before production use, repeat live tests on the deployment environment and a second fresh migration replay, benchmark workspace write contention, review least-privilege roles, backups/restore and all unresolved contracts in DATABASE_ARCHITECTURE.md. Application roles must not own schema, disable triggers or create shadowing objects. Credentials belong in secret management; query parameters and logs must not leak connection strings.
 
 Final application regression: **209 Vitest tests and 50 Playwright tests passed**; build, lint, formatting and installed dependency checks passed. API health returned HTTP 200 / ok; all 49 authoritative assets matched. Frontend source hashes are unchanged from the start of Block 8. The frontend continues using in-memory services; no database connection was added to React.
+
+## Block 9B.1 runtime grant extension
+
+After verifying the same approved disposable target, `node database/scripts/invoice-runtime-grants.js` was executed as a reviewed administrator operation. It grants only the existing invoice/client/payment tables and draft item replacement access to easyfinance_9a_app; it does not recreate the role, rotate credentials, change schema or reset data. Never run privileged setup automatically from API startup. See BLOCK9B1_INVOICES_PAYMENTS.md for the exact scope.

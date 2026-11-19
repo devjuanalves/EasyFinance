@@ -31,6 +31,23 @@ function fingerprint(input) {
     )
     .digest('hex');
 }
+async function withBalance(tx, row) {
+  const total = await tx.transaction.aggregate({
+    where: {
+      workspaceId: row.workspaceId,
+      accountId: row.id,
+      currency: row.currency,
+      excludedAt: null,
+    },
+    _sum: { amountMinor: true },
+  });
+  return {
+    ...row,
+    balanceMinor: (
+      row.openingBalanceMinor + (total._sum.amountMinor || 0n)
+    ).toString(),
+  };
+}
 export function ledger(db) {
   const run = (auth, wid, write, fn) =>
     withActor(db, auth, async (tx) => {
@@ -39,19 +56,20 @@ export function ledger(db) {
     });
   return {
     accounts: (a, w, c) =>
-      run(a, w, false, (tx) =>
-        tx.financialAccount.findMany({
+      run(a, w, false, async (tx) => {
+        const rows = await tx.financialAccount.findMany({
           where: scope(w, c ? { currency: c } : {}),
           orderBy: { createdAt: 'asc' },
-        }),
-      ),
+        });
+        return Promise.all(rows.map((row) => withBalance(tx, row)));
+      }),
     account: (a, w, id) =>
       run(a, w, false, async (tx) => {
         const r = await tx.financialAccount.findFirst({
           where: scope(w, { id }),
         });
         if (!r) throw missing();
-        return r;
+        return withBalance(tx, r);
       }),
     categories: (a, w) =>
       run(a, w, false, (tx) =>

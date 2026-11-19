@@ -23,7 +23,9 @@ export default function PersistentExpenses({ overview = false }) {
   const user = useAuth(),
     demo = useWorkspace(),
     cache = useQueryClient();
-  const [workspaceId, setWorkspace] = useState(''),
+  const [workspaceId, setWorkspace] = useState(
+      routeParams.get('workspace') || '',
+    ),
     [currency, setCurrency] = useState('AUD'),
     [accountId, setAccount] = useState(''),
     [search, setSearch] = useState(''),
@@ -127,8 +129,8 @@ export default function PersistentExpenses({ overview = false }) {
           <span className="app-badge">PERSISTENT DEVELOPMENT DATA</span>
           <h1>{overview ? 'Expense Overview' : 'Transactions'}</h1>
           <p>
-            Manual ledger saved in PostgreSQL. Other modules use separate
-            demonstration data.
+            Ledger and invoices saved in PostgreSQL. Remaining modules use
+            separate demonstration data.
           </p>
         </div>
         <button
@@ -248,7 +250,7 @@ export default function PersistentExpenses({ overview = false }) {
                 'Internal transfers are neutral',
               ],
               [
-                'Transactions',
+                'Transaction count',
                 String(data.transactions.count),
                 'Includes excluded rows for review',
               ],
@@ -260,9 +262,9 @@ export default function PersistentExpenses({ overview = false }) {
               {data.accounts.length ? (
                 data.accounts.map((a) => (
                   <p key={a.id}>
-                    {a.name} · {a.currency} · Opening{' '}
-                    {formatMinor(a.openingBalanceMinor, a.currency)} on{' '}
-                    {a.openingDate.slice(0, 10)}
+                    {a.name} · Balance {formatMinor(a.balanceMinor, a.currency)}{' '}
+                    · Opening {formatMinor(a.openingBalanceMinor, a.currency)}{' '}
+                    on {a.openingDate.slice(0, 10)}
                   </p>
                 ))
               ) : (

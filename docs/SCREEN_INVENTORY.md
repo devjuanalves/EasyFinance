@@ -90,3 +90,7 @@ All six local SVG references were inspected. See [behavior](SETTINGS_COLLABORATI
 ## Block 7 cross-module review
 
 All F01–F21 implementations were reviewed at 1440×900 and 390×844 (42 targets). See [per-screen evidence](design/BLOCK7_VISUAL_AUDIT.md). F04 desktop/mobile and F06 mobile remain provisional because references are still absent. Existing routes and shell are preserved; Home now opens the transaction editor and scoped review screen. Broader browser/device and final design approval remain pending.
+
+### Block 9B.1 persistence update
+
+F07 Income Overview, F08 Invoice List, F09 Create/Edit Invoice, F10 Invoice Details/Payments and F11 Clients now have explicit API-mode persistence alongside their preserved demos. Existing routes and shell remain. See BLOCK9B1_INVOICES_PAYMENTS.md for supported controls and desktop/mobile validation.

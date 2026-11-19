@@ -1,7 +1,12 @@
 import { useState } from 'react';
 import { useWorkspace } from '../../finance/WorkspaceContext.js';
 import { Field } from './IncomeUI.jsx';
-export default function ClientForm({ client, onSaved }) {
+export default function ClientForm({
+  client,
+  onSaved,
+  onSubmitClient,
+  editable,
+}) {
   const { command, canEdit } = useWorkspace();
   const [form, setForm] = useState(
     client || {
@@ -18,18 +23,24 @@ export default function ClientForm({ client, onSaved }) {
     },
   );
   const [error, setError] = useState('');
+  const [busy, setBusy] = useState(false);
   const change = (name, value) => setForm({ ...form, [name]: value });
   return (
     <form
       className="income-form"
       noValidate
-      onSubmit={(e) => {
+      onSubmit={async (e) => {
         e.preventDefault();
         try {
-          const id = command('saveClient', { id: client?.id, client: form });
+          setBusy(true);
+          const id = onSubmitClient
+            ? await onSubmitClient(form)
+            : command('saveClient', { id: client?.id, client: form });
           onSaved(id, form);
         } catch (error) {
           setError(error.message);
+        } finally {
+          setBusy(false);
         }
       }}
     >
@@ -108,7 +119,10 @@ export default function ClientForm({ client, onSaved }) {
         Tax identifiers are optional, jurisdiction-specific and not verified. No
         tax registration is assumed.
       </p>
-      <button className="primary-button" disabled={!canEdit}>
+      <button
+        className="primary-button"
+        disabled={busy || !(editable ?? canEdit)}
+      >
         Save client
       </button>
     </form>

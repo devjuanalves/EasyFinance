@@ -1,27 +1,44 @@
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink, Link, useSearchParams } from 'react-router-dom';
 import { useWorkspace } from '../../finance/WorkspaceContext.js';
 import { money } from '../../finance/data/calculations.js';
 import '../income.css';
-export function IncomePage({ title, subtitle, actions, children }) {
+export function IncomePage({
+  title,
+  subtitle,
+  actions,
+  children,
+  persistent = false,
+}) {
   const { ledger, setFilter } = useWorkspace();
+  const [params] = useSearchParams();
+  const suffix =
+    persistent && params.get('workspace')
+      ? '?workspace=' + params.get('workspace')
+      : '';
   return (
     <main className="workspace-content income-page">
       <nav className="income-tabs" aria-label="Income navigation">
-        <NavLink to="/income" end>
+        <NavLink to={'/income' + suffix} end>
           Overview
         </NavLink>
-        <NavLink to="/income/invoices">Invoices</NavLink>
-        <NavLink to="/income/clients">Clients</NavLink>
+        <NavLink to={'/income/invoices' + suffix}>Invoices</NavLink>
+        <NavLink to={'/income/clients' + suffix}>Clients</NavLink>
       </nav>
       <div className="page-heading">
         <div>
-          <span className="app-badge">INCOME & INVOICES · SESSION DEMO</span>
+          <span className="app-badge">
+            {persistent
+              ? 'INCOME & INVOICES · PERSISTENT DEVELOPMENT'
+              : 'INCOME & INVOICES · SESSION DEMO'}
+          </span>
           <h1>{title}</h1>
           <p>{subtitle}</p>
         </div>
         <div className="income-actions">{actions}</div>
       </div>
-      {ledger.isPending ? (
+      {persistent ? (
+        children
+      ) : ledger.isPending ? (
         <p role="status" className="finance-card">
           Loading income records…
         </p>
@@ -67,6 +84,7 @@ export function IncomeKpis({ values, currency }) {
 }
 export function StatusBadge({ status }) {
   const labels = {
+    issued: 'Issued · not sent',
     draft: 'Draft',
     prepared: 'Prepared · not sent',
     sent: 'Sent · mock history',

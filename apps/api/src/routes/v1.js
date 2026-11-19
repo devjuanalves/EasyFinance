@@ -1,3 +1,4 @@
+import { invoiceControllers } from '../controllers/invoices.js';
 import { Router } from 'express';
 import { controllers } from '../controllers/v1.js';
 import { authenticate } from '../middleware/authentication.js';
@@ -13,9 +14,14 @@ export function v1Router(db, config) {
   });
   r.use((req, _res, next) => {
     if (
-      !['/transactions', '/accounts', '/expenses/summary'].some((s) =>
-        req.path.endsWith(s),
-      )
+      ![
+        '/transactions',
+        '/accounts',
+        '/expenses/summary',
+        '/invoices',
+        '/income/summary',
+        '/clients',
+      ].some((s) => req.path.endsWith(s))
     )
       shape(req.query, []);
     next();
@@ -49,5 +55,20 @@ export function v1Router(db, config) {
   r.patch(p + '/transactions/:id', c.update);
   r.post(p + '/transactions/:id/exclusion', c.exclusion);
   r.get(p + '/expenses/summary', c.summary);
+  const i = invoiceControllers(db);
+  r.get(p + '/clients', i.clients);
+  r.post(p + '/clients', i.clientCreate);
+  r.patch(p + '/clients/:id', i.clientEdit);
+  r.post(p + '/clients/:id/archive', i.archive);
+  r.get(p + '/invoices', i.list);
+  r.post(p + '/invoices', i.create);
+  r.get(p + '/invoices/:id', i.read);
+  r.patch(p + '/invoices/:id', i.edit);
+  r.post(p + '/invoices/:id/issue', i.issue);
+  r.post(p + '/invoices/:id/cancel', i.cancel);
+  r.post(p + '/invoices/:id/duplicate', i.duplicate);
+  r.post(p + '/invoices/:id/payments', i.payment);
+  r.get(p + '/payments/:id', i.readPayment);
+  r.get(p + '/income/summary', i.summary);
   return r;
 }

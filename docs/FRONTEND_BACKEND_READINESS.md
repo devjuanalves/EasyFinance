@@ -81,3 +81,9 @@ The later authorized database foundation now represents all 34 detailed dictiona
 ## Block 9A implemented boundary
 
 The earlier readiness inventory remains historical. Real local registration/login/session/logout/password change, workspace authorization and Accounts/Transactions/Expense Overview now have [implemented contracts](API_CONTRACTS.md). Cookie authentication and PostgreSQL runtime privileges are documented in [backend architecture](BACKEND_ARCHITECTURE.md). Explicit API mode connects F01–F04 and the F12/F14 persistence slice; other domain screens continue as labeled demos. Home/Dashboard do not yet combine persistent data with fixtures. [Integration evidence](BLOCK9A_INTEGRATION.md) records actual tests and remaining production gaps. No Block 9B endpoints were added.
+
+## Block 9B.1 — persistent income slice
+
+API mode now connects F07 Income, F08 Invoices, F09 Editor, F10 Details/Payments and F11 Clients to the guarded local backend. Browser workflows cover issue, partial/final receipt, refresh and ledger/account consistency. Demo mode remains intact. Other financial domains, email/recurring delivery, refunds and production hardening remain outstanding. See BLOCK9B1_INVOICES_PAYMENTS.md for contracts and executed validation.
+
+Block 9B.1 final validation: 49 live API, 31 live database, 14 offline database, 220 Vitest, 50 demo browser and four real-API browser tests passed. Both production builds, lint, formatting, Prisma validation/generation, migration status and health passed. Desktop/mobile persistence and account reconciliation are verified locally; production security/operations and unsupported domains remain outstanding. See BLOCK9B1_INVOICES_PAYMENTS.md. Block 9B.2 has not started.

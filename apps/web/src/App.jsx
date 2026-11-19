@@ -1,3 +1,6 @@
+const PersistentIncome = lazy(
+  () => import('./features/persistent/PersistentIncome.jsx'),
+);
 import { useQueryClient } from '@tanstack/react-query';
 import { useAuth } from './features/auth/hooks/useAuth.js';
 import { API_MODE } from './services/persistentApi.js';
@@ -161,12 +164,50 @@ export default function App() {
           <Route path="/investments/new" element={<InvestmentEditor />} />
           <Route path="/investments/:id" element={<InvestmentDetails />} />
           <Route path="/investments/:id/edit" element={<InvestmentEditor />} />
-          <Route path="/income" element={<IncomeOverview />} />
-          <Route path="/income/invoices" element={<InvoiceList />} />
-          <Route path="/income/invoices/new" element={<InvoiceEditor />} />
-          <Route path="/income/invoices/:id" element={<InvoiceDetails />} />
-          <Route path="/income/invoices/:id/edit" element={<InvoiceEditor />} />
-          <Route path="/income/clients" element={<ClientsPage />} />
+          <Route
+            path="/income"
+            element={
+              API_MODE ? (
+                <PersistentIncome screen="overview" />
+              ) : (
+                <IncomeOverview />
+              )
+            }
+          />
+          <Route
+            path="/income/invoices"
+            element={
+              API_MODE ? <PersistentIncome screen="list" /> : <InvoiceList />
+            }
+          />
+          <Route
+            path="/income/invoices/new"
+            element={
+              API_MODE ? <PersistentIncome screen="new" /> : <InvoiceEditor />
+            }
+          />
+          <Route
+            path="/income/invoices/:id"
+            element={
+              API_MODE ? (
+                <PersistentIncome screen="detail" />
+              ) : (
+                <InvoiceDetails />
+              )
+            }
+          />
+          <Route
+            path="/income/invoices/:id/edit"
+            element={
+              API_MODE ? <PersistentIncome screen="edit" /> : <InvoiceEditor />
+            }
+          />
+          <Route
+            path="/income/clients"
+            element={
+              API_MODE ? <PersistentIncome screen="clients" /> : <ClientsPage />
+            }
+          />
         </Route>
         <Route
           path="/development"

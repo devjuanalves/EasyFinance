@@ -41,3 +41,7 @@ The runtime role has no superuser, CREATE DATABASE, CREATE ROLE, replication, by
 ## Remaining deployment work
 
 Independent security assessment, verified email ownership, recovery delivery, MFA, trusted proxy/TLS configuration, distributed rate limiting, secret rotation, session cleanup/absolute policies, audit retention, least-privilege review under deployment workloads, database backup/restore, migration replay and operational monitoring remain pending. Lists paginate; summary currently scans the scoped ledger inside a transaction and needs workload benchmarking/aggregation planning before large datasets. Runtime privileges intentionally support only this slice; do not broadly expand them to bypass a failed future command.
+
+## Block 9B.1 extension
+
+The runtime now also serves clients, invoices, payment allocations and income summaries through dedicated invoice controller/validation/service/repository modules. A guarded grant script extends the same restricted role to these tables, including DELETE only on invoice_items for draft replacement. The Block 9A-only grant inventory above is historical. No schema or migration change was needed. See BLOCK9B1_INVOICES_PAYMENTS.md for the current authorization, financial and privilege boundaries.

@@ -95,3 +95,7 @@ Prepare Send / Prepare Resend confirms the recipient and records `prepared-not-s
 Replace the in-memory command boundary with authenticated server operations, enforce workspace permissions server-side, and persist atomic allocation/transaction updates with uniqueness and idempotency constraints. Supply authoritative date coverage, invoice lifecycle/correction rules, tax jurisdiction/configuration and currency precision. Add a real document renderer, delivery provider, reconciliation review API and calendar-aware background scheduler only in their authorized blocks. No Prisma model or migration is implied by these JavaScript records.
 
 See design/BLOCK3_VISUAL_REVIEW.md for references, ten target screenshots, executed verification and provisional visual choices. Earlier block documentation remains a historical record rather than being rewritten.
+
+## Block 9B.1 API-mode integration
+
+The Block 3 behavior above remains the historical demo contract. Explicit API mode now persists F07–F11 through authenticated scoped endpoints, including clients, drafts/items, issue, cancellation, duplication and payment allocation. Demo fixture dates do not constrain real development records. Shared calculation rules are unchanged, with an additional safe subtotal bound. Real API behavior and intentionally unavailable delivery/recurrence/correction actions are documented in BLOCK9B1_INVOICES_PAYMENTS.md.

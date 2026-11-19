@@ -41,3 +41,7 @@ Investment histories need service-level position locking/version checks and dete
 First run real migration replay/seed/integration/concurrency checks and resolve any failures. Then agree identity/authorization and data serialization contracts, implement repositories and validated services behind controllers, and replace frontend mock adapters incrementally with contract tests. Add provider delivery, storage scanning, background scheduling and AI only in separately authorized work. Resolve recurrence/calendar rules, correction policy, structured import data limits and retention before those endpoints are implemented. No production routes, jobs, authentication or schema deployment were introduced in Block 8.
 
 Live validation preserved all existing frontend services and screen sources. Notification recipient foreign keys establish identity existence; active membership, ownership of reads and authenticated authorization remain future server responsibilities.
+
+## Block 9B.1 implementation update — 19 November 2026
+
+F07–F11 now use persistent Client/Invoice/InvoiceItem/Payment/PaymentAllocation/Transaction APIs in explicit API mode. Draft replacement, issuing, unpaid cancellation, duplication, receipt reuse/allocation and summaries use existing models and transaction guards. F12/F14 continue sharing the same persisted ledger. The historical proposed contracts above are superseded only for implemented operations in API_CONTRACTS.md. Recurrence/delivery/bank suggestions remain unconnected. See BLOCK9B1_INVOICES_PAYMENTS.md; no schema migration was required.
