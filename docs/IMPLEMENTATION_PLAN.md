@@ -26,3 +26,7 @@ See [frontend audit](FRONTEND_AUDIT.md), [42-target visual audit](design/BLOCK7_
 ## Block 8 — PostgreSQL/Prisma persistence foundation
 
 Authorized after Block 7. The existing 34-model schema, versioned migration, guarded seed and tests are prepared without replacing frontend services. See [database architecture](DATABASE_ARCHITECTURE.md), [setup and results](DATABASE_SETUP.md) and [future API mapping](DATABASE_FRONTEND_MAPPING.md). Prisma/offline validation is distinct from live PostgreSQL validation. Live PostgreSQL 18.7 migration application, seed reruns and all 31 integrity tests passed, including allocation races on independent connections. Production service authorization, deployment roles and performance validation remain required. No production API work or Block 9 has started.
+
+## Block 9A — real backend and first persistent slice
+
+Implemented real identity/session services, database membership authorization, scoped financial account/transaction reads and versioned manual ledger writes, plus authenticated Expense Overview. React API mode is separate from the preserved demo services. The 34-model schema and initial migration are unchanged. See [integration evidence and limits](BLOCK9A_INTEGRATION.md). Production security/deployment remains unapproved; stop before Block 9B domains.

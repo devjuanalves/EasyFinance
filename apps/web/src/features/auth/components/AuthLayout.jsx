@@ -1,10 +1,11 @@
+import { API_MODE } from '../../../services/persistentApi.js';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../../../assets/brand/color.svg';
 import whiteLogo from '../../../assets/brand/white.svg';
 import Icon from './Icon.jsx';
 import InfoDialog from './InfoDialog.jsx';
-import { MOCK_AUTH_ENABLED } from '../services/authService.js';
+import { AUTH_ENABLED } from '../services/authService.js';
 function BrandPanel({ variant, openInfo }) {
   const recovery = variant === 'recovery';
   const signup = variant === 'signup' || variant === 'onboarding';
@@ -165,7 +166,7 @@ export default function AuthLayout({
               <h1>{title}</h1>
               <p>{subtitle}</p>
             </header>
-            {!MOCK_AUTH_ENABLED && (
+            {!AUTH_ENABLED && (
               <p className="form-error" role="alert">
                 Demo authentication is disabled in this build.
               </p>
@@ -175,14 +176,17 @@ export default function AuthLayout({
           <footer className="auth-footer">
             {footer}
             <p className="demo-notice">
-              <Icon name="shield" /> Development demo · No real accounts
+              <Icon name="shield" />{' '}
+              {API_MODE
+                ? 'Local API mode · Accounts persist in the development database'
+                : 'Development demo · No real accounts'}
             </p>
             <button
               type="button"
               className="text-button demo-help"
               onClick={() => setTopic('Support')}
             >
-              Demo sign-in details
+              {API_MODE ? 'Development support' : 'Demo sign-in details'}
             </button>
           </footer>
         </main>

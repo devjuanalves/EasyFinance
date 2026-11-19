@@ -1,3 +1,4 @@
+import { API_MODE } from '../../../services/persistentApi.js';
 import { focusFirstError } from '../validation/focusFirstError.js';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -9,7 +10,7 @@ import {
   FormError,
 } from '../components/FormControls.jsx';
 import { validateSignUp } from '../validation/authValidation.js';
-import { authService, MOCK_AUTH_ENABLED } from '../services/authService.js';
+import { authService, AUTH_ENABLED } from '../services/authService.js';
 export default function SignUpPage() {
   const navigate = useNavigate();
   const [values, setValues] = useState({
@@ -43,7 +44,9 @@ export default function SignUpPage() {
     setLoading(true);
     try {
       await authService.signUp(values);
-      navigate('/onboarding', { replace: true });
+      navigate(API_MODE ? '/login?registered=1' : '/onboarding', {
+        replace: true,
+      });
     } catch (cause) {
       setError(cause.message);
     } finally {
@@ -63,7 +66,7 @@ export default function SignUpPage() {
     >
       {(openInfo) => (
         <form noValidate onSubmit={submit} aria-label="Create account">
-          <fieldset disabled={loading || !MOCK_AUTH_ENABLED}>
+          <fieldset disabled={loading || !AUTH_ENABLED}>
             <InputField
               label="Full name"
               name="fullName"

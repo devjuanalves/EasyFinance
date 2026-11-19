@@ -1,3 +1,4 @@
+import { cashTotals } from '@easyfinance/shared';
 import { validDate } from './dates.js';
 export { validDate } from './dates.js';
 import { billable } from './invoiceMath.js';
@@ -30,14 +31,10 @@ export function previousPeriod({ start, end }) {
   };
 }
 export function calculateIncome(rows = []) {
-  return rows
-    .filter((t) => t.type === 'income' && !t.excluded)
-    .reduce((sum, t) => sum + t.amount, 0);
+  return cashTotals(rows).income;
 }
 export function calculateExpenses(rows = []) {
-  return rows
-    .filter((t) => t.type === 'expense' && !t.excluded)
-    .reduce((sum, t) => sum - t.amount, 0);
+  return cashTotals(rows).expenses;
 }
 export function calculateSavingsRate(income, expenses) {
   return income > 0 ? ((income - expenses) / income) * 100 : null;

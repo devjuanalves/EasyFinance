@@ -1,3 +1,5 @@
+import PasswordChange from '../../features/persistent/PasswordChange.jsx';
+import { API_MODE } from '../../services/persistentApi.js';
 import NotificationCenter from '../../features/settings/NotificationCenter.jsx';
 import { useState } from 'react';
 import {
@@ -56,6 +58,7 @@ function SidebarContent({ close, openProfile }) {
       <img className="workspace-logo" src={logo} alt="EasyFinance" />
       <label className="workspace-selector">
         <span className="sr-only">Workspace</span>
+        {API_MODE && <small>Demo workspace (other modules)</small>}
         <select
           aria-label="Workspace"
           value={filters.workspaceId}
@@ -158,7 +161,12 @@ export default function AppShell() {
             </button>
             <button
               className="compact-button brand-button desktop-only"
-              onClick={() => navigate('/expenses/transactions?add=1')}
+              onClick={() =>
+                navigate(
+                  '/expenses/transactions?add=' +
+                    (API_MODE ? crypto.randomUUID() : '1'),
+                )
+              }
             >
               ＋ Add Record
             </button>
@@ -197,10 +205,18 @@ export default function AppShell() {
         <div className="demo-ledger-strip">
           <span className="status-dot" />
           <strong>Financial Intelligence</strong>
-          <span className="app-badge">SAMPLE DATA</span>
+          <span className="app-badge">
+            {API_MODE ? 'MIXED DEVELOPMENT MODE' : 'SAMPLE DATA'}
+          </span>
+          {API_MODE && (
+            <span>
+              Expenses Overview / Transactions persist. All other financial
+              screens and shell workspace controls are separate demos.
+            </span>
+          )}
           <span>No live bank connection or AI service</span>
         </div>
-        {hasAccess ? (
+        {hasAccess || API_MODE ? (
           <Outlet key={user.id} />
         ) : (
           <main className="workspace-content">
@@ -228,7 +244,11 @@ export default function AppShell() {
                 ? 'unavailable — start the API server'
                 : health.data.status}
           </span>
-          <span>Session-only demo · Financial data is fictional</span>
+          <span>
+            {API_MODE
+              ? 'Local development · Persistent Expenses; other modules are demos'
+              : 'Session-only demo · Financial data is fictional'}
+          </span>
         </footer>
       </div>
       <div className="mobile-navigation">
@@ -298,11 +318,16 @@ export default function AppShell() {
         <button
           className="primary-button"
           onClick={() => {
-            if (confirmDiscard()) authService.signOut();
+            if (confirmDiscard()) {
+              Promise.resolve(authService.signOut()).catch((e) =>
+                setNotice({ title: 'Sign out failed', body: e.message }),
+              );
+            }
           }}
         >
           Sign out
         </button>
+        {API_MODE && <PasswordChange />}
       </AppDialog>
       <NotificationCenter
         key={user.id}

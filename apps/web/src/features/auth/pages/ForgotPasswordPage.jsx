@@ -9,7 +9,7 @@ import {
 } from '../components/FormControls.jsx';
 import Icon from '../components/Icon.jsx';
 import { emailError } from '../validation/authValidation.js';
-import { authService, MOCK_AUTH_ENABLED } from '../services/authService.js';
+import { authService, AUTH_ENABLED } from '../services/authService.js';
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState('');
   const [validation, setValidation] = useState('');
@@ -75,7 +75,7 @@ export default function ForgotPasswordPage() {
         </div>
       ) : (
         <form noValidate onSubmit={submit} aria-label="Password recovery">
-          <fieldset disabled={loading || !MOCK_AUTH_ENABLED}>
+          <fieldset disabled={loading || !AUTH_ENABLED}>
             <InputField
               label="Email address"
               name="email"

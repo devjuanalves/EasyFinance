@@ -1,3 +1,5 @@
+import { API_MODE } from '../../../services/persistentApi.js';
+import { createApiAuthService } from './apiAuthService.js';
 import {
   validateLogin,
   validateSignUp,
@@ -10,7 +12,9 @@ export const DEMO_CREDENTIALS = Object.freeze({
   password: 'EasyFinanceDemo!',
 });
 export const MOCK_AUTH_ENABLED =
-  import.meta.env.DEV || import.meta.env.VITE_AUTH_MODE === 'mock';
+  !API_MODE &&
+  (import.meta.env.DEV || import.meta.env.VITE_AUTH_MODE === 'mock');
+export const AUTH_ENABLED = API_MODE || MOCK_AUTH_ENABLED;
 export function createMockAuthService({
   enabled = MOCK_AUTH_ENABLED,
   latency = 400,
@@ -125,4 +129,6 @@ export function createMockAuthService({
     },
   };
 }
-export const authService = createMockAuthService();
+export const authService = API_MODE
+  ? createApiAuthService()
+  : createMockAuthService();

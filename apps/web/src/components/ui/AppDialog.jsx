@@ -1,10 +1,16 @@
 import { useEffect, useId, useRef } from 'react';
-export default function AppDialog({ open, title, onClose, children }) {
+export default function AppDialog({
+  open,
+  title,
+  onClose,
+  children,
+  closeDisabled = false,
+}) {
   const ref = useRef(null);
   const id = useId();
   const closeRequested = useRef(false);
   function requestClose() {
-    if (!open || closeRequested.current) return;
+    if (!open || closeRequested.current || closeDisabled) return;
     closeRequested.current = true;
     onClose();
   }
@@ -38,6 +44,7 @@ export default function AppDialog({ open, title, onClose, children }) {
           type="button"
           className="icon-button"
           aria-label="Close dialog"
+          disabled={closeDisabled}
           onClick={requestClose}
         >
           ×

@@ -6,11 +6,20 @@ export default function TransactionForm({
   onSaved,
   defaultType = 'expense',
 }) {
-  const { ledger, filters, command, canEdit } = useWorkspace(),
+  const { ledger, filters, command, canEdit, persistent } = useWorkspace(),
     data = ledger.data;
   const [form, setForm] = useState(() =>
     transaction
-      ? { ...transaction, amount: (transaction.amount / 100).toFixed(2) }
+      ? {
+          ...transaction,
+          amount: persistent
+            ? (() => {
+                const n = BigInt(transaction.amountMinor),
+                  a = n < 0n ? -n : n;
+                return `${n < 0n ? '-' : ''}${a / 100n}.${String(a % 100n).padStart(2, '0')}`;
+              })()
+            : (transaction.amount / 100).toFixed(2),
+        }
       : {
           date: data.asOf,
           description: '',
@@ -29,6 +38,7 @@ export default function TransactionForm({
         },
   );
   const [error, setError] = useState('');
+  const [saving, setSaving] = useState(false);
   const change = (key, value) => {
     setForm((f) => ({
       ...f,
@@ -41,16 +51,20 @@ export default function TransactionForm({
     <form
       className="income-form"
       noValidate
-      onSubmit={(e) => {
+      onSubmit={async (e) => {
         e.preventDefault();
+        if (saving) return;
+        setSaving(true);
         try {
-          const id = command('expense:saveTransaction', {
+          const id = await command('expense:saveTransaction', {
             id: transaction?.id,
             transaction: form,
           });
           onSaved(id);
         } catch (e) {
           setError(e.message);
+        } finally {
+          setSaving(false);
         }
       }}
     >
@@ -78,7 +92,10 @@ export default function TransactionForm({
             value={form.type}
             onChange={(e) => change('type', e.target.value)}
           >
-            {['expense', 'income', 'transfer'].map((v) => (
+            {(persistent
+              ? ['expense', 'income']
+              : ['expense', 'income', 'transfer']
+            ).map((v) => (
               <option key={v}>{v}</option>
             ))}
           </select>
@@ -86,6 +103,7 @@ export default function TransactionForm({
         <Field label="Transaction account">
           <select
             aria-label="Transaction account"
+            disabled={persistent && Boolean(transaction)}
             value={form.accountId}
             onChange={(e) => change('accountId', e.target.value)}
           >
@@ -113,16 +131,19 @@ export default function TransactionForm({
       </div>
       <p className="scope-note">
         {filters.currency} only. Enter negative expenses and positive income.
-        Dates use sample coverage 1 August–31 October 2026. Transfers retain
-        their signed balance effect.
+        {persistent
+          ? 'Saved to the development database. Account and currency are fixed after creation.'
+          : 'Dates use sample coverage 1 August–31 October 2026. Transfers retain their signed balance effect.'}
       </p>
-      <Field label="Transaction notes">
-        <textarea
-          aria-label="Transaction notes"
-          value={form.notes || ''}
-          onChange={(e) => change('notes', e.target.value)}
-        />
-      </Field>
+      {!persistent && (
+        <Field label="Transaction notes">
+          <textarea
+            aria-label="Transaction notes"
+            value={form.notes || ''}
+            onChange={(e) => change('notes', e.target.value)}
+          />
+        </Field>
+      )}
       {transaction && (
         <p className="scope-note">
           Original bank data and invoice allocations are preserved. Financial
@@ -135,7 +156,7 @@ export default function TransactionForm({
           {error}
         </p>
       )}
-      <button className="primary-button" disabled={!canEdit}>
+      <button className="primary-button" disabled={!canEdit || saving}>
         Save Transaction
       </button>
     </form>

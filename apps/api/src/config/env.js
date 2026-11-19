@@ -15,6 +15,13 @@ export function parseEnv(source = process.env) {
   const url = new URL(webOrigin);
   if (!['http:', 'https:'].includes(url.protocol) || url.origin !== webOrigin)
     throw new Error('WEB_ORIGIN must be an HTTP(S) origin');
-  return { port, nodeEnv, webOrigin };
+  const apiMode = source.API_MODE ?? 'demo';
+  if (!['api', 'demo'].includes(apiMode)) throw new Error('Invalid API_MODE');
+  if (
+    nodeEnv === 'production' &&
+    (apiMode !== 'api' || url.protocol !== 'https:')
+  )
+    throw new Error('Production requires API mode and HTTPS origin');
+  return { port, nodeEnv, webOrigin, apiMode };
 }
 export const env = parseEnv();

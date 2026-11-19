@@ -1,3 +1,4 @@
+import { API_MODE } from '../../../services/persistentApi.js';
 import { focusFirstError } from '../validation/focusFirstError.js';
 import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -79,8 +80,18 @@ export default function OnboardingPage() {
     <AuthLayout
       variant="onboarding"
       title="Make EasyFinance yours"
-      subtitle="Your demo account is ready. Let’s set up your financial workspace."
-      footer={<p>Setup is saved only for this demo session.</p>}
+      subtitle={
+        API_MODE
+          ? 'Set up your persistent development workspace.'
+          : 'Your demo account is ready. Let’s set up your financial workspace.'
+      }
+      footer={
+        <p>
+          {API_MODE
+            ? 'Setup is saved in the local development database.'
+            : 'Setup is saved only for this demo session.'}
+        </p>
+      }
     >
       <ol className="step-progress" aria-label="Setup progress">
         {steps.map((name, index) => (
@@ -132,9 +143,11 @@ export default function OnboardingPage() {
           {step === 2 && (
             <>
               <InputField label="Primary currency" {...field('currency')}>
-                {CURRENCIES.map((currency) => (
-                  <option key={currency}>{currency}</option>
-                ))}
+                {(API_MODE ? ['AUD', 'EUR', 'USD'] : CURRENCIES).map(
+                  (currency) => (
+                    <option key={currency}>{currency}</option>
+                  ),
+                )}
               </InputField>
               <InputField label="Date format" {...field('dateFormat')}>
                 {DATE_FORMATS.map((format) => (

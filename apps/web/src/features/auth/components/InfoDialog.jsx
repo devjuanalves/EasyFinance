@@ -1,3 +1,4 @@
+import { API_MODE } from '../../../services/persistentApi.js';
 import { useEffect, useRef } from 'react';
 import { DEMO_CREDENTIALS } from '../services/authService.js';
 export default function InfoDialog({ topic, onClose }) {
@@ -15,7 +16,13 @@ export default function InfoDialog({ topic, onClose }) {
       aria-labelledby="dialog-title"
     >
       <h2 id="dialog-title">{topic === 'Support' ? 'Demo support' : topic}</h2>
-      {topic === 'Support' ? (
+      {topic === 'Support' && API_MODE ? (
+        <p>
+          Use your registered local development account. Demo credentials cannot
+          access persistent records. Email recovery and social sign-in are not
+          available.
+        </p>
+      ) : topic === 'Support' ? (
         <>
           <p>
             Use the development account to explore the simulated sign-in flow.

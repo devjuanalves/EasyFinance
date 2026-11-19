@@ -1,8 +1,9 @@
+import { API_MODE } from '../../../services/persistentApi.js';
 import googleIcon from '../../../assets/brand/google.svg';
 import appleIcon from '../../../assets/brand/apple.svg';
 import { focusFirstError } from '../validation/focusFirstError.js';
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import AuthLayout from '../components/AuthLayout.jsx';
 import {
   InputField,
@@ -11,9 +12,10 @@ import {
   FormError,
 } from '../components/FormControls.jsx';
 import { validateLogin } from '../validation/authValidation.js';
-import { authService, MOCK_AUTH_ENABLED } from '../services/authService.js';
+import { authService, AUTH_ENABLED } from '../services/authService.js';
 export default function LoginPage() {
   const navigate = useNavigate();
+  const [params] = useSearchParams();
   const [values, setValues] = useState({
     email: '',
     password: '',
@@ -60,8 +62,14 @@ export default function LoginPage() {
         </p>
       }
     >
+      {API_MODE && params.has('registered') && (
+        <p role="status">
+          Registration request processed. Sign in to continue. Existing accounts
+          are unchanged.
+        </p>
+      )}
       <form noValidate onSubmit={submit} aria-label="Sign in">
-        <fieldset disabled={loading || !MOCK_AUTH_ENABLED}>
+        <fieldset disabled={loading || !AUTH_ENABLED}>
           <InputField
             label="Email address"
             name="email"
@@ -96,7 +104,9 @@ export default function LoginPage() {
             <Link to="/forgot-password">Forgot password?</Link>
           </div>
           <span id="remember-note" className="sr-only">
-            Demo preference only. Refreshing ends this session.
+            {API_MODE
+              ? 'Keep this session for up to seven days; otherwise it expires after twelve hours.'
+              : 'Demo preference only. Refreshing ends this session.'}
           </span>
           <FormError>{error}</FormError>
           <PrimaryButton type="submit" loading={loading}>

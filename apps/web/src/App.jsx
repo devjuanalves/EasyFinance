@@ -1,3 +1,9 @@
+import { useQueryClient } from '@tanstack/react-query';
+import { useAuth } from './features/auth/hooks/useAuth.js';
+import { API_MODE } from './services/persistentApi.js';
+const PersistentExpenses = lazy(
+  () => import('./features/persistent/PersistentExpenses.jsx'),
+);
 import { Link, Route, Routes, useLocation } from 'react-router-dom';
 import { lazy, Suspense, useEffect } from 'react';
 
@@ -65,7 +71,12 @@ const titles = {
   '/development': 'Development home',
 };
 export default function App() {
-  const { pathname } = useLocation();
+  const session = useAuth();
+  const queryClient = useQueryClient();
+  useEffect(() => {
+    if (API_MODE && (!session || session.sessionError)) queryClient.clear();
+  }, [session, queryClient]);
+  const { pathname, search } = useLocation();
   useEffect(() => {
     document.title = `${titles[pathname] || (pathname.startsWith('/settings') ? 'Settings' : pathname.startsWith('/investments') ? 'Investments' : pathname.startsWith('/income') ? 'Income & Invoices' : pathname.startsWith('/expenses') ? 'Expenses' : 'Page not found')} · EasyFinance`;
     window.scrollTo(0, 0);
@@ -128,9 +139,23 @@ export default function App() {
             path="/settings/automations"
             element={<AutomationSettings />}
           />
-          <Route path="/expenses" element={<ExpenseOverview />} />
+          <Route
+            path="/expenses"
+            element={
+              API_MODE ? <PersistentExpenses overview /> : <ExpenseOverview />
+            }
+          />
           <Route path="/expenses/import" element={<StatementImport />} />
-          <Route path="/expenses/transactions" element={<TransactionsPage />} />
+          <Route
+            path="/expenses/transactions"
+            element={
+              API_MODE ? (
+                <PersistentExpenses key={search} />
+              ) : (
+                <TransactionsPage />
+              )
+            }
+          />
           <Route path="/expenses/categories" element={<CategoriesPage />} />
           <Route path="/investments" element={<InvestmentDashboard />} />
           <Route path="/investments/new" element={<InvestmentEditor />} />

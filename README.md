@@ -98,3 +98,9 @@ F07–F11 provide invoice editing/preview, client management, partial payments, 
 ## PostgreSQL/Prisma foundation (Block 8)
 
 The 34-model persistence structure, reviewed versioned migration and guarded fictional seed are in `database/`; existing frontend services remain unchanged. Run `npm run db:validate`, `npm run db:generate` and `npm run db:test:offline` for checks without a database. See [database setup](docs/DATABASE_SETUP.md) for the explicit disposable-database safeguards, live validation results and migration commands. The migration, seed reruns and 31 live database tests passed on disposable local PostgreSQL 18.7; no production financial API is implemented.
+
+## Backend foundation (Block 9A)
+
+`npm run dev` retains the labeled demo. `npm run dev:api-mode` uses real local authentication and persistent Accounts/Transactions/Expense Overview with the restricted `API_DATABASE_URL` configured in ignored `.env`. Register a fictional development identity, sign in, complete onboarding and open Expenses. Other financial modules remain explicit in-memory demos; they do not share persistent balances yet. No bank/email/OAuth integration or production deployment is included.
+
+See [backend architecture](docs/BACKEND_ARCHITECTURE.md), [API contracts](docs/API_CONTRACTS.md), [authentication](docs/AUTHENTICATION_BACKEND.md) and [integration/test commands](docs/BLOCK9A_INTEGRATION.md). Run `npm run test:api:live` only against the acknowledged disposable target. `npm run test:e2e:api` exercises real browser persistence separately from the unchanged demo browser suite. Keep both local servers stopped before switching test modes.

@@ -30,7 +30,10 @@
     "db:status": "node database/scripts/prisma.js status",
     "db:seed": "node database/prisma/seed.js",
     "db:test:offline": "node --test database/tests/offline.test.js",
-    "db:test": "node --test database/tests/integration.test.js"
+    "db:test": "node --test database/tests/integration.test.js",
+    "test:api:live": "node --test apps/api/integration/backend.integration.js",
+    "test:e2e:api": "playwright test --config playwright.api.config.js",
+    "dev:api-mode": "API_MODE=api VITE_AUTH_MODE=api npm run dev"
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",

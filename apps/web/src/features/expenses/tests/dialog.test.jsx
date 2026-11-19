@@ -159,3 +159,23 @@ it('ignores an old queued native close event after the dialog has reopened', () 
   expect(onClose).toHaveBeenCalledTimes(1);
   expect(screen.getByRole('dialog')).toBeVisible();
 });
+
+it('keeps a pending save open and still permits one close after saving', () => {
+  const onClose = vi.fn();
+  const { rerender } = render(
+    <AppDialog open title="Saving transaction" closeDisabled onClose={onClose}>
+      Saving
+    </AppDialog>,
+  );
+  const dialog = screen.getByRole('dialog');
+  fireEvent(dialog, new Event('cancel', { cancelable: true }));
+  expect(onClose).not.toHaveBeenCalled();
+  expect(screen.getByRole('button', { name: 'Close dialog' })).toBeDisabled();
+  rerender(
+    <AppDialog open title="Saving transaction" onClose={onClose}>
+      Saved
+    </AppDialog>,
+  );
+  fireEvent.click(screen.getByRole('button', { name: 'Close dialog' }));
+  expect(onClose).toHaveBeenCalledTimes(1);
+});
