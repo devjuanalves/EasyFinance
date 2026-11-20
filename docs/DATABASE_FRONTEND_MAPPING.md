@@ -45,3 +45,7 @@ Live validation preserved all existing frontend services and screen sources. Not
 ## Block 9B.1 implementation update — 19 November 2026
 
 F07–F11 now use persistent Client/Invoice/InvoiceItem/Payment/PaymentAllocation/Transaction APIs in explicit API mode. Draft replacement, issuing, unpaid cancellation, duplication, receipt reuse/allocation and summaries use existing models and transaction guards. F12/F14 continue sharing the same persisted ledger. The historical proposed contracts above are superseded only for implemented operations in API_CONTRACTS.md. Recurrence/delivery/bank suggestions remain unconnected. See BLOCK9B1_INVOICES_PAYMENTS.md; no schema migration was required.
+
+## Block 9B.2 — 20 November 2026
+
+F13 now maps real API import preview/confirmation/history to ImportBatch and Transaction, with Category/FinancialAccount validation and ActivityLog. F14 category-only updates preserve split/transfer/payment protections. Existing 34-model schema is unchanged. See BLOCK9B2_IMPORT_RECONCILIATION.md.

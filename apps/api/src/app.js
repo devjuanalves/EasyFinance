@@ -20,6 +20,7 @@ export function createApp({ db = null, config = env } = {}) {
       allowedHeaders: ['Content-Type', 'X-EasyFinance-CSRF'],
     }),
   );
+  app.use('/api/v1/workspaces/:wid/imports', express.json({ limit: '6mb' }));
   app.use(express.json({ limit: '100kb' }));
   app.use(healthRouter);
   app.use(

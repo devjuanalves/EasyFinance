@@ -49,3 +49,16 @@ All paths below are under `/api/v1/workspaces/:wid`. Active server membership is
 | GET /income/summary          | currency, accountId?, clientId?, start?, end?                                                                             | Cash received by booking date; billed/paid/outstanding/overdue by invoice issue date     |
 
 A payment key is workspace-wide and immutable: identical retries return the original payment; changed payload/invoice/actor conflicts. Existing payment receipts may allocate their remaining amount to another compatible invoice through a new request key recorded in ActivityLog. No email delivery, refund, credit note, recurring scheduler or bank-match suggestion API is included. Account balances derive from opening balance plus non-excluded signed transactions; transfers affect individual balances but remain neutral in income/expense totals.
+
+## Block 9B.2 contract inventory
+
+All routes below are under `/api/v1/workspaces/:wid`, require real authentication and active membership. Owner/Editor may preview/confirm and categorize; Viewer may read history. No schema migration is planned.
+
+| Operation        | Method / route                     | Request / response                                                                                                     | Transaction and errors                                                                                              |
+| ---------------- | ---------------------------------- | ---------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| Preview CSV      | POST `/imports/preview`            | CSV text, filename, account/currency, mapping, normalization options → normalized rows, candidate matches, review hash | No writes; scoped account validation; 400 invalid format, 403 role                                                  |
+| Confirm CSV      | POST `/imports`                    | Same source, UUID key, preview hash, explicit row decisions → batch and accepted count                                 | Atomic batch/ledger/audit; workspace lock; repeat key returns same result, changed key payload or stale preview 409 |
+| History / result | GET `/imports`, GET `/imports/:id` | Recent scoped batches / retained decisions                                                                             | Read only; cross-workspace 404                                                                                      |
+| Categorize       | PATCH `/transactions/:id/category` | Version, nullable categoryId → transaction                                                                             | Versioned category-only update; protected receipt/split/transfer 409; wrong category 400                            |
+
+CSV is bounded to 2 MB / 500 rows; JSON transport is bounded separately. Full source is parsed again on confirmation. Existing matches can be explicitly excluded/reused or reviewed as distinct Keep Both; no existing financial record is overwritten. Category management/rule automation remains outside this slice.

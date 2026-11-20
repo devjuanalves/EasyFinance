@@ -94,3 +94,7 @@ All F01–F21 implementations were reviewed at 1440×900 and 390×844 (42 target
 ### Block 9B.1 persistence update
 
 F07 Income Overview, F08 Invoice List, F09 Create/Edit Invoice, F10 Invoice Details/Payments and F11 Clients now have explicit API-mode persistence alongside their preserved demos. Existing routes and shell remain. See BLOCK9B1_INVOICES_PAYMENTS.md for supported controls and desktop/mobile validation.
+
+## Block 9B.2 — 20 November 2026
+
+F13 now supports real CSV persistence in explicit API mode; F14 supports versioned category-only updates. Demo screens remain intact. See BLOCK9B2_IMPORT_RECONCILIATION.md.

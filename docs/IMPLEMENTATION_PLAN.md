@@ -34,3 +34,7 @@ Implemented real identity/session services, database membership authorization, s
 ### Block 9B.1 persistence slice
 
 Income, invoices, clients and receipt allocation use existing models and the Block 9A security/data boundary. F07–F11 are connected in API mode; remaining demonstration modules are unchanged. Refer to BLOCK9B1_INVOICES_PAYMENTS.md for completion evidence and explicitly deferred delivery, corrections and recurring workflows. Block 9B.2 is not started.
+
+## Block 9B.2 — 20 November 2026
+
+Block 9B.2 CSV persistence and reviewed reconciliation extend existing contracts only. See BLOCK9B2_IMPORT_RECONCILIATION.md. Stop before Block 9B.3.

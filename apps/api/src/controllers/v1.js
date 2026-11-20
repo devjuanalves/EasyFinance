@@ -157,6 +157,14 @@ export function controllers(db, config) {
         v.transactionInput(req.body, false),
       ),
     ),
+    categorize: send((req) => {
+      v.shape(req.body, ['version', 'categoryId']);
+      return finance.categorize(req.auth, wid(req), rid(req), {
+        version: v.integer(req.body.version, 1, 2147483646),
+        categoryId:
+          req.body.categoryId === null ? null : v.id(req.body.categoryId),
+      });
+    }),
     exclusion: send((req) => {
       v.shape(req.body, ['version', 'excluded']);
       if (typeof req.body.excluded !== 'boolean') v.fail();

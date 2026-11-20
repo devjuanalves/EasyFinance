@@ -1,3 +1,4 @@
+import { importControllers } from '../controllers/imports.js';
 import { invoiceControllers } from '../controllers/invoices.js';
 import { Router } from 'express';
 import { controllers } from '../controllers/v1.js';
@@ -70,5 +71,11 @@ export function v1Router(db, config) {
   r.post(p + '/invoices/:id/payments', i.payment);
   r.get(p + '/payments/:id', i.readPayment);
   r.get(p + '/income/summary', i.summary);
+  const imp = importControllers(db);
+  r.post(p + '/imports/preview', imp.preview);
+  r.post(p + '/imports', imp.confirm);
+  r.get(p + '/imports', imp.list);
+  r.get(p + '/imports/:id', imp.read);
+  r.patch(p + '/transactions/:id/category', c.categorize);
   return r;
 }

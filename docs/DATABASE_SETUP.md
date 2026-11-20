@@ -96,3 +96,7 @@ Final application regression: **209 Vitest tests and 50 Playwright tests passed*
 ## Block 9B.1 runtime grant extension
 
 After verifying the same approved disposable target, `node database/scripts/invoice-runtime-grants.js` was executed as a reviewed administrator operation. It grants only the existing invoice/client/payment tables and draft item replacement access to easyfinance_9a_app; it does not recreate the role, rotate credentials, change schema or reset data. Never run privileged setup automatically from API startup. See BLOCK9B1_INVOICES_PAYMENTS.md for the exact scope.
+
+## Block 9B.2 — 20 November 2026
+
+Block 9B.2 uses database/scripts/import-runtime-grants.js as an explicit guarded administrator operation to grant the existing restricted API role SELECT/INSERT on import_batches only. No migration, reset or reseed is required. See BLOCK9B2_IMPORT_RECONCILIATION.md.

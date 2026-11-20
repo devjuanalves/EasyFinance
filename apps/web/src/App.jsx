@@ -1,3 +1,6 @@
+const PersistentImport = lazy(
+  () => import('./features/persistent/PersistentImport.jsx'),
+);
 const PersistentIncome = lazy(
   () => import('./features/persistent/PersistentIncome.jsx'),
 );
@@ -148,7 +151,10 @@ export default function App() {
               API_MODE ? <PersistentExpenses overview /> : <ExpenseOverview />
             }
           />
-          <Route path="/expenses/import" element={<StatementImport />} />
+          <Route
+            path="/expenses/import"
+            element={API_MODE ? <PersistentImport /> : <StatementImport />}
+          />
           <Route
             path="/expenses/transactions"
             element={

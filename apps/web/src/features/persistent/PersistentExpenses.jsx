@@ -43,8 +43,9 @@ export default function PersistentExpenses({ overview = false }) {
     queryFn: () => api('/workspaces'),
     retry: false,
   });
-  const selected =
-    workspaces.data?.find((w) => w.id === workspaceId) || workspaces.data?.[0];
+  const selected = workspaceId
+    ? workspaces.data?.find((w) => w.id === workspaceId)
+    : workspaces.data?.[0];
   const wid = selected?.id,
     root = `/workspaces/${wid}`,
     prefix = ['persistent', user.id, wid];
@@ -121,8 +122,13 @@ export default function PersistentExpenses({ overview = false }) {
   return (
     <main className="workspace-content income-page expenses-page">
       <nav className="income-tabs" aria-label="Expenses navigation">
-        <Link to="/expenses">Overview</Link>
-        <Link to="/expenses/transactions">Transactions</Link>
+        <Link to={'/expenses?workspace=' + (wid || '')}>Overview</Link>
+        <Link to={'/expenses/transactions?workspace=' + (wid || '')}>
+          Transactions
+        </Link>
+        <Link to={'/expenses/import?workspace=' + (wid || '')}>
+          Import Statement
+        </Link>
       </nav>
       <div className="page-heading">
         <div>
@@ -368,6 +374,53 @@ export default function PersistentExpenses({ overview = false }) {
                 · {formatMinor(s.amountMinor, details.data.currency)}
               </p>
             ))}
+            <Field label="Transaction category">
+              <select
+                aria-label="Transaction category"
+                value={details.data.categoryId || ''}
+                disabled={
+                  !canEdit ||
+                  busy ||
+                  details.data.type === 'transfer' ||
+                  details.data.source === 'payment' ||
+                  details.data.splits.length > 0
+                }
+                onChange={async (e) => {
+                  setBusy(true);
+                  setError('');
+                  try {
+                    await api(
+                      root + '/transactions/' + details.data.id + '/category',
+                      {
+                        method: 'PATCH',
+                        body: {
+                          version: details.data.version,
+                          categoryId: e.target.value || null,
+                        },
+                      },
+                    );
+                    await refresh();
+                  } catch (e) {
+                    setError(e.message);
+                  } finally {
+                    setBusy(false);
+                  }
+                }}
+              >
+                <option value="">Unclassified</option>
+                {data?.categories
+                  .filter(
+                    (c) =>
+                      c.kind === details.data.type &&
+                      (!c.archivedAt || c.id === details.data.categoryId),
+                  )
+                  .map((c) => (
+                    <option key={c.id} value={c.id} disabled={!!c.archivedAt}>
+                      {c.name}
+                    </option>
+                  ))}
+              </select>
+            </Field>
             <div className="income-actions">
               <button
                 className="compact-button"
@@ -413,8 +466,9 @@ export default function PersistentExpenses({ overview = false }) {
               </button>
             </div>
             <p className="scope-note">
-              Split, imported, transfer and invoice-linked records retain their
-              protected history. Corrective workflows follow in Block 9B.
+              Imported records allow category-only updates. Splits, transfers
+              and invoice-linked records retain protected history; corrective
+              workflows remain unavailable.
             </p>
           </>
         )}

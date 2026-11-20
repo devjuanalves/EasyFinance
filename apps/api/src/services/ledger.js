@@ -189,6 +189,35 @@ export function ledger(db) {
         await audit(tx, a.userId, w, id, 'updated');
         return serialize(result);
       }),
+    categorize: (a, w, id, input) =>
+      run(a, w, true, async (tx) => {
+        const row = await transactionById(tx, w, id);
+        if (row.version !== input.version)
+          throw conflict('This transaction changed. Reload before editing.');
+        if (
+          row.type === 'transfer' ||
+          row.TransactionSplit_transaction.length ||
+          (await tx.payment.count({
+            where: { transactionId: id, workspaceId: w },
+          }))
+        )
+          throw conflict(
+            'Split, transfer and invoice-linked records retain their protected classification.',
+          );
+        await category(tx, w, { ...input, type: row.type });
+        const result = await tx.transaction.update({
+          where: { id },
+          data: {
+            categoryId: input.categoryId,
+            manualCategoryOverride: true,
+            reviewStatus: 'reviewed',
+            version: { increment: 1 },
+          },
+          include: transactionInclude,
+        });
+        await audit(tx, a.userId, w, id, 'categorized');
+        return serialize(result);
+      }),
     exclusion: (a, w, id, input) =>
       run(a, w, true, async (tx) => {
         const row = await transactionById(tx, w, id);

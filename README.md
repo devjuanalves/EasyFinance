@@ -106,3 +106,5 @@ The 34-model persistence structure, reviewed versioned migration and guarded fic
 See [backend architecture](docs/BACKEND_ARCHITECTURE.md), [API contracts](docs/API_CONTRACTS.md), [authentication](docs/AUTHENTICATION_BACKEND.md) and [integration/test commands](docs/BLOCK9A_INTEGRATION.md). Run `npm run test:api:live` only against the acknowledged disposable target. `npm run test:e2e:api` exercises real browser persistence separately from the unchanged demo browser suite. Keep both local servers stopped before switching test modes.
 
 Block 9B.1 extends API mode to Income, Invoices, Clients and recorded receipts. Issuing a document does not receive cash or send email. See [invoice/payment persistence](docs/BLOCK9B1_INVOICES_PAYMENTS.md) for runtime grants, contracts, exact calculations and validation; demo mode remains available.
+
+Block 9B.2 persistent CSV import and reconciliation: [behavior, validation and limitations](docs/BLOCK9B2_IMPORT_RECONCILIATION.md).

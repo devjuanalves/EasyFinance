@@ -87,3 +87,9 @@ The earlier readiness inventory remains historical. Real local registration/logi
 API mode now connects F07 Income, F08 Invoices, F09 Editor, F10 Details/Payments and F11 Clients to the guarded local backend. Browser workflows cover issue, partial/final receipt, refresh and ledger/account consistency. Demo mode remains intact. Other financial domains, email/recurring delivery, refunds and production hardening remain outstanding. See BLOCK9B1_INVOICES_PAYMENTS.md for contracts and executed validation.
 
 Block 9B.1 final validation: 49 live API, 31 live database, 14 offline database, 220 Vitest, 50 demo browser and four real-API browser tests passed. Both production builds, lint, formatting, Prisma validation/generation, migration status and health passed. Desktop/mobile persistence and account reconciliation are verified locally; production security/operations and unsupported domains remain outstanding. See BLOCK9B1_INVOICES_PAYMENTS.md. Block 9B.2 has not started.
+
+## Block 9B.2 — 20 November 2026
+
+F13 CSV import/review and F14 category-only updates now use authenticated APIs in persistent mode. F15 category/rule management remains a separate demonstration; PDF, new transfer pairing, storage and production hardening remain deferred. See BLOCK9B2_IMPORT_RECONCILIATION.md for evidence.
+
+Block 9B.2 local validation is complete: 72 API / 31 database / 14 offline / 220 Vitest / 50 demo browser / six API browser tests passed. Production hardening, large-ledger workloads and unsupported workflows remain deferred; Block 9B.3 requires separate authorization.

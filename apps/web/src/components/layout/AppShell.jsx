@@ -210,9 +210,9 @@ export default function AppShell() {
           </span>
           {API_MODE && (
             <span>
-              Income / Invoices and Expenses Overview / Transactions persist.
-              Other financial screens and shell workspace controls are separate
-              demos.
+              Income / Invoices, Expenses / Transactions and CSV imports
+              persist. Other financial screens and shell workspace controls are
+              separate demos.
             </span>
           )}
           <span>No live bank connection or AI service</span>
