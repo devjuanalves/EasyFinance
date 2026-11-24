@@ -479,3 +479,30 @@ it('keeps all-currency reporting unaggregated even when another filter leaves on
   expect(p.allocation).toEqual([]);
   expect(p.mixed).toBe(true);
 });
+
+it('rejects a portfolio total beyond the exact JSON integer range', () => {
+  const data = {
+    asOf: '2026-11-01',
+    coverageStart: '2026-11-01',
+    investmentAccounts: [],
+    investmentMovements: [],
+    investments: Array.from({ length: 1000 }, (_, n) => ({
+      id: String(n),
+      workspaceId: 'large',
+      currency: 'AUD',
+      assetType: 'Other',
+      openedAt: '2026-11-01',
+    })),
+    investmentValuations: Array.from({ length: 1000 }, (_, n) => ({
+      id: `v-${n}`,
+      investmentId: String(n),
+      valuedAt: '2026-11-01',
+      estimatedValue: 10000000000000,
+      capitalSignature: '',
+      order: n,
+    })),
+  };
+  expect(() =>
+    portfolio(data, { workspaceId: 'large', currency: 'AUD' }),
+  ).toThrow('exact integer range');
+});

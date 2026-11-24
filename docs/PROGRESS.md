@@ -164,3 +164,9 @@ Executed 49 live API tests, 31 live database tests, 14 offline tests and 220 Vit
 Block 9B.2 implements persistent CSV preview/confirmation, duplicate review, history and category-only ledger updates on feat/backend-9b2. Existing schema and applied migration are preserved; see BLOCK9B2_IMPORT_RECONCILIATION.md for final validation and limits. No Block 9B.3 work.
 
 Final Block 9B.2 validation passed: 72 live API, 31 live database, 14 offline database, 220 Vitest, 50 demo Playwright and six real-API Playwright tests. Both production builds, lint, formatting, Prisma validate/generate/status and API health passed. Original schema/migration/seed and all 49 authoritative assets are preserved. Desktop/mobile review is documented in BLOCK9B2_IMPORT_RECONCILIATION.md.
+
+## Block 9B.3 — 23 November 2026
+
+F16–F18 now use authenticated persistent InvestmentAccount, Investment, InvestmentMovement, InvestmentValuation and ActivityLog operations in API mode. Existing screens, charts and demo mode are preserved. Shared weighted-average calculations, dated valuation signatures, versioned corrections and idempotent transactional commands retain cash-ledger separation. No schema migration was required. See [Block 9B.3 implementation and verification](BLOCK9B3_INVESTMENTS.md) for executed checks, permissions, visual evidence and limits. Home/Dashboard remain separate demonstrations; Block 9B.4 has not started.
+
+Block 9B.3 final verification: 98 live API tests (26 investment cases), 31 database integrity tests, 14 offline database tests and 221 Vitest tests pass. Both production modes build; lint, formatting, Prisma validation/generation, migration status and API health pass. Browser evidence and preservation details are in BLOCK9B3_INVESTMENTS.md. All changes remain uncommitted.

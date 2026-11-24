@@ -1,6 +1,7 @@
+import Link from './InvestmentLink.jsx';
 import { displayMoney } from './format.js';
 import { useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useWorkspace } from '../finance/WorkspaceContext.js';
 import { money, dateLabel } from '../finance/data/calculations.js';
 import { IncomeKpis, Field } from '../income/components/IncomeUI.jsx';
@@ -39,7 +40,7 @@ export default function InvestmentDetails() {
   );
 }
 function Details({ investment: i }) {
-  const { ledger, filters, canEdit, command } = useWorkspace(),
+  const { ledger, filters, canEdit, command, persistent } = useWorkspace(),
     data = ledger.data;
   const [dialog, setDialog] = useState(null),
     [query, setQuery] = useState({
@@ -89,7 +90,7 @@ function Details({ investment: i }) {
       (!query.end || m.activityDate <= query.end) &&
       `${m.notes} ${m.type}`.toLowerCase().includes(query.search.toLowerCase()),
   );
-  function remove(m) {
+  async function remove(m) {
     if (
       !window.confirm(
         'Delete this activity from the active history? Its audit snapshot is retained and dependent movements are checked.',
@@ -97,7 +98,7 @@ function Details({ investment: i }) {
     )
       return;
     try {
-      command(
+      await command(
         `investment:${m.type === 'valuation' ? 'deleteValuation' : 'deleteMovement'}`,
         { id: i.id, movementId: m.id, valuationId: m.id, confirmed: true },
       );
@@ -317,7 +318,9 @@ function Details({ investment: i }) {
           <section className="finance-card">
             <h2>Correction History</h2>
             <p className="muted">
-              Session audit snapshots; not a production audit log.
+              {persistent
+                ? 'Saved correction history; not a production audit assurance.'
+                : 'Session audit snapshots; not a production audit log.'}
             </p>
             {data.investmentEvents
               .filter((e) => e.investmentId === i.id)
@@ -336,7 +339,11 @@ function Details({ investment: i }) {
                 </details>
               ))}
             {!data.investmentEvents.some((e) => e.investmentId === i.id) && (
-              <p>Original sample history; no session corrections.</p>
+              <p>
+                {persistent
+                  ? 'No correction events recorded.'
+                  : 'Original sample history; no session corrections.'}
+              </p>
             )}
           </section>
         </aside>

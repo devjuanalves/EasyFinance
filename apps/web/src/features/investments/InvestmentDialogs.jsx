@@ -51,6 +51,7 @@ function Entry({ investment, mode, movement, onClose }) {
           notes: '',
         },
   );
+  const [expectedVersion] = useState(investment.version);
   const [error, setError] = useState('');
   const change = (key, value) => setForm({ ...form, [key]: value });
   const isUnits =
@@ -69,7 +70,7 @@ function Entry({ investment, mode, movement, onClose }) {
   } catch {
     preview = null;
   }
-  function submit(e) {
+  async function submit(e) {
     e.preventDefault();
     setError('');
     try {
@@ -80,10 +81,11 @@ function Entry({ investment, mode, movement, onClose }) {
         )
       )
         return;
-      command(
+      await command(
         `investment:${mode === 'valuation' ? 'valuation' : movement ? 'editMovement' : 'recordMovement'}`,
         {
           id: investment.id,
+          expectedVersion,
           movementId: movement?.id,
           form,
           confirmed: !!movement,
@@ -213,10 +215,10 @@ export function AccountDialog({ currency, onClose, onCreated }) {
     <AppDialog open title="Add Investment Account" onClose={onClose}>
       <form
         noValidate
-        onSubmit={(e) => {
+        onSubmit={async (e) => {
           e.preventDefault();
           try {
-            const id = command('investment:createAccount', form);
+            const id = await command('investment:createAccount', form);
             onCreated(id);
             onClose();
           } catch (e) {

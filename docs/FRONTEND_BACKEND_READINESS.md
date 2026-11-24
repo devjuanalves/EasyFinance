@@ -93,3 +93,7 @@ Block 9B.1 final validation: 49 live API, 31 live database, 14 offline database,
 F13 CSV import/review and F14 category-only updates now use authenticated APIs in persistent mode. F15 category/rule management remains a separate demonstration; PDF, new transfer pairing, storage and production hardening remain deferred. See BLOCK9B2_IMPORT_RECONCILIATION.md for evidence.
 
 Block 9B.2 local validation is complete: 72 API / 31 database / 14 offline / 220 Vitest / 50 demo browser / six API browser tests passed. Production hardening, large-ledger workloads and unsupported workflows remain deferred; Block 9B.3 requires separate authorization.
+
+## Block 9B.3 — 23 November 2026
+
+F16–F18 now use authenticated persistent InvestmentAccount, Investment, InvestmentMovement, InvestmentValuation and ActivityLog operations in API mode. Existing screens, charts and demo mode are preserved. Shared weighted-average calculations, dated valuation signatures, versioned corrections and idempotent transactional commands retain cash-ledger separation. No schema migration was required. See [Block 9B.3 implementation and verification](BLOCK9B3_INVESTMENTS.md) for executed checks, permissions, visual evidence and limits. Home/Dashboard remain separate demonstrations; Block 9B.4 has not started.

@@ -1,5 +1,6 @@
+import Link from './InvestmentLink.jsx';
 import { displayMoney } from './format.js';
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { useWorkspace } from '../finance/WorkspaceContext.js';
 import { money, dateLabel } from '../finance/data/calculations.js';
 import { periods } from '../finance/data/financialData.js';
@@ -7,7 +8,7 @@ import { Field } from '../income/components/IncomeUI.jsx';
 import { ASSET_TYPES, CURRENCIES } from './investmentMath.js';
 import './investments.css';
 export function InvestmentPage({ title, subtitle, actions, children }) {
-  const { ledger, setFilter } = useWorkspace();
+  const { ledger, setFilter, persistent } = useWorkspace();
   const { hash } = useLocation();
   return (
     <main className="workspace-content income-page investment-page">
@@ -30,7 +31,11 @@ export function InvestmentPage({ title, subtitle, actions, children }) {
       </nav>
       <div className="page-heading">
         <div>
-          <span className="app-badge">MANUAL TRACKING · SESSION DEMO</span>
+          <span className="app-badge">
+            {persistent
+              ? 'MANUAL TRACKING · SAVED TO DATABASE'
+              : 'MANUAL TRACKING · SESSION DEMO'}
+          </span>
           <h1>{title}</h1>
           <p>{subtitle}</p>
         </div>
@@ -71,7 +76,13 @@ export function InvestmentFilters({
   currency,
   setCurrency,
 }) {
-  const { ledger, filters, setFilter } = useWorkspace();
+  const {
+    ledger,
+    filters,
+    setFilter,
+    persistent,
+    periods: livePeriods,
+  } = useWorkspace();
   return (
     <section
       className="finance-card investment-filters"
@@ -134,24 +145,26 @@ export function InvestmentFilters({
           value={options.periodId}
           onChange={(e) => setOptions({ ...options, periodId: e.target.value })}
         >
-          {periods.map((p) => (
+          {(livePeriods || periods).map((p) => (
             <option key={p.id} value={p.id}>
               {p.label.replace(' · no activity', '')}
             </option>
           ))}
         </select>
       </Field>
-      <Field label="Demo data state">
-        <select
-          aria-label="Demo data state"
-          value={filters.scenario}
-          onChange={(e) => setFilter('scenario', e.target.value)}
-        >
-          {['normal', 'empty', 'partial', 'error'].map((s) => (
-            <option key={s}>{s}</option>
-          ))}
-        </select>
-      </Field>
+      {!persistent && (
+        <Field label="Demo data state">
+          <select
+            aria-label="Demo data state"
+            value={filters.scenario}
+            onChange={(e) => setFilter('scenario', e.target.value)}
+          >
+            {['normal', 'empty', 'partial', 'error'].map((s) => (
+              <option key={s}>{s}</option>
+            ))}
+          </select>
+        </Field>
+      )}
     </section>
   );
 }

@@ -49,3 +49,7 @@ F07–F11 now use persistent Client/Invoice/InvoiceItem/Payment/PaymentAllocatio
 ## Block 9B.2 — 20 November 2026
 
 F13 now maps real API import preview/confirmation/history to ImportBatch and Transaction, with Category/FinancialAccount validation and ActivityLog. F14 category-only updates preserve split/transfer/payment protections. Existing 34-model schema is unchanged. See BLOCK9B2_IMPORT_RECONCILIATION.md.
+
+## Block 9B.3 — 23 November 2026
+
+F16–F18 now use authenticated persistent InvestmentAccount, Investment, InvestmentMovement, InvestmentValuation and ActivityLog operations in API mode. Existing screens, charts and demo mode are preserved. Shared weighted-average calculations, dated valuation signatures, versioned corrections and idempotent transactional commands retain cash-ledger separation. No schema migration was required. See [Block 9B.3 implementation and verification](BLOCK9B3_INVESTMENTS.md) for executed checks, permissions, visual evidence and limits. Home/Dashboard remain separate demonstrations; Block 9B.4 has not started.

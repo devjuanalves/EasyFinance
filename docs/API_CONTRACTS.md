@@ -62,3 +62,16 @@ All routes below are under `/api/v1/workspaces/:wid`, require real authenticatio
 | Categorize       | PATCH `/transactions/:id/category` | Version, nullable categoryId → transaction                                                                             | Versioned category-only update; protected receipt/split/transfer 409; wrong category 400                            |
 
 CSV is bounded to 2 MB / 500 rows; JSON transport is bounded separately. Full source is parsed again on confirmation. Existing matches can be explicitly excluded/reused or reviewed as distinct Keep Both; no existing financial record is overwritten. Category management/rule automation remains outside this slice.
+
+## Block 9B.3 investment contracts
+
+All routes are under `/api/v1/workspaces/:wid`; authenticated active membership is mandatory. Owner/Editor may mutate, Viewer may read. No browser role claim is accepted. Existing CSRF and error envelopes apply.
+
+| Operation          | Method / route             | Request                                                                      | Response / transaction                                                                                                                                          |
+| ------------------ | -------------------------- | ---------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Portfolio records  | GET /investments           | No query                                                                     | Scoped accounts, holdings, dated movements, valuations, audit history, positions and currency-separated summaries; bounded complete history for accurate replay |
+| Investment command | POST /investments/commands | UUID key, action, payload, expected investment version for existing holdings | Result ID and updated scoped records; one transaction including audit and idempotency                                                                           |
+
+Commands are an explicit allowlist matching existing UI actions: createAccount, create, update, recordMovement, editMovement, deleteMovement, valuation, deleteValuation. Payload fields are validated separately per action; IDs/workspace/actor/derived money cannot be mass assigned. Metadata updates cannot change historical type/currency. Corrections and soft deletions require confirmation and replay all later history. Creates and movements calculate amounts on the server from exact decimal inputs; response monetary values are safe bounded integer cents. Quantities/prices are decimal strings. No cash ledger write occurs.
+
+Each command key is scoped to workspace and actor with a normalized request fingerprint. Identical retry returns the original result; altered retry conflicts. Existing-holding mutations require its current version. User/workspace locks serialize authorization and financial replay across independent API connections. Responses use 400 validation, 401 session, 403 role, 404 inaccessible resource, 409 stale version/idempotency conflict, and existing safe database errors. History is limited to 10,000 rows per entity; exceeding this fails explicitly rather than returning a partial financial calculation.

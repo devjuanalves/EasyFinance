@@ -1,6 +1,7 @@
+import Link from './InvestmentLink.jsx';
 import { displayMoney } from './format.js';
 import { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { useWorkspace } from '../finance/WorkspaceContext.js';
 import { periods } from '../finance/data/financialData.js';
 import { money, dateLabel } from '../finance/data/calculations.js';
@@ -19,7 +20,13 @@ export default function InvestmentDashboard() {
   return <Dashboard key={filters.workspaceId} />;
 }
 function Dashboard() {
-  const { ledger, filters, setFilter, canEdit } = useWorkspace(),
+  const {
+      ledger,
+      filters,
+      setFilter,
+      canEdit,
+      periods: livePeriods,
+    } = useWorkspace(),
     location = useLocation();
   const [options, setOptions] = useState({
       accountId: 'all',
@@ -29,7 +36,10 @@ function Dashboard() {
     [currency, setCurrency] = useState(filters.currency),
     [selected, setSelected] = useState(null),
     [search, setSearch] = useState('');
-  const period = periods.find((p) => p.id === options.periodId) || periods[0],
+  const period =
+      (livePeriods || periods).find((p) => p.id === options.periodId) ||
+      (livePeriods || periods)[0] ||
+      periods[0],
     data = ledger.data;
   const scope = { ...filters, currency };
   const reportOptions = {

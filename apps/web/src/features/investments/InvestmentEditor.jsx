@@ -1,6 +1,7 @@
+import Link from './InvestmentLink.jsx';
 import { displayMoney } from './format.js';
 import { useEffect, useRef, useState } from 'react';
-import { Link, useBlocker, useNavigate, useParams } from 'react-router-dom';
+import { useBlocker, useNavigate, useParams } from 'react-router-dom';
 import { useWorkspace } from '../finance/WorkspaceContext.js';
 import AppDialog from '../../components/ui/AppDialog.jsx';
 import { Field } from '../income/components/IncomeUI.jsx';
@@ -45,7 +46,7 @@ export default function InvestmentEditor() {
   );
 }
 function Editor({ investment }) {
-  const { ledger, filters, command, setUnsaved } = useWorkspace(),
+  const { ledger, filters, command, setUnsaved, persistent } = useWorkspace(),
     data = ledger.data,
     navigate = useNavigate();
   const [initial] = useState(() =>
@@ -110,16 +111,22 @@ function Editor({ investment }) {
   } catch (e) {
     previewError = e.message;
   }
-  function save(e) {
+  async function save(e) {
     e.preventDefault();
     try {
-      const id = command(`investment:${investment ? 'update' : 'create'}`, {
-        id: investment?.id,
-        form,
-      });
+      const id = await command(
+        `investment:${investment ? 'update' : 'create'}`,
+        {
+          id: investment?.id,
+          expectedVersion: initial.version,
+          form,
+        },
+      );
       saved.current = true;
       setUnsaved(false);
-      navigate(`/investments/${id}`);
+      navigate(
+        `/investments/${id}${persistent ? `?workspace=${filters.workspaceId}` : ''}`,
+      );
     } catch (e) {
       setError(e.message);
     }
@@ -273,8 +280,9 @@ function Editor({ investment }) {
                   </div>
                   <p className="muted">
                     Up to 8 decimal places for units/prices; amounts and fees
-                    use cents. No cash transaction is created. Sample dates
-                    through {data.asOf}.
+                    use cents. No cash transaction is created.{' '}
+                    {persistent ? 'Accounting dates' : 'Sample dates'} through{' '}
+                    {data.asOf}.
                   </p>
                 </section>
                 <section className="finance-card">

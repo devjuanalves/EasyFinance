@@ -1,3 +1,6 @@
+const PersistentInvestments = lazy(
+  () => import('./features/persistent/PersistentInvestments.jsx'),
+);
 const PersistentImport = lazy(
   () => import('./features/persistent/PersistentImport.jsx'),
 );
@@ -166,10 +169,46 @@ export default function App() {
             }
           />
           <Route path="/expenses/categories" element={<CategoriesPage />} />
-          <Route path="/investments" element={<InvestmentDashboard />} />
-          <Route path="/investments/new" element={<InvestmentEditor />} />
-          <Route path="/investments/:id" element={<InvestmentDetails />} />
-          <Route path="/investments/:id/edit" element={<InvestmentEditor />} />
+          <Route
+            path="/investments"
+            element={
+              API_MODE ? (
+                <PersistentInvestments screen="overview" />
+              ) : (
+                <InvestmentDashboard />
+              )
+            }
+          />
+          <Route
+            path="/investments/new"
+            element={
+              API_MODE ? (
+                <PersistentInvestments screen="new" />
+              ) : (
+                <InvestmentEditor />
+              )
+            }
+          />
+          <Route
+            path="/investments/:id"
+            element={
+              API_MODE ? (
+                <PersistentInvestments screen="detail" />
+              ) : (
+                <InvestmentDetails />
+              )
+            }
+          />
+          <Route
+            path="/investments/:id/edit"
+            element={
+              API_MODE ? (
+                <PersistentInvestments screen="edit" />
+              ) : (
+                <InvestmentEditor />
+              )
+            }
+          />
           <Route
             path="/income"
             element={
