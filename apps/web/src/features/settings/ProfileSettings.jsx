@@ -1,3 +1,4 @@
+import PasswordChange from '../persistent/PasswordChange.jsx';
 import {
   CURRENCIES,
   LANGUAGES as LANGUAGE_LABELS,
@@ -22,6 +23,7 @@ export default function ProfileSettings() {
 }
 function ProfileForm() {
   const {
+    persistent,
     user,
     settings,
     command,
@@ -70,10 +72,14 @@ function ProfileForm() {
     setError('');
     await Promise.resolve();
     try {
-      command('settings:profile', form);
+      await command('settings:profile', form);
       setSaved(form);
       setEditing(false);
-      setMessage('Profile and personal preferences saved for this session.');
+      setMessage(
+        persistent
+          ? 'Profile and personal preferences saved.'
+          : 'Profile and personal preferences saved for this session.',
+      );
     } catch (e) {
       setError(e.message);
     } finally {
@@ -108,7 +114,12 @@ function ProfileForm() {
                 </span>
                 <div>
                   <strong>{user.fullName}</strong>
-                  <p>Individual demo identity · email is read-only</p>
+                  <p>
+                    {persistent
+                      ? 'Authenticated identity'
+                      : 'Individual demo identity'}{' '}
+                    · email is read-only
+                  </p>
                 </div>
               </div>
               <div className="form-grid">
@@ -229,11 +240,11 @@ function ProfileForm() {
           <form
             className="finance-card"
             noValidate
-            onSubmit={(e) => {
+            onSubmit={async (e) => {
               e.preventDefault();
               setError('');
               try {
-                command('settings:workspace', workspace);
+                await command('settings:workspace', workspace);
                 setWorkspaceSaved(workspace);
                 setMessage(
                   'Workspace settings saved. Historical financial records are unchanged.',
@@ -269,6 +280,7 @@ function ProfileForm() {
                 />
                 <Select
                   label="Workspace Base Currency"
+                  disabled={persistent}
                   value={workspace.baseCurrency || 'AUD'}
                   onChange={(v) =>
                     setWorkspace({ ...workspace, baseCurrency: v })
@@ -291,8 +303,9 @@ function ProfileForm() {
                 />
               </div>
               <p>
-                Base currency is metadata; existing accounts and transactions
-                retain their native currencies.
+                {persistent
+                  ? 'Base currency is locked in this persistent workflow.'
+                  : 'Base currency is metadata; existing accounts and transactions retain their native currencies.'}
               </p>
               <div className="income-actions">
                 <button className="primary-button">
@@ -315,39 +328,56 @@ function ProfileForm() {
         <div className="settings-stack">
           <section className="finance-card">
             <h2>Account Security</h2>
-            <p>
-              Current session: {user.email}. In-memory demonstration; reload
-              clears it. Device and remote session information is unavailable.
-            </p>
-            {[
-              'Change Password',
-              'Sign Out Other Sessions',
-              'Configure Two-Factor Authentication',
-            ].map((label) => (
-              <div className="settings-security" key={label}>
-                <span>
-                  {label}
-                  <small>Unavailable in this demo</small>
-                </span>
+            {persistent ? (
+              <>
+                <p>
+                  Authenticated HttpOnly session. Password changes revoke all
+                  sessions.
+                </p>
+                <PasswordChange />
+                <p>
+                  Two-factor authentication and remote device management remain
+                  unavailable.
+                </p>
+              </>
+            ) : (
+              <>
+                <p>
+                  Current session: {user.email}. In-memory demonstration; reload
+                  clears it. Device and remote session information is
+                  unavailable.
+                </p>
+                {[
+                  'Change Password',
+                  'Sign Out Other Sessions',
+                  'Configure Two-Factor Authentication',
+                ].map((label) => (
+                  <div className="settings-security" key={label}>
+                    <span>
+                      {label}
+                      <small>Unavailable in this demo</small>
+                    </span>
+                    <button
+                      className="secondary-button"
+                      onClick={() => unavailable(label)}
+                    >
+                      View limitation
+                    </button>
+                  </div>
+                ))}
                 <button
                   className="secondary-button"
-                  onClick={() => unavailable(label)}
+                  onClick={() =>
+                    setNotice({
+                      title: 'Current Session',
+                      body: `${user.email} · simulated session only. No remote devices or verified location are available.`,
+                    })
+                  }
                 >
-                  View limitation
+                  View Current Session
                 </button>
-              </div>
-            ))}
-            <button
-              className="secondary-button"
-              onClick={() =>
-                setNotice({
-                  title: 'Current Session',
-                  body: `${user.email} · simulated session only. No remote devices or verified location are available.`,
-                })
-              }
-            >
-              View Current Session
-            </button>
+              </>
+            )}
           </section>
           <section className="finance-card settings-danger">
             <h2>Account Actions</h2>

@@ -42,3 +42,7 @@ Block 9B.2 CSV persistence and reviewed reconciliation extend existing contracts
 ## Block 9B.3 — 23 November 2026
 
 F16–F18 now use authenticated persistent InvestmentAccount, Investment, InvestmentMovement, InvestmentValuation and ActivityLog operations in API mode. Existing screens, charts and demo mode are preserved. Shared weighted-average calculations, dated valuation signatures, versioned corrections and idempotent transactional commands retain cash-ledger separation. No schema migration was required. See [Block 9B.3 implementation and verification](BLOCK9B3_INVESTMENTS.md) for executed checks, permissions, visual evidence and limits. Home/Dashboard remain separate demonstrations; Block 9B.4 has not started.
+
+## Block 9B.4 delivery boundary
+
+F19 Settings, F20 Sharing and F21 Automations now persist through authenticated APIs. Completed: profile/workspace preferences, invitation preparation/acceptance/revocation, protected membership changes, alert/reminder configuration and own notification preferences. Preserve the current configuration-only execution boundary; real scheduling, recurring invoice templates, delivery and notification producers need separate authorization/design. Regression evidence and remaining production dependencies: [Block 9B.4](BLOCK9B4_COLLABORATION_AUTOMATIONS.md). Block 9B.5 has not started.

@@ -25,37 +25,61 @@ export function Select({ label, value, onChange, options, disabled = false }) {
   );
 }
 export function SettingsPage({ title, description, actions, children }) {
-  const { ledger, setFilter, filters, user } = useWorkspace();
+  const { ledger, setFilter, filters, user, persistent } = useWorkspace();
   return (
     <main className="workspace-content income-page settings-page">
       <nav className="income-tabs" aria-label="Settings navigation">
-        <NavLink to="/settings" end>
+        <NavLink
+          to={
+            persistent
+              ? `/settings?workspace=${filters.workspaceId}`
+              : '/settings'
+          }
+          end
+        >
           Profile & Settings
         </NavLink>
-        <NavLink to="/settings/sharing">Sharing & Permissions</NavLink>
-        <NavLink to="/settings/automations">
+        <NavLink
+          to={
+            persistent
+              ? `/settings/sharing?workspace=${filters.workspaceId}`
+              : '/settings/sharing'
+          }
+        >
+          Sharing & Permissions
+        </NavLink>
+        <NavLink
+          to={
+            persistent
+              ? `/settings/automations?workspace=${filters.workspaceId}`
+              : '/settings/automations'
+          }
+        >
           Automations & Notifications
         </NavLink>
       </nav>
       <div className="page-heading">
         <div>
           <span className="app-badge">
-            SETTINGS · SESSION DEMO · {user.role || 'no access'}
+            SETTINGS · {persistent ? 'PERSISTENT DEVELOPMENT' : 'SESSION DEMO'}{' '}
+            · {user.role || 'no access'}
           </span>
           <h1>{title}</h1>
           <p>{description}</p>
         </div>
         <div className="income-actions">{actions}</div>
       </div>
-      <details className="settings-demo">
-        <summary>Demonstration states</summary>
-        <Select
-          label="Settings data state"
-          value={filters.scenario}
-          onChange={(v) => setFilter('scenario', v)}
-          options={['normal', 'error', 'partial']}
-        />
-      </details>
+      {!persistent && (
+        <details className="settings-demo">
+          <summary>Demonstration states</summary>
+          <Select
+            label="Settings data state"
+            value={filters.scenario}
+            onChange={(v) => setFilter('scenario', v)}
+            options={['normal', 'error', 'partial']}
+          />
+        </details>
+      )}
       {ledger.isPending ? (
         <p role="status">Loading settings…</p>
       ) : ledger.isError ? (
@@ -98,10 +122,15 @@ export function Feedback({ error, message }) {
   );
 }
 export function ActivityLog({ events }) {
+  const { persistent } = useWorkspace();
   return (
     <section className="finance-card">
-      <h2>Session Activity</h2>
-      <p>Demonstration history only; not a durable audit trail.</p>
+      <h2>{persistent ? 'Workspace Activity' : 'Session Activity'}</h2>
+      <p>
+        {persistent
+          ? 'Recorded workspace changes; latest 100 events.'
+          : 'Demonstration history only; not a durable audit trail.'}
+      </p>
       {!events.length ? (
         <p>No changes recorded.</p>
       ) : (

@@ -1,3 +1,6 @@
+const PersistentSettings = lazy(
+  () => import('./features/persistent/PersistentSettings.jsx'),
+);
 const PersistentInvestments = lazy(
   () => import('./features/persistent/PersistentInvestments.jsx'),
 );
@@ -142,11 +145,29 @@ export default function App() {
         >
           <Route path="/" element={<HomePage />} />
           <Route path="/dashboard" element={<DashboardPage />} />
-          <Route path="/settings" element={<ProfileSettings />} />
-          <Route path="/settings/sharing" element={<SharingSettings />} />
+          <Route
+            path="/settings"
+            element={API_MODE ? <PersistentSettings /> : <ProfileSettings />}
+          />
+          <Route
+            path="/settings/sharing"
+            element={
+              API_MODE ? (
+                <PersistentSettings screen="sharing" />
+              ) : (
+                <SharingSettings />
+              )
+            }
+          />
           <Route
             path="/settings/automations"
-            element={<AutomationSettings />}
+            element={
+              API_MODE ? (
+                <PersistentSettings screen="automations" />
+              ) : (
+                <AutomationSettings />
+              )
+            }
           />
           <Route
             path="/expenses"

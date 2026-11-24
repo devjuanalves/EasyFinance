@@ -10,7 +10,7 @@ import {
 } from './SettingsUI.jsx';
 import { formattedExample } from './settingsService.js';
 export default function SharingSettings() {
-  const { settings, user, command, filters } = useWorkspace();
+  const { settings, user, command, filters, persistent } = useWorkspace();
   const [dialog, setDialog] = useState(null),
     [form, setForm] = useState({ email: '', role: 'editor', message: '' }),
     [error, setError] = useState(''),
@@ -26,10 +26,10 @@ export default function SharingSettings() {
         : { role: record?.role || 'editor' },
     );
   };
-  function execute(action, payload, success) {
+  async function execute(action, payload, success) {
     setError('');
     try {
-      command(`settings:${action}`, payload);
+      await command(`settings:${action}`, payload);
       setMessage(success);
       setDialog(null);
     } catch (e) {
@@ -177,7 +177,7 @@ export default function SharingSettings() {
               >
                 View Invitation
               </button>
-              {['pending', 'expired'].includes(inv.status) && (
+              {!persistent && ['pending', 'expired'].includes(inv.status) && (
                 <button
                   className="text-button"
                   disabled={!owner}
@@ -207,13 +207,15 @@ export default function SharingSettings() {
                   >
                     Revoke Invitation
                   </button>
-                  <button
-                    className="text-button"
-                    disabled={!owner}
-                    onClick={() => open('accept', inv)}
-                  >
-                    Simulate Acceptance
-                  </button>
+                  {!persistent && (
+                    <button
+                      className="text-button"
+                      disabled={!owner}
+                      onClick={() => open('accept', inv)}
+                    >
+                      Simulate Acceptance
+                    </button>
+                  )}
                 </>
               )}
             </div>
@@ -248,7 +250,9 @@ export default function SharingSettings() {
               execute(
                 'invite',
                 form,
-                'Invitation prepared in this demo. Email delivery is not configured.',
+                persistent
+                  ? 'Local invitation prepared. No email sent.'
+                  : 'Invitation prepared in this demo. Email delivery is not configured.',
               );
             }}
           >
@@ -264,16 +268,22 @@ export default function SharingSettings() {
               onChange={(v) => setForm({ ...form, role: v })}
               options={['editor', 'viewer']}
             />
-            <Field
-              label="Optional Message"
-              value={form.message}
-              onChange={(e) => setForm({ ...form, message: e.target.value })}
-            />
+            {!persistent && (
+              <Field
+                label="Optional Message"
+                value={form.message}
+                onChange={(e) => setForm({ ...form, message: e.target.value })}
+              />
+            )}
             <p>
-              Creates a pending record only; access requires explicit demo
+              Creates a pending record only; access requires explicit
               acceptance.
             </p>
-            <button className="primary-button">Send Invitation (Demo)</button>
+            <button className="primary-button">
+              {persistent
+                ? 'Prepare Local Invitation'
+                : 'Send Invitation (Demo)'}
+            </button>
           </form>
         ) : dialog?.kind === 'role' ? (
           <form

@@ -23,7 +23,7 @@ export default function AutomationSettings() {
   );
 }
 function Automations() {
-  const { settings, ledger, filters, command } = useWorkspace();
+  const { settings, ledger, filters, command, persistent } = useWorkspace();
   const data = ledger.data,
     owner = settings.role === 'owner' && filters.scenario === 'normal';
   const [dialog, setDialog] = useState(null),
@@ -44,7 +44,7 @@ function Automations() {
     setForm(
       record || {
         name: '',
-        type: 'draft',
+        type: persistent ? 'alert' : 'draft',
         clientId: clients[0]?.id || '',
         templateId: '',
         invoiceId: invoices[0]?.id || '',
@@ -55,12 +55,16 @@ function Automations() {
         status: 'active',
       },
     );
-    setDialog({ kind: 'editor', id: record?.id });
+    setDialog({
+      kind: 'editor',
+      id: record?.id,
+      creationId: crypto.randomUUID(),
+    });
   }
-  function run(action, payload, success, close = true) {
+  async function run(action, payload, success, close = true) {
     setError('');
     try {
-      const result = command(`settings:${action}`, payload);
+      const result = await command(`settings:${action}`, payload);
       setMessage(
         result?.status === 'failed'
           ? `Simulation failed: ${result.error}`
@@ -86,8 +90,9 @@ function Automations() {
       <Feedback error={!dialog && error} message={message} />
       <p className="partial-banner">
         Schedules are configuration only. Nothing runs in the background.
-        Simulations use the fixed sample date {data.asOf}; no email is
-        delivered.
+        {persistent
+          ? 'Configurations persist, but execution is disabled. No email or financial action is performed.'
+          : `Simulations use the fixed sample date ${data.asOf}; no email is delivered.`}
       </p>
       <div className="income-actions">
         <button
@@ -99,7 +104,7 @@ function Automations() {
         </button>
         <button
           className="secondary-button"
-          disabled={!owner}
+          disabled={!owner || persistent}
           onClick={() => {
             setError('');
             setTemplateClient(clients[0]?.id || '');
@@ -112,6 +117,13 @@ function Automations() {
           View Activity
         </a>
       </div>
+      {persistent && (
+        <p>
+          Recurring invoice draft templates and classification rule editing
+          remain demonstration-only. Their persistent services are not
+          available.
+        </p>
+      )}
       <div className="settings-kpis">
         {[
           [
@@ -122,7 +134,10 @@ function Automations() {
             'Paused Automations',
             settings.automations.filter((a) => a.status === 'paused').length,
           ],
-          ['Next Scheduled Action', next || 'None'],
+          [
+            persistent ? 'Next Configured Date' : 'Next Scheduled Action',
+            next || 'None',
+          ],
           ['Recorded Runs', settings.runs.length],
         ].map(([label, value]) => (
           <article className="finance-card" key={label}>
@@ -165,7 +180,12 @@ function Automations() {
                   <td data-label="Status / Mode">
                     {a.status}
                     <small>
-                      {a.status === 'active' ? 'Scheduled' : 'Paused'} ·{' '}
+                      {persistent
+                        ? 'Execution disabled'
+                        : a.status === 'active'
+                          ? 'Scheduled'
+                          : 'Paused'}{' '}
+                      ·{' '}
                       {a.type === 'draft'
                         ? 'Draft for review'
                         : 'Internal in-app review'}
@@ -203,19 +223,23 @@ function Automations() {
                       </button>
                       <button
                         className="text-button"
-                        disabled={!owner || a.status !== 'active'}
+                        disabled={persistent || !owner || a.status !== 'active'}
                         onClick={() =>
                           setDialog({ kind: 'simulate', record: a })
                         }
                       >
-                        Simulate Next Occurrence
+                        {persistent
+                          ? 'Execution Unavailable'
+                          : 'Simulate Next Occurrence'}
                       </button>
                       <button
                         className="text-button settings-destructive"
                         disabled={!owner}
                         onClick={() => setDialog({ kind: 'delete', record: a })}
                       >
-                        Delete Automation
+                        {persistent
+                          ? 'Archive Automation'
+                          : 'Delete Automation'}
                       </button>
                     </div>
                   </td>
@@ -250,8 +274,10 @@ function Automations() {
       >
         <h2>Notification Preferences</h2>
         <p>
-          In-app events apply to your identity and this workspace. Email
-          delivery is unavailable. Daily/weekly summaries are
+          {persistent
+            ? 'Preferences persist for your identity and this workspace; event generation is not connected in API mode.'
+            : 'In-app events apply to your identity and this workspace.'}{' '}
+          Email delivery is unavailable. Daily/weekly summaries are
           configuration-only; they suppress immediate notifications and no
           digest is generated.
         </p>
@@ -270,8 +296,7 @@ function Automations() {
                     'Access revocation',
                   ].includes(event) && (
                     <small>
-                      Saved preference only; event generation is not connected
-                      in this demo.
+                      Saved preference only; event generation is not connected.
                     </small>
                   )}
                 </span>
@@ -328,7 +353,11 @@ function Automations() {
       </form>
       <section id="automation-activity" className="finance-card">
         <h2>Automation Activity</h2>
-        <p>These records describe explicit simulations only.</p>
+        <p>
+          {persistent
+            ? 'Actual stored run history. No worker or execution endpoint is enabled.'
+            : 'These records describe explicit simulations only.'}
+        </p>
         {!settings.runs.length ? (
           <p>No executions recorded.</p>
         ) : (
@@ -353,7 +382,7 @@ function Automations() {
                 </div>
                 <button
                   className="text-button"
-                  disabled={!owner}
+                  disabled={persistent || !owner}
                   onClick={() =>
                     run(
                       'run',
@@ -376,7 +405,7 @@ function Automations() {
             editor: dialog?.id ? 'Edit Automation' : 'Create Automation',
             template: 'Create Invoice Template',
             view: 'Automation Details',
-            delete: 'Delete Automation?',
+            delete: persistent ? 'Archive Automation?' : 'Delete Automation?',
             simulate: 'Simulate Scheduled Action?',
           }[dialog?.kind] || 'Automation'
         }
@@ -391,7 +420,11 @@ function Automations() {
               e.preventDefault();
               run(
                 'automation',
-                { id: dialog.id, automation: form },
+                {
+                  id: dialog.id,
+                  creationId: dialog.creationId,
+                  automation: form,
+                },
                 'Automation configuration saved. No background scheduler is running.',
               );
             }}
@@ -406,7 +439,7 @@ function Automations() {
               value={form.type}
               onChange={(v) => change('type', v)}
               options={[
-                ['draft', 'Recurring Invoice Draft'],
+                ...(!persistent ? [['draft', 'Recurring Invoice Draft']] : []),
                 ['reminder', 'Invoice Reminder'],
                 ['alert', 'Reviewable Financial Alert'],
               ]}
@@ -537,8 +570,8 @@ function Automations() {
         ) : dialog?.kind === 'delete' ? (
           <>
             <p>
-              Delete this configuration? Existing runs and financial records
-              will remain.
+              Archive or delete this configuration? Existing runs and financial
+              records will remain.
             </p>
             <button
               className="secondary-button settings-destructive"
@@ -546,11 +579,13 @@ function Automations() {
                 run(
                   'deleteAutomation',
                   { id: dialog.record.id, confirmed: true },
-                  'Automation deleted; history preserved.',
+                  persistent
+                    ? 'Automation archived; history preserved.'
+                    : 'Automation deleted; history preserved.',
                 )
               }
             >
-              Confirm Delete
+              {persistent ? 'Confirm Archive' : 'Confirm Delete'}
             </button>
           </>
         ) : dialog?.kind === 'simulate' ? (

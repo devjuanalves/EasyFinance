@@ -97,3 +97,7 @@ Block 9B.2 local validation is complete: 72 API / 31 database / 14 offline / 220
 ## Block 9B.3 — 23 November 2026
 
 F16–F18 now use authenticated persistent InvestmentAccount, Investment, InvestmentMovement, InvestmentValuation and ActivityLog operations in API mode. Existing screens, charts and demo mode are preserved. Shared weighted-average calculations, dated valuation signatures, versioned corrections and idempotent transactional commands retain cash-ledger separation. No schema migration was required. See [Block 9B.3 implementation and verification](BLOCK9B3_INVESTMENTS.md) for executed checks, permissions, visual evidence and limits. Home/Dashboard remain separate demonstrations; Block 9B.4 has not started.
+
+## Block 9B.4 readiness
+
+F19–F21 now use persisted Settings/member/invitation/automation-configuration data in API mode while retaining demo mode. Local token acceptance and subsequent revocation are exercised with separate authenticated identities on desktop/mobile. All earlier browser suites remain green. This establishes a local configuration/collaboration foundation for separately scoped next work; it is not production approval. Email verification/provider delivery, recurring templates, durable scheduling/execution, notification generation/inbox and deployment hardening remain outstanding. See [Block 9B.4 evidence](BLOCK9B4_COLLABORATION_AUTOMATIONS.md).

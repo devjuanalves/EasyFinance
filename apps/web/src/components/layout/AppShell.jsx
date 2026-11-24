@@ -211,8 +211,9 @@ export default function AppShell() {
           {API_MODE && (
             <span>
               Income / Invoices, Expenses / Transactions, CSV imports and
-              Investments persist. Other financial screens and shell workspace
-              controls are separate demos.
+              Investments, Settings, Sharing and Automation configurations
+              persist. Home, Dashboard and shell workspace controls are separate
+              demos.
             </span>
           )}
           <span>No live bank connection or AI service</span>
@@ -247,7 +248,7 @@ export default function AppShell() {
           </span>
           <span>
             {API_MODE
-              ? 'Local development · Persistent Income, Expenses & Investments; other modules are demos'
+              ? 'Local development · Persistent finance and settings slices; Home/Dashboard remain demos'
               : 'Session-only demo · Financial data is fictional'}
           </span>
         </footer>

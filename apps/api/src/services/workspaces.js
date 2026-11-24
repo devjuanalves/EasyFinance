@@ -100,7 +100,7 @@ export function workspaces(db) {
             'OWNER_PROTECTED',
             'Ownership transfer requires a separate workflow.',
           );
-        return tx.workspaceMember.update({
+        const updated = await tx.workspaceMember.update({
           where: { id },
           data: {
             role: input.role,
@@ -109,6 +109,17 @@ export function workspaces(db) {
           },
           select: { id: true, role: true, status: true },
         });
+        await tx.activityLog.create({
+          data: {
+            workspaceId: wid,
+            actorUserId: auth.userId,
+            entityType: 'collaboration',
+            entityId: id,
+            action: 'Membership updated',
+            metadataJson: { role: input.role, status: input.status },
+          },
+        });
+        return updated;
       }),
   };
 }

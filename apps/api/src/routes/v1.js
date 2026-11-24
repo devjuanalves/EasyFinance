@@ -1,3 +1,4 @@
+import { collaborationControllers } from '../controllers/collaboration.js';
 import { investmentControllers } from '../controllers/investments.js';
 import { importControllers } from '../controllers/imports.js';
 import { invoiceControllers } from '../controllers/invoices.js';
@@ -46,6 +47,16 @@ export function v1Router(db, config) {
   r.get('/workspaces', c.workspaces);
   r.post('/onboarding', c.onboarding);
   const p = '/workspaces/:wid';
+  const co = collaborationControllers(db);
+  r.get(p + '/settings', co.read);
+  r.patch(p + '/settings/notifications', co.preferences);
+  r.patch(p + '/settings/profile', co.profile);
+  r.patch(p + '/settings/workspace', co.workspace);
+  r.post(p + '/invitations', co.invite);
+  r.post(p + '/invitations/:id/revoke', co.revoke);
+  r.post('/invitations/accept', authRate, co.accept);
+  r.post(p + '/automations', co.create);
+  r.patch(p + '/automations/:id', co.edit);
   r.get(p + '/members', c.members);
   r.patch(p + '/members/:id', c.member);
   r.get(p + '/accounts', c.accounts);

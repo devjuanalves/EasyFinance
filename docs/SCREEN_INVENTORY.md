@@ -98,3 +98,7 @@ F07 Income Overview, F08 Invoice List, F09 Create/Edit Invoice, F10 Invoice Deta
 ## Block 9B.2 — 20 November 2026
 
 F13 now supports real CSV persistence in explicit API mode; F14 supports versioned category-only updates. Demo screens remain intact. See BLOCK9B2_IMPORT_RECONCILIATION.md.
+
+## Block 9B.4 mode update
+
+F19 `/settings`, F20 `/settings/sharing` and F21 `/settings/automations` preserve their responsive components and now use `PersistentSettings` in API mode. Personal/workspace settings, secure local sharing and alert/reminder configuration persist; demo mode remains unchanged. Execution, delivery and recurring templates remain unavailable in API mode. Desktop 1440×900/mobile 390×844 evidence: BLOCK9B4_COLLABORATION_AUTOMATIONS.md.
