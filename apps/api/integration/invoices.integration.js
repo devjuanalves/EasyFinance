@@ -516,3 +516,92 @@ test('database conflict after receipt insertion rolls back the entire command', 
     '0',
   );
 });
+
+test('client-filtered receipts attribute shared bank allocations without duplicating cash', async () => {
+  const a = (
+    await call(owner, 'post', base() + '/clients', clientBody()).expect(200)
+  ).body.data;
+  const b = (
+    await call(owner, 'post', base() + '/clients', clientBody()).expect(200)
+  ).body.data;
+  const first = await issue(await create({ ...draft(), clientId: a.id }));
+  const second = await issue(await create({ ...draft(), clientId: b.id }));
+  const receipt = (
+    await call(owner, 'post', base() + '/transactions', {
+      id: randomUUID(),
+      accountId: account.id,
+      currency: 'AUD',
+      date: '2026-11-19',
+      description: 'Shared client advance',
+      type: 'income',
+      amountMinor: '10000',
+    }).expect(200)
+  ).body.data;
+  const total = (
+    await call(owner, 'get', base() + '/income/summary?currency=AUD').expect(
+      200,
+    )
+  ).body.data.receivedMinor;
+  assert.equal(
+    (await payment(first, { ...pay('4000'), transactionId: receipt.id }))
+      .status,
+    200,
+  );
+  assert.equal(
+    (await payment(second, { ...pay('5000'), transactionId: receipt.id }))
+      .status,
+    200,
+  );
+  for (const [clientId, expected] of [
+    [a.id, '4000'],
+    [b.id, '5000'],
+  ]) {
+    const path =
+      base() +
+      `/income/summary?currency=AUD&clientId=${clientId}&accountId=${account.id}`;
+    assert.equal(
+      (await call(owner, 'get', path).expect(200)).body.data.receivedMinor,
+      expected,
+    );
+    assert.equal(
+      (await call(owner, 'get', path + '&start=2026-11-20').expect(200)).body
+        .data.receivedMinor,
+      '0',
+    );
+    assert.equal(
+      (
+        await call(
+          owner,
+          'get',
+          path.replace('currency=AUD', 'currency=USD'),
+        ).expect(200)
+      ).body.data.receivedMinor,
+      '0',
+    );
+  }
+  assert.equal(
+    (
+      await call(owner, 'get', base() + '/income/summary?currency=AUD').expect(
+        200,
+      )
+    ).body.data.receivedMinor,
+    total,
+  );
+  // A directly tagged receipt attributes only its remaining unallocated portion.
+  await admin.transaction.update({
+    where: { id: receipt.id },
+    data: { clientId: a.id },
+  });
+  for (const clientId of [a.id, b.id]) {
+    assert.equal(
+      (
+        await call(
+          owner,
+          'get',
+          base() + `/income/summary?currency=AUD&clientId=${clientId}`,
+        ).expect(200)
+      ).body.data.receivedMinor,
+      '5000',
+    );
+  }
+});

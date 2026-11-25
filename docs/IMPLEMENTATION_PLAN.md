@@ -46,3 +46,7 @@ F16–F18 now use authenticated persistent InvestmentAccount, Investment, Invest
 ## Block 9B.4 delivery boundary
 
 F19 Settings, F20 Sharing and F21 Automations now persist through authenticated APIs. Completed: profile/workspace preferences, invitation preparation/acceptance/revocation, protected membership changes, alert/reminder configuration and own notification preferences. Preserve the current configuration-only execution boundary; real scheduling, recurring invoice templates, delivery and notification producers need separate authorization/design. Regression evidence and remaining production dependencies: [Block 9B.4](BLOCK9B4_COLLABORATION_AUTOMATIONS.md). Block 9B.5 has not started.
+
+## Block 9B.5 audit disposition
+
+The system integration audit is documented in [BLOCK9B5_INTEGRATION_AUDIT.md](BLOCK9B5_INTEGRATION_AUDIT.md). Scope is validation and the minimal client-income attribution correction, not a new product module. Follow-up priorities require separate authorization: real Home/Dashboard reporting contracts; category/rule persistence; verified identity/recovery and production operations; bounded pagination/aggregation; explicit portfolio/cash and corrective financial workflows. Automation execution remains deferred.

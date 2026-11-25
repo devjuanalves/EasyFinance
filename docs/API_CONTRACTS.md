@@ -79,3 +79,7 @@ Each command key is scoped to workspace and actor with a normalized request fing
 ## Block 9B.4 implemented contracts
 
 The reviewed [collaboration contract inventory](BLOCK9B4_COLLABORATION_AUTOMATIONS.md) adds GET `/workspaces/:wid/settings`, PATCH `/settings/profile`, `/settings/workspace` and `/settings/notifications` under that workspace; POST `/workspaces/:wid/invitations`, POST `/workspaces/:wid/invitations/:id/revoke`, POST `/invitations/accept`, POST `/workspaces/:wid/automations` and PATCH `/workspaces/:wid/automations/:id`. Existing membership PATCH now writes an atomic audit. Workspace/settings reads expose bounded DTOs; invitations are Owner-only, personal preferences self-only. Owner-only shared mutations reuse workspace locks. UUID creation retry and timestamp-based configuration edits reject conflicts. Invitation acceptance requires hashed expiring token possession plus matching authenticated email. No execution/delivery endpoint exists.
+
+## Block 9B.5 — received-income client attribution
+
+`GET /workspaces/:wid/income/summary` retains its existing contract. With `clientId`, confirmed receipt allocations are attributed to the invoice client; only a directly client-tagged transaction's unallocated remainder is attributed directly. An untagged remainder belongs only to the unfiltered cash total. This supports one receipt allocated across clients without duplicating income. Account/currency/booking-date filters still scope cash; invoice issue dates scope billed/outstanding metrics. No migration or new endpoint is required.

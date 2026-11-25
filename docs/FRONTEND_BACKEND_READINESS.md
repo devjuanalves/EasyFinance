@@ -101,3 +101,7 @@ F16–F18 now use authenticated persistent InvestmentAccount, Investment, Invest
 ## Block 9B.4 readiness
 
 F19–F21 now use persisted Settings/member/invitation/automation-configuration data in API mode while retaining demo mode. Local token acceptance and subsequent revocation are exercised with separate authenticated identities on desktop/mobile. All earlier browser suites remain green. This establishes a local configuration/collaboration foundation for separately scoped next work; it is not production approval. Email verification/provider delivery, recurring templates, durable scheduling/execution, notification generation/inbox and deployment hardening remain outstanding. See [Block 9B.4 evidence](BLOCK9B4_COLLABORATION_AUTOMATIONS.md).
+
+## Current status after Block 9B.5
+
+The earlier proposal sections are historical; the current screen-by-screen source of truth is [the Block 9B.5 matrix](BLOCK9B5_INTEGRATION_AUDIT.md#all-screen-capability-and-endpoint-matrix). Auth/onboarding, Income, Expenses/Transactions/CSV, Investments and Settings/Sharing/configuration have tested persistent slices. F05 Home, F06 Dashboard, F15 Categories/Rules and shell demonstration controls are not converted by a real login. The audit corrects client-filtered receipt attribution and tests a connected financial journey plus cross-domain revocation. Production readiness remains blocked by identity verification/recovery, operational safeguards, scaling limits and explicitly deferred domain contracts. No new aggregate service or automation worker was implemented.

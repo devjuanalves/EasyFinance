@@ -443,7 +443,7 @@ export function invoices(db) {
             include: invoiceInclude,
           })
         ).map(invoiceDto);
-        const { issueDate, ...where } = f.where;
+        const { issueDate, clientId, ...where } = f.where;
         const receipts = await tx.transaction.findMany({
           where: {
             ...where,
@@ -452,14 +452,49 @@ export function invoices(db) {
             excludedAt: null,
             ...(issueDate ? { bookingDate: issueDate } : {}),
           },
-          select: { amountMinor: true },
+          select: {
+            amountMinor: true,
+            ...(clientId
+              ? {
+                  clientId: true,
+                  Payment_transaction: {
+                    where: { status: 'confirmed' },
+                    select: {
+                      PaymentAllocation_payment: {
+                        select: {
+                          amountMinor: true,
+                          invoice: { select: { clientId: true } },
+                        },
+                      },
+                    },
+                  },
+                }
+              : {}),
+          },
         });
+        // Allocations attribute existing bank receipts without creating cash.
+        // Only a directly tagged client receives the unallocated remainder.
+        const received = receipts.reduce((total, receipt) => {
+          if (!clientId) return total + receipt.amountMinor;
+          const allocations = receipt.Payment_transaction.flatMap(
+            (p) => p.PaymentAllocation_payment,
+          );
+          const allocated = allocations.reduce((n, x) => n + x.amountMinor, 0n);
+          const attributed = allocations
+            .filter((x) => x.invoice.clientId === clientId)
+            .reduce((n, x) => n + x.amountMinor, 0n);
+          return (
+            total +
+            attributed +
+            (receipt.clientId === clientId
+              ? receipt.amountMinor - allocated
+              : 0n)
+          );
+        }, 0n);
         const sum = (k) =>
           rows.reduce((n, r) => n + BigInt(r[k]), 0n).toString();
         return {
-          receivedMinor: receipts
-            .reduce((n, r) => n + r.amountMinor, 0n)
-            .toString(),
+          receivedMinor: received.toString(),
           invoicedMinor: sum('totalMinor'),
           paidMinor: sum('paidMinor'),
           outstandingMinor: sum('outstandingMinor'),

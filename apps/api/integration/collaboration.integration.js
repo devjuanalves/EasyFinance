@@ -491,3 +491,50 @@ test('settings and automation writes preserve an existing cash transaction exact
     before,
   );
 });
+
+test('membership revocation removes access across every persistent financial domain', async () => {
+  const u = await identity(),
+    invitation = await invite(u, 'editor');
+  await call(u, 'post', '/invitations/accept', {
+    token: invitation.token,
+  }).expect(200);
+  const paths = [
+    '/accounts',
+    '/categories',
+    '/transactions?currency=AUD',
+    '/expenses/summary?currency=AUD',
+    '/clients',
+    '/invoices?currency=AUD',
+    '/income/summary?currency=AUD',
+    '/imports',
+    '/investments',
+    '/settings',
+  ];
+  const timings = [];
+  for (const path of paths) {
+    const start = performance.now();
+    await call(u, 'get', root() + path).expect(200);
+    timings.push(Math.round(performance.now() - start));
+  }
+  console.log(
+    'Bounded local authenticated reads (10 sequential, ms):',
+    timings.join(','),
+  );
+  const member = await admin.workspaceMember.findFirst({
+    where: { workspaceId: wid, userId: u.id },
+  });
+  await call(owner, 'patch', root() + `/members/${member.id}`, {
+    role: 'editor',
+    status: 'revoked',
+  }).expect(200);
+  for (const path of paths) await call(u, 'get', root() + path).expect(404);
+  await call(u, 'post', root() + '/transactions', {
+    id: randomUUID(),
+    accountId: randomUUID(),
+    currency: 'AUD',
+    date: '2026-11-19',
+    description: 'Denied after revocation',
+    type: 'expense',
+    amountMinor: '-100',
+  }).expect(404);
+});
