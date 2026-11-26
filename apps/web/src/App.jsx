@@ -69,6 +69,12 @@ const WorkspaceProvider = lazy(
   () => import('./features/finance/WorkspaceProvider.jsx'),
 );
 const AppShell = lazy(() => import('./components/layout/AppShell.jsx'));
+const PersistentDashboard = lazy(
+  () => import('./features/persistent/PersistentDashboard.jsx'),
+);
+const PersistentCategories = lazy(
+  () => import('./features/persistent/PersistentCategories.jsx'),
+);
 const HomePage = lazy(() => import('./features/assistant/HomePage.jsx'));
 const DashboardPage = lazy(
   () => import('./features/finance/DashboardPage.jsx'),
@@ -143,8 +149,14 @@ export default function App() {
             </SessionRoute>
           }
         >
-          <Route path="/" element={<HomePage />} />
-          <Route path="/dashboard" element={<DashboardPage />} />
+          <Route
+            path="/"
+            element={API_MODE ? <PersistentDashboard home /> : <HomePage />}
+          />
+          <Route
+            path="/dashboard"
+            element={API_MODE ? <PersistentDashboard /> : <DashboardPage />}
+          />
           <Route
             path="/settings"
             element={API_MODE ? <PersistentSettings /> : <ProfileSettings />}
@@ -189,7 +201,10 @@ export default function App() {
               )
             }
           />
-          <Route path="/expenses/categories" element={<CategoriesPage />} />
+          <Route
+            path="/expenses/categories"
+            element={API_MODE ? <PersistentCategories /> : <CategoriesPage />}
+          />
           <Route
             path="/investments"
             element={

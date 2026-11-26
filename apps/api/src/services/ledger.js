@@ -75,7 +75,15 @@ export function ledger(db) {
       run(a, w, false, (tx) =>
         tx.category.findMany({
           where: scope(w),
-          select: { id: true, name: true, kind: true, archivedAt: true },
+          select: {
+            id: true,
+            name: true,
+            kind: true,
+            archivedAt: true,
+            icon: true,
+            color: true,
+            updatedAt: true,
+          },
         }),
       ),
     list: (a, w, f) =>

@@ -275,6 +275,15 @@ test('connected financial journey reconciles receipts, CSV and portfolio across 
   await page.goto('/expenses?workspace=' + wid);
   await expect(page.getByText(/Balance AUD 87.66/)).toBeVisible();
   await capture('reconciled');
+  for (const path of ['/', '/dashboard']) {
+    await page.goto(path + '?workspace=' + wid);
+    await expect(page.locator('.income-kpis')).toContainText('AUD 100.00');
+    await expect(page.locator('.income-kpis')).toContainText('AUD 12.34');
+    await expect(page.locator('.income-kpis')).toContainText('AUD 87.66');
+    await page.reload();
+    await expect(page.locator('.income-kpis')).toContainText('AUD 87.66');
+  }
+
   const guestEmail = `journey-viewer-${randomUUID()}@example.test`;
   expect(
     (

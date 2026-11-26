@@ -1,3 +1,4 @@
+import { dashboardControllers } from '../controllers/dashboard.js';
 import { collaborationControllers } from '../controllers/collaboration.js';
 import { investmentControllers } from '../controllers/investments.js';
 import { importControllers } from '../controllers/imports.js';
@@ -21,6 +22,7 @@ export function v1Router(db, config) {
         '/transactions',
         '/accounts',
         '/expenses/summary',
+        '/dashboard',
         '/invoices',
         '/income/summary',
         '/clients',
@@ -47,6 +49,11 @@ export function v1Router(db, config) {
   r.get('/workspaces', c.workspaces);
   r.post('/onboarding', c.onboarding);
   const p = '/workspaces/:wid';
+  const report = dashboardControllers(db);
+  r.get(p + '/dashboard', report.summary);
+  r.post(p + '/categories', report.create);
+  r.patch(p + '/categories/:id', report.edit);
+  r.post(p + '/categories/:id/archive', report.archive);
   const co = collaborationControllers(db);
   r.get(p + '/settings', co.read);
   r.patch(p + '/settings/notifications', co.preferences);

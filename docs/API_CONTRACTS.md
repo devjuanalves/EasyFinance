@@ -83,3 +83,17 @@ The reviewed [collaboration contract inventory](BLOCK9B4_COLLABORATION_AUTOMATIO
 ## Block 9B.5 — received-income client attribution
 
 `GET /workspaces/:wid/income/summary` retains its existing contract. With `clientId`, confirmed receipt allocations are attributed to the invoice client; only a directly client-tagged transaction's unallocated remainder is attributed directly. An untagged remainder belongs only to the unfiltered cash total. This supports one receipt allocated across clients without duplicating income. Account/currency/booking-date filters still scope cash; invoice issue dates scope billed/outstanding metrics. No migration or new endpoint is required.
+
+## Block 10A implemented contracts — 26 November 2026
+
+All routes below use `/api/v1/workspaces/:wid`, authenticated active membership, strict fields and existing error envelopes. Reads permit Owner/Editor/Viewer; writes require Owner/Editor and CSRF.
+
+| Operation        | Route                          | Request                                             | Response / transaction                                                                                                                                                      |
+| ---------------- | ------------------------------ | --------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Financial report | GET `/dashboard`               | currency, start, end; optional accountId/categoryId | Exact string minor-unit cash totals, prior period, buckets, category totals/options, accounts/balance, receivables, recent rows, portfolio; authorized snapshot transaction |
+| Category list    | GET `/categories`              | No query                                            | Existing list now includes icon, color, updatedAt and archive metadata                                                                                                      |
+| Create category  | POST `/categories`             | id, name, kind, icon, color                         | Category and atomic audit; identical UUID retry is idempotent                                                                                                               |
+| Edit metadata    | PATCH `/categories/:id`        | updatedAt, name, icon, color                        | Updated category and atomic audit; stale version 409; kind immutable                                                                                                        |
+| Archive category | POST `/categories/:id/archive` | updatedAt                                           | Preserved historical category and atomic audit; archived/stale command 409                                                                                                  |
+
+Report currency is AUD/EUR/USD, dates inclusive, no future end, maximum 366 days. Report collection limits fail explicitly with 409 REPORT_LIMIT. Authorization errors remain 401/403/404; malformed input is 400. Assignment reuses the existing transaction category endpoint. See [definitions, reconciliation and limits](BLOCK10A_DASHBOARD_CATEGORIES.md).

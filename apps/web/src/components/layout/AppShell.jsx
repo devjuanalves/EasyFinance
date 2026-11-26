@@ -75,7 +75,13 @@ function SidebarContent({ close, openProfile }) {
         </select>
       </label>
       <Navigation onNavigate={close} />
-      <ConversationHistory onOpen={close} />
+      {API_MODE ? (
+        <p className="data-provenance">
+          Conversation history is unavailable in API mode.
+        </p>
+      ) : (
+        <ConversationHistory onOpen={close} />
+      )}
       <div className="sidebar-bottom">
         <NavLink className="settings-nav-link" to="/settings" onClick={close}>
           <AppIcon name="settings" />
@@ -173,7 +179,7 @@ export default function AppShell() {
             <button
               className="icon-button mobile-only"
               aria-label="New chat"
-              disabled={busy}
+              disabled={busy || API_MODE}
               onClick={() => {
                 newChat();
                 navigate('/');
@@ -212,8 +218,8 @@ export default function AppShell() {
             <span>
               Income / Invoices, Expenses / Transactions, CSV imports and
               Investments, Settings, Sharing and Automation configurations
-              persist. Home, Dashboard and shell workspace controls are separate
-              demos.
+              persist. Home, Dashboard and Categories use authorized records. AI
+              conversations and rule execution are unavailable.
             </span>
           )}
           <span>No live bank connection or AI service</span>
@@ -248,7 +254,7 @@ export default function AppShell() {
           </span>
           <span>
             {API_MODE
-              ? 'Local development · Persistent finance and settings slices; Home/Dashboard remain demos'
+              ? 'Local development · Authorized financial records; no live banking or AI'
               : 'Session-only demo · Financial data is fictional'}
           </span>
         </footer>

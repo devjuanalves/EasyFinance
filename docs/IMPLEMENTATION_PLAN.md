@@ -50,3 +50,7 @@ F19 Settings, F20 Sharing and F21 Automations now persist through authenticated 
 ## Block 9B.5 audit disposition
 
 The system integration audit is documented in [BLOCK9B5_INTEGRATION_AUDIT.md](BLOCK9B5_INTEGRATION_AUDIT.md). Scope is validation and the minimal client-income attribution correction, not a new product module. Follow-up priorities require separate authorization: real Home/Dashboard reporting contracts; category/rule persistence; verified identity/recovery and production operations; bounded pagination/aggregation; explicit portfolio/cash and corrective financial workflows. Automation execution remains deferred.
+
+## Block 10A completion — 26 November 2026
+
+Implemented the read-only report adapter and category management against existing authorized services/tables, preserving demo screens. Cross-module receipt/import/investment reporting, date/currency/category scope, category races, revocation and refresh workflows are validated. See [executed validation and limitations](BLOCK10A_DASHBOARD_CATEGORIES.md). Historical balance trends, AI, rule execution and production deployment remain out of scope. Further work requires a separately authorized block; Block 10B has not begun.
