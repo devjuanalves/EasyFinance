@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../e2e-support/api-test.js';
 import { randomUUID } from 'node:crypto';
 import { mkdir } from 'node:fs/promises';
 

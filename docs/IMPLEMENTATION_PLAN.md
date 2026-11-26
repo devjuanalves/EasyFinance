@@ -54,3 +54,7 @@ The system integration audit is documented in [BLOCK9B5_INTEGRATION_AUDIT.md](BL
 ## Block 10A completion — 26 November 2026
 
 Implemented the read-only report adapter and category management against existing authorized services/tables, preserving demo screens. Cross-module receipt/import/investment reporting, date/currency/category scope, category races, revocation and refresh workflows are validated. See [executed validation and limitations](BLOCK10A_DASHBOARD_CATEGORIES.md). Historical balance trends, AI, rule execution and production deployment remain out of scope. Further work requires a separately authorized block; Block 10B has not begun.
+
+## Block 10B quality automation
+
+The existing quality commands are now wired into separate static/build, demo-browser and ephemeral database/API jobs. Added preservation, build-content, lifecycle, syntax and bounded infrastructure checks; corrected fixture-clock/server-readiness hazards without changing product behavior. See [local evidence and remaining hosted validation](BLOCK10B_CI_QUALITY.md). The next block requires separate authorization; no production rollout is included.

@@ -1,0 +1,7 @@
+{
+  "database/prisma/README.md": "20091b070a4900fb0ae546b8e5169134f5cdf8482e461347f2aa835bf81eed2d",
+  "database/prisma/migrations/202611170001_initial/migration.sql": "666465abf6aa5ad4a709156d77c73df0897af74b5f06b2f01ffb569baad26a05",
+  "database/prisma/migrations/migration_lock.toml": "1db17a8d051aa136110736752c5e1f8b7ed92b6ea8e803112fbbe2497047c210",
+  "database/prisma/schema.prisma": "1f8bd069f0a8ce406c56850edb82c150418d94112563b57093dac15c97f50f95",
+  "database/prisma/seed.js": "94e80bcc1404bf17b863777cf7dd3903f792d5f621e555f7970cb52e212ce6cd"
+}

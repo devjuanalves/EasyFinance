@@ -109,3 +109,7 @@ The earlier proposal sections are historical; the current screen-by-screen sourc
 ## Current boundary after Block 10A — 26 November 2026
 
 Earlier dated assessments above are historical. Home, Dashboard and Category management are now persistent in API mode, in addition to prior financial/settings slices. Reports are authorized read-only aggregations; Category writes use role checks, optimistic timestamps and atomic audit records. Conversation/AI features, historical balance curves, categorization rules and background execution remain unavailable, with no sample figures presented as real. Demo mode retains its prior services. Local regression evidence and remaining production gaps are documented in [Block 10A](BLOCK10A_DASHBOARD_CATEGORIES.md); this does not establish production readiness.
+
+## Operational boundary after Block 10B
+
+Local regression execution now has a versioned CI workflow and fresh isolated database provisioning. This improves reproducibility, not production authorization or scalability. The first hosted Linux run, branch protection, six reported dependency entries, driver deprecation review and production operations remain open. See [CI quality report](BLOCK10B_CI_QUALITY.md). Existing persistent/mock boundaries and unsupported financial features are unchanged.

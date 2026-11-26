@@ -1,10 +1,10 @@
 # EasyFinance
 
-A personal finance application planned around an AI home, financial dashboard, income/invoices, expenses, manual investments and workspace collaboration. Block 0 provides the development foundation. Block 1 implements Login, Sign Up, Password Recovery and provisional Onboarding with an in-memory mock service. Block 2 implements a deterministic sample-data Home assistant and financial Dashboard. Block 3 implements Income & Invoices with a shared in-memory ledger, clients and payment allocation. No production authentication, financial endpoints or database models have been implemented.
+EasyFinance implements 21 responsive V1 screens with explicit demo and authenticated local API modes. Express/Prisma persistence covers the established financial and workspace workflows, including real Home/Dashboard reports and category management. AI, live banking, market feeds and background automation remain unavailable. This is a locally validated development application, not a production deployment. See [current CI and quality controls](docs/BLOCK10B_CI_QUALITY.md) and the dated block reports for supported boundaries.
 
 ## Stack and requirements
 
-JavaScript ESM/JSX, React, Vite, Tailwind CSS, React Router, TanStack Query, Node.js, Express, PostgreSQL and Prisma. npm workspaces, ESLint, Prettier, Vitest, Supertest and GitHub Actions support development. Use Node **24.19.0** (`.nvmrc`) and npm **11**. Exact dependency versions are pinned in workspace manifests and `package-lock.json`. PostgreSQL is not needed for this block. Playwright tests all 21 frontend screens and cross-module workflows at desktop and mobile sizes.
+JavaScript ESM/JSX, React, Vite, Tailwind CSS, React Router, TanStack Query, Node.js, Express, PostgreSQL and Prisma. npm workspaces, ESLint, Prettier, Vitest, Supertest and GitHub Actions support development. Use Node **24.19.0** (`.nvmrc`) and npm **11**. Exact dependency versions are pinned in workspace manifests and `package-lock.json`. PostgreSQL 18 is required for API-mode integration tests, but not ordinary lint/unit/demo checks. Playwright tests all 21 frontend screens and cross-module workflows at desktop and mobile sizes.
 
 ## Repository
 
@@ -12,7 +12,7 @@ JavaScript ESM/JSX, React, Vite, Tailwind CSS, React Router, TanStack Query, Nod
 apps/web/                 React SPA and original-logo runtime copy
 apps/api/                 Express REST API and Supertest tests
 packages/shared/          Browser-safe API contracts
-database/prisma/          Reserved schema location (no models yet)
+database/prisma/          34-model schema, reviewed migration and fictional seed
 docs/blueprint/           Original Draw.io and PDF
 docs/design/              Frame index, design system, brand and SVG references
 docs/architecture/        Architecture and database review
@@ -51,7 +51,7 @@ Both apps read the repository-root `.env` from explicit paths, so workspace comm
 | API_PORT     | Server                 | 3001                                                    |
 | WEB_ORIGIN   | Server                 | http://localhost:5173; exact allowed browser origin     |
 | VITE_API_URL | Public browser bundle  | http://localhost:3001; API origin, no trailing API path |
-| DATABASE_URL | Private server tooling | PostgreSQL connection string; unused until schema block |
+| DATABASE_URL | Private server tooling | Private migration/test PostgreSQL connection            |
 
 Never place credentials in `VITE_*`: Vite embeds them in browser code. Restart development processes after environment changes. Configure public values at build time for production. Keep `.env` ignored; `.env.example` contains placeholders only. If changing the web port, update the Vite config and matching WEB_ORIGIN. Do not use 127.0.0.1 in the browser unless WEB_ORIGIN is adjusted to match.
 
@@ -108,3 +108,7 @@ See [backend architecture](docs/BACKEND_ARCHITECTURE.md), [API contracts](docs/A
 Block 9B.1 extends API mode to Income, Invoices, Clients and recorded receipts. Issuing a document does not receive cash or send email. See [invoice/payment persistence](docs/BLOCK9B1_INVOICES_PAYMENTS.md) for runtime grants, contracts, exact calculations and validation; demo mode remains available.
 
 Block 9B.2 persistent CSV import and reconciliation: [behavior, validation and limitations](docs/BLOCK9B2_IMPORT_RECONCILIATION.md).
+
+## Continuous integration — Block 10B
+
+GitHub Actions separates quality/build gates, demo browsers and ephemeral PostgreSQL/API browsers. It uses the lockfile, exact project Node version, restricted runtime grants, bounded jobs and safe failure artifacts. Hosted execution is not yet verified; local replay results and open dependency advisories are in [the CI runbook](docs/BLOCK10B_CI_QUALITY.md). No production secrets or deployment are required. Use `npm run ci:preservation`, `npm run ci:infrastructure` and `npm run ci:backend-check` alongside existing checks. The runbook documents fresh isolated database setup and safe local test commands. Never run CI bootstrap against an existing developer database.

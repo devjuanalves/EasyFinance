@@ -2,24 +2,123 @@ name: CI
 on:
   push:
   pull_request:
+  workflow_dispatch:
 permissions:
   contents: read
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+# No repository/production secrets, pull_request_target, or self-hosted runners.
+env:
+  CI: 'true'
+  TZ: UTC
 jobs:
-  foundation:
-    runs-on: ubuntu-latest
+  quality:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      DATABASE_URL: postgresql://build:CI_SERVER_SECRET_SENTINEL@127.0.0.1:5432/easyfinance_test_disposable_ci
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 # v6.0.0
         with:
           node-version-file: .nvmrc
           cache: npm
       - run: npm ci
-      - run: npm run check
+      - run: npm ls --depth=0
+      - run: npm run ci:preservation
+      - run: npm run db:validate && npm run db:generate
+      - run: npm run ci:backend-check
+      - run: npm run ci:infrastructure
+      - run: npm run lint && npm run format:check
+      - run: npm test
+      - run: npm run db:test:offline
+      - run: npm run build && npm run ci:build-check
+      - run: VITE_AUTH_MODE=api npm run build && npm run ci:build-check
+      - run: git diff --check
+      - name: Dependency advisory diagnostics (review, no automatic upgrades)
+        run: npm audit --json > "$RUNNER_TEMP/npm-audit.json" || test -s "$RUNNER_TEMP/npm-audit.json"
+      - run: node -e "const a=require(process.env.RUNNER_TEMP+'/npm-audit.json'); if(a.error) process.exit(1); console.log(a.metadata.vulnerabilities)"
+  demo-browser:
+    needs: quality
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      EASYFINANCE_BROWSER_MODE: demo
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 # v6.0.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run db:generate
       - run: npx playwright install --with-deps chromium
       - run: npm run test:e2e
-      - uses: actions/upload-artifact@v4
-        if: always()
+      - run: node scripts/ci/artifacts.js
+        if: failure()
+      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+        if: failure()
         with:
-          name: authentication-browser-results
-          path: test-results/
-          retention-days: 7
+          name: demo-safe-test-summary
+          path: |
+            test-results/ci-safe/demo.json
+            test-results/ci-safe/demo-*-dashboard.png
+          retention-days: 3
+          if-no-files-found: ignore
+  database-api:
+    needs: quality
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:18
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: ci_${{ github.run_id }}_${{ github.run_attempt }}
+          POSTGRES_DB: easyfinance_test_disposable_ci
+        ports:
+          - '127.0.0.1:5432:5432'
+        options: >-
+          --health-cmd "pg_isready -U postgres -d easyfinance_test_disposable_ci"
+          --health-interval 5s --health-timeout 5s --health-retries 12
+    env:
+      EASYFINANCE_DISPOSABLE_DB: 'yes'
+      EASYFINANCE_CI_BOOTSTRAP: 'yes'
+      EASYFINANCE_BROWSER_MODE: api
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 # v6.0.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: node scripts/ci/github-env.js
+      - run: npm ci
+      - run: npm run db:validate && npm run db:generate
+      - run: npm run db:migrate
+      - run: npm run ci:db-bootstrap
+      - run: npm run db:status
+      - run: npm run ci:lifecycle
+      # Seed-based constraint suite is serial; API suites use unique workspaces.
+      - run: npm run db:test
+      - run: npm run test:api:live
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:e2e:api
+      - run: npm run ci:preservation && git diff --check
+      - run: node scripts/ci/artifacts.js
+        if: failure()
+      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+        if: failure()
+        with:
+          name: api-safe-test-summary
+          path: |
+            test-results/ci-safe/api.json
+            test-results/ci-safe/api-*-dashboard.png
+          retention-days: 3
+          if-no-files-found: ignore

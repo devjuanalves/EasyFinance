@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import { disposableClient } from '../../../database/scripts/client.js';
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../e2e-support/api-test.js';
 import { randomUUID } from 'node:crypto';
 import { mkdir } from 'node:fs/promises';
 test('investment positions, corrections and valuations persist without cash changes', async ({

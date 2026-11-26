@@ -33,7 +33,13 @@
     "db:test": "node --test database/tests/integration.test.js",
     "test:api:live": "node --test apps/api/integration/*.integration.js",
     "test:e2e:api": "playwright test --config playwright.api.config.js",
-    "dev:api-mode": "API_MODE=api VITE_AUTH_MODE=api npm run dev"
+    "dev:api-mode": "API_MODE=api VITE_AUTH_MODE=api npm run dev",
+    "ci:preservation": "node scripts/ci/preservation.js",
+    "ci:db-bootstrap": "node scripts/ci/bootstrap-db.js",
+    "ci:build-check": "node scripts/ci/check-build.js",
+    "ci:infrastructure": "node --test scripts/ci/infrastructure.test.js",
+    "ci:lifecycle": "node scripts/ci/lifecycle.js",
+    "ci:backend-check": "node scripts/ci/backend-check.js"
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",
