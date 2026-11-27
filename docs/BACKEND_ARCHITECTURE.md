@@ -45,3 +45,7 @@ Independent security assessment, verified email ownership, recovery delivery, MF
 ## Block 9B.1 extension
 
 The runtime now also serves clients, invoices, payment allocations and income summaries through dedicated invoice controller/validation/service/repository modules. A guarded grant script extends the same restricted role to these tables, including DELETE only on invoice_items for draft replacement. The Block 9A-only grant inventory above is historical. No schema or migration change was needed. See BLOCK9B1_INVOICES_PAYMENTS.md for the current authorization, financial and privilege boundaries.
+
+## Block 10C operational hardening
+
+Added `controllers/readiness.js` and `security/operations.js`: bounded/coalesced database readiness and allowlisted operational/authentication outcomes. Runtime credentials reject common defaults; pooling and HTTP timeouts are explicit; startup diagnostics reject replication privileges. Graceful shutdown marks readiness unavailable before draining. The API remains loopback/disposable-only. No financial service, schema, migration, seed or runtime grant changed. See [security/operations evidence](BLOCK10C_SECURITY_OPERATIONS.md) and the new guarded fictional backup rehearsal under `scripts/operations/`.

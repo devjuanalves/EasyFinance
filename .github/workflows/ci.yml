@@ -38,8 +38,8 @@ jobs:
       - run: npm run build && npm run ci:build-check
       - run: VITE_AUTH_MODE=api npm run build && npm run ci:build-check
       - run: git diff --check
-      - name: Dependency advisory diagnostics (review, no automatic upgrades)
-        run: npm audit --json > "$RUNNER_TEMP/npm-audit.json" || test -s "$RUNNER_TEMP/npm-audit.json"
+      - name: Dependency advisory gate (no automatic upgrades)
+        run: npm audit --json > "$RUNNER_TEMP/npm-audit.json"
       - run: node -e "const a=require(process.env.RUNNER_TEMP+'/npm-audit.json'); if(a.error) process.exit(1); console.log(a.metadata.vulnerabilities)"
   demo-browser:
     needs: quality

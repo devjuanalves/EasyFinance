@@ -58,3 +58,7 @@ Implemented the read-only report adapter and category management against existin
 ## Block 10B quality automation
 
 The existing quality commands are now wired into separate static/build, demo-browser and ephemeral database/API jobs. Added preservation, build-content, lifecycle, syntax and bounded infrastructure checks; corrected fixture-clock/server-readiness hazards without changing product behavior. See [local evidence and remaining hosted validation](BLOCK10B_CI_QUALITY.md). The next block requires separate authorization; no production rollout is included.
+
+## Block 10C delivery boundary
+
+Security review and local operational hardening only: compatible dependency remediation, fail-closed audit gate, readiness/logging/configuration checks and a native fictional backup/restore rehearsal. Preserve existing recovery-unavailable behavior pending a reviewed account audit/verification lifecycle and authorized delivery integration. Production secrets/proxy/TLS, distributed throttling, monitoring and backup objectives remain future work requiring separate authorization. See [Block 10C evidence](BLOCK10C_SECURITY_OPERATIONS.md).

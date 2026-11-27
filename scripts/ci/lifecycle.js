@@ -34,7 +34,7 @@ const deadline = setTimeout(() => {
 try {
   await new Promise((resolve, reject) => {
     child.stdout.on('data', (chunk) => {
-      if (chunk.toString().includes('API listening')) resolve();
+      if (chunk.toString().includes('"event":"startup"')) resolve();
     });
     child.once('error', reject);
     child.once('exit', () => reject(new Error('API exited before readiness')));
@@ -45,6 +45,11 @@ try {
   const body = await response.json();
   if (response.status !== 200 || body.status !== 'ok')
     throw new Error('Health check failed');
+  const ready = await fetch(`http://127.0.0.1:${port}/api/ready`, {
+    signal: AbortSignal.timeout(5000),
+  });
+  if (ready.status !== 200 || (await ready.json()).status !== 'ready')
+    throw new Error('Database readiness failed');
   child.kill('SIGTERM');
   const result = await done;
   if (result.code !== 0 || result.signal)

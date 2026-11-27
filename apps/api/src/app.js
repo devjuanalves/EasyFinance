@@ -6,13 +6,17 @@ import { notFound, errorHandler } from './middleware/errors.js';
 import { v1Router } from './routes/v1.js';
 import { headers } from './security/http.js';
 import { ApiError } from './validation/contracts.js';
-export function createApp({ db = null, config = env } = {}) {
+import { authEvents } from './security/operations.js';
+import { readiness } from './controllers/readiness.js';
+export function createApp({ db = null, config = env, isStopping } = {}) {
   const app = express();
   app.disable('x-powered-by');
+  app.set('trust proxy', false);
   app.set('json replacer', (_key, value) =>
     typeof value === 'bigint' ? value.toString() : value,
   );
   app.use(headers);
+  app.use(authEvents);
   app.use(
     cors({
       origin: config.webOrigin,
@@ -23,6 +27,7 @@ export function createApp({ db = null, config = env } = {}) {
   app.use('/api/v1/workspaces/:wid/imports', express.json({ limit: '6mb' }));
   app.use(express.json({ limit: '100kb' }));
   app.use(healthRouter);
+  app.get('/api/ready', readiness(db, isStopping));
   app.use(
     '/api/v1',
     db

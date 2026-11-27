@@ -113,3 +113,7 @@ Earlier dated assessments above are historical. Home, Dashboard and Category man
 ## Operational boundary after Block 10B
 
 Local regression execution now has a versioned CI workflow and fresh isolated database provisioning. This improves reproducibility, not production authorization or scalability. The first hosted Linux run, branch protection, six reported dependency entries, driver deprecation review and production operations remain open. See [CI quality report](BLOCK10B_CI_QUALITY.md). Existing persistent/mock boundaries and unsupported financial features are unchanged.
+
+## Operational boundary after Block 10C
+
+The user reports hosted Block 10B jobs passed at `350d183`; new Block 10C changes have not been pushed or run on GitHub. The local dependency audit is now clear and CI makes future findings blocking. Readiness and operational security checks improve diagnostics; all existing UI/persistence boundaries remain unchanged. Recovery and email verification are still unavailable, not simulated as real delivery. Fictional restore validation does not establish production backups or approved RPO/RTO. See [the security/operations report](BLOCK10C_SECURITY_OPERATIONS.md) for exact local evidence and unresolved deployment requirements.

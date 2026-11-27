@@ -112,3 +112,7 @@ Block 9B.2 persistent CSV import and reconciliation: [behavior, validation and l
 ## Continuous integration — Block 10B
 
 GitHub Actions separates quality/build gates, demo browsers and ephemeral PostgreSQL/API browsers. It uses the lockfile, exact project Node version, restricted runtime grants, bounded jobs and safe failure artifacts. Hosted execution is not yet verified; local replay results and open dependency advisories are in [the CI runbook](docs/BLOCK10B_CI_QUALITY.md). No production secrets or deployment are required. Use `npm run ci:preservation`, `npm run ci:infrastructure` and `npm run ci:backend-check` alongside existing checks. The runbook documents fresh isolated database setup and safe local test commands. Never run CI bootstrap against an existing developer database.
+
+## Security and operations — Block 10C
+
+See [the security/operations report](docs/BLOCK10C_SECURITY_OPERATIONS.md) for dependency patches, authentication review, the unavailable recovery/verification boundary, database readiness and the fictional backup/restore runbook. `/api/health` is liveness; `/api/ready` checks database availability. Production deployment remains blocked and unauthorized. The CI dependency audit now fails on reported advisories.

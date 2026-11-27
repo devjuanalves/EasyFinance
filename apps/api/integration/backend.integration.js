@@ -566,3 +566,38 @@ test('identical concurrent retries commit exactly one transaction and one audit 
     1,
   );
 });
+
+test('10C runtime has no broad DELETE, TRUNCATE or recovery-token grants', async () => {
+  const rows =
+    await db.$queryRaw`SELECT tablename, has_table_privilege(current_user, quote_ident(schemaname)||'.'||quote_ident(tablename),'DELETE') AS can_delete, has_table_privilege(current_user, quote_ident(schemaname)||'.'||quote_ident(tablename),'TRUNCATE') AS can_truncate FROM pg_tables WHERE schemaname='public'`;
+  assert.deepEqual(
+    rows.filter((r) => r.can_delete).map((r) => r.tablename),
+    ['invoice_items'],
+  );
+  assert.ok(rows.every((r) => !r.can_truncate));
+  await assert.rejects(
+    db.$queryRaw`SELECT token_hash FROM password_reset_tokens LIMIT 0`,
+  );
+});
+test('10C recovery remains equally unavailable for existing and unknown identities without generating tokens', async () => {
+  const responses = await Promise.all(
+    [owner.email, `unknown-${randomUUID()}@example.test`].map((email) =>
+      call(null, 'post', '/auth/recovery', { email }),
+    ),
+  );
+  assert.deepEqual(
+    responses.map((r) => r.status),
+    [503, 503],
+  );
+  assert.deepEqual(responses[0].body.error, responses[1].body.error);
+  assert.equal(
+    await admin.passwordResetToken.count({ where: { userId: owner.id } }),
+    0,
+  );
+});
+test('10C live database readiness exposes only availability', async () => {
+  await request(app).get('/api/ready').expect(200, { status: 'ready' });
+  await request(app)
+    .get('/api/health')
+    .expect(200, { status: 'ok', service: 'easyfinance-api' });
+});

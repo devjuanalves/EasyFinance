@@ -2,6 +2,32 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
 import { disposableDatabaseUrl } from '../../database/scripts/safety.js';
+import { rehearsalTarget } from '../operations/backup-safety.js';
+test('backup rehearsal requires separate isolated cluster and explicit acknowledgement', () => {
+  const base = {
+    DATABASE_URL:
+      'postgresql://postgres:fake@127.0.0.1/easyfinance_test_disposable_ci',
+    EASYFINANCE_DISPOSABLE_DB: 'yes',
+    EASYFINANCE_BACKUP_REHEARSAL: 'yes',
+  };
+  assert.equal(
+    rehearsalTarget(base).pathname,
+    '/easyfinance_test_disposable_ci',
+  );
+  assert.throws(() =>
+    rehearsalTarget({ ...base, EASYFINANCE_BACKUP_REHEARSAL: '' }),
+  );
+  assert.throws(() =>
+    rehearsalTarget({
+      ...base,
+      DATABASE_URL: base.DATABASE_URL.replace(
+        'easyfinance_test_disposable_ci',
+        'easyfinance_block8_test',
+      ),
+    }),
+  );
+  assert.throws(() => rehearsalTarget({ ...base, NODE_ENV: 'production' }));
+});
 for (const [name, DATABASE_URL] of [
   [
     'shared host',

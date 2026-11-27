@@ -33,3 +33,7 @@ Before deployment: verify email/invitation ownership, recovery-token delivery an
 ## Block 9B.4 invitation and membership review
 
 Existing opaque session/CSRF/role mechanisms protect all collaboration endpoints. Invitations use 256-bit random tokens with SHA-256 hashes, seven-day expiry, normalized-email binding, single-use acceptance, workspace serialization and atomic audit. Pending invites confer no access; accepted-token replay cannot reactivate revoked membership. Only Owners manage invitations/members/shared automation settings; Owner removal is protected. Token handoff is explicitly local and displayed once, never sent as claimed email. Verified email ownership and production distributed abuse controls remain unresolved. No automation executes under a revoked identity because no execution endpoint or worker exists. See BLOCK9B4_COLLABORATION_AUTOMATIONS.md for tests and limits.
+
+## Block 10C security review
+
+Opaque sessions, Argon2id, strict cookies, CSRF and server-side membership checks are preserved. Authentication outcome logs now use a fixed action/status/request-ID allowlist, without account identifiers or credentials. Proxy trust is explicitly disabled. Recovery still returns the same unavailable response for known/unknown accounts and generates no token; no email provider or verification lifecycle was added. Existing reset-token fields alone do not establish a safe delivered and durably audited recovery flow. See [Block 10C](BLOCK10C_SECURITY_OPERATIONS.md) for lifecycle requirements, tested boundaries and production blockers.

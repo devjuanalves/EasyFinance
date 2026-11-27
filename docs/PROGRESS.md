@@ -1,6 +1,6 @@
 # Progress
 
-Current block: **Block 8 — PostgreSQL/Prisma foundation prepared; live database validation blocked**. All prior frontend work is preserved. See DATABASE_SETUP.md for the environment blocker; Block 9 is not started.
+Current block: **Block 10C — security and operational hardening locally validated**. Earlier dated entries below are historical. See [the current security/operations report](BLOCK10C_SECURITY_OPERATIONS.md) for validation and remaining production blockers.
 
 ## Completed
 
@@ -194,3 +194,9 @@ Final executed counts: **131 live API, 31 PostgreSQL integrity, 14 offline datab
 Implemented three CI jobs with ephemeral PostgreSQL 18, immutable action pins, least-privilege token access, fresh-target runtime provisioning, independent server readiness, deterministic browser dates and restricted failure artifacts. Application source, financial behavior, original database foundation and assets are unchanged. Local validation and advisory findings are recorded in [Block 10B](BLOCK10B_CI_QUALITY.md); hosted execution remains unverified. No commit, push, deployment or Block 10C.
 
 Executed locally on fresh PostgreSQL 18.7 at port 55432: **131 API, 31 DB integrity, 14 offline DB, 226 Vitest, 7 infrastructure, 50 demo browser and 14 API browser tests passed**. Both builds, backend syntax, Prisma validate/generate/migrate/status, lifecycle/health, actionlint, lint/format, whitespace and preservation checks passed. Hosted CI remains unexecuted. Audit reports three moderate and three high affected package entries; no dependency upgrade was applied.
+
+## Block 10C — 27 November 2026
+
+Security and operational hardening preserves all prior financial/UI behavior. Patched ESLint/minimatch and scoped Effect without changing Prisma; added readiness, safe auth outcome logging, explicit pool/HTTP bounds and default-credential rejection. Recovery/email verification remain accurately unavailable; requirements and account-audit/delivery gaps are documented. Fresh isolated PostgreSQL backup/restore and regressions are recorded in [Block 10C](BLOCK10C_SECURITY_OPERATIONS.md). No production deployment or next block is authorized.
+
+Final Block 10C results: **236 Vitest, 8 infrastructure, 134 live API/security, 31 database integrity, 31 restored-copy integrity, 14 offline database, 50 demo browser and 14 API browser tests passed**. Both builds, lint/formatting, Prisma checks, health/readiness, zero-advisory npm audit, workflow syntax and preservation checks passed. All changes remain uncommitted; hosted CI for this block has not run.

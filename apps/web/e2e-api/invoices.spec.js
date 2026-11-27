@@ -77,6 +77,12 @@ test('persistent invoice, partial/final receipts and ledger remain consistent af
   await capture('clients');
   await page.getByRole('link', { name: 'New Invoice', exact: true }).click();
   await page.getByLabel('Invoice Number', { exact: true }).fill('BROWSER-001');
+  // Browser fixtures use a fixed historical clock; the server correctly derives
+  // overdue status from real time. This workflow explicitly requires not-yet-due.
+  const futureDueDate = new Date(Date.now() + 30 * 86400000)
+    .toISOString()
+    .slice(0, 10);
+  await page.getByLabel('Due Date', { exact: true }).fill(futureDueDate);
   await page
     .getByLabel('Description 1', { exact: true })
     .fill('Consulting service');
