@@ -321,7 +321,14 @@ function SettingsData({ user, workspace, screen }) {
       }}
     >
       {screen === 'profile' ? (
-        <ProfileSettings />
+        <>
+          <p>
+            <a href="/account-security">
+              Account security and email verification
+            </a>
+          </p>
+          <ProfileSettings />
+        </>
       ) : screen === 'sharing' ? (
         <SharingSettings />
       ) : (

@@ -62,3 +62,7 @@ The existing quality commands are now wired into separate static/build, demo-bro
 ## Block 10C delivery boundary
 
 Security review and local operational hardening only: compatible dependency remediation, fail-closed audit gate, readiness/logging/configuration checks and a native fictional backup/restore rehearsal. Preserve existing recovery-unavailable behavior pending a reviewed account audit/verification lifecycle and authorized delivery integration. Production secrets/proxy/TLS, distributed throttling, monitoring and backup objectives remain future work requiring separate authorization. See [Block 10C evidence](BLOCK10C_SECURITY_OPERATIONS.md).
+
+## Block 10D identity extension
+
+Block 10D adds password-reset and email-verification proof lifecycles, account security events, shared database throttling and supporting React forms. Real email delivery remains explicitly unavailable; only isolated in-process test transports are supported. The original 34-table foundation is preserved with three additive identity tables. API startup now requires the server-only `IDENTITY_RATE_SECRET`; fresh CI bootstrap generates it. See [Block 10D identity security](BLOCK10D_IDENTITY_SECURITY.md) for contracts, migration/grants, security boundaries, validation results and production blockers. Prior block reports are historical results, not evidence for this block.

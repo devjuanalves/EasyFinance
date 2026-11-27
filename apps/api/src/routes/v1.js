@@ -1,3 +1,5 @@
+import { identityControllers } from '../controllers/identity.js';
+import { identityRate } from '../security/identity-rate.js';
 import { dashboardControllers } from '../controllers/dashboard.js';
 import { collaborationControllers } from '../controllers/collaboration.js';
 import { investmentControllers } from '../controllers/investments.js';
@@ -8,7 +10,7 @@ import { controllers } from '../controllers/v1.js';
 import { authenticate } from '../middleware/authentication.js';
 import { csrf, rateLimit } from '../security/http.js';
 import { shape } from '../validation/contracts.js';
-export function v1Router(db, config) {
+export function v1Router(db, config, transport) {
   const r = Router(),
     c = controllers(db, config);
   r.use(csrf(config.webOrigin));
@@ -39,13 +41,21 @@ export function v1Router(db, config) {
           .trim()
           .toLowerCase(),
     });
-  r.post('/auth/register', authRate, emailRate, c.register);
-  r.post('/auth/login', authRate, emailRate, c.login);
-  r.post('/auth/recovery', authRate, emailRate, c.recovery);
+  const identity = identityControllers(db, config, transport),
+    sharedRate = identityRate(db, config);
+  r.post('/auth/register', authRate, emailRate, sharedRate, c.register);
+  r.post('/auth/login', authRate, emailRate, sharedRate, c.login);
+  r.post('/auth/recovery', authRate, emailRate, sharedRate, identity.recovery);
+  r.post('/auth/reset', authRate, sharedRate, identity.reset);
+  r.post('/auth/verify', authRate, sharedRate, identity.verify);
   r.use(authenticate(db));
   r.get('/auth/session', c.session);
   r.post('/auth/logout', c.logout);
-  r.post('/auth/password', authRate, c.password);
+  r.post('/auth/password', authRate, sharedRate, c.password);
+  r.get('/auth/identity', identity.status);
+  r.get('/auth/events', identity.events);
+  r.post('/auth/verification', authRate, sharedRate, identity.resend);
+  r.post('/auth/email-change', authRate, sharedRate, identity.change);
   r.get('/workspaces', c.workspaces);
   r.post('/onboarding', c.onboarding);
   const p = '/workspaces/:wid';

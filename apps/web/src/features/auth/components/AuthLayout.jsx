@@ -46,7 +46,9 @@ function BrandPanel({ variant, openInfo }) {
         </h2>
         <p className="brand-description">
           {recovery
-            ? 'Regain access to your account and get back to managing your finances. Explore the recovery flow in this local demo.'
+            ? API_MODE
+              ? 'Manage your account identity with expiring, single-use proof links. Email delivery is currently unavailable.'
+              : 'Regain access to your account and get back to managing your finances. Explore the recovery flow in this local demo.'
             : signup
               ? 'One intelligent platform to manage your money, understand your finances, and build a better financial future.'
               : 'Manage your money, track investments, and grow your finances with the power of AI.'}
@@ -56,7 +58,11 @@ function BrandPanel({ variant, openInfo }) {
             <Icon name="shield" />
             <div>
               <strong>Account Recovery Protection</strong>
-              <p>Simulated recovery preview</p>
+              <p>
+                {API_MODE
+                  ? 'Single-use identity proof · Email delivery unavailable'
+                  : 'Simulated recovery preview'}
+              </p>
             </div>
             <ol>
               <li>Identity</li>

@@ -1,3 +1,4 @@
+import { API_MODE } from '../../../services/persistentApi.js';
 import { focusFirstError } from '../validation/focusFirstError.js';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -39,10 +40,18 @@ export default function ForgotPasswordPage() {
   return (
     <AuthLayout
       variant="recovery"
-      title={sent ? 'Check your email' : 'Forgot your password?'}
+      title={
+        sent
+          ? API_MODE
+            ? 'Request received'
+            : 'Check your email'
+          : 'Forgot your password?'
+      }
       subtitle={
         sent
-          ? 'Your recovery request has been simulated.'
+          ? API_MODE
+            ? 'If eligible, instructions will be sent. This response does not confirm delivery.'
+            : 'Your recovery request has been simulated.'
           : 'No worries. Enter your email address to start the recovery process.'
       }
       footer={
@@ -60,7 +69,11 @@ export default function ForgotPasswordPage() {
             reset instructions.
           </p>
           <p>
-            <strong>Demo only: no email was sent.</strong>
+            <strong>
+              {API_MODE
+                ? 'Delivery is not confirmed by this response.'
+                : 'Demo only: no email was sent.'}
+            </strong>
           </p>
           <button
             type="button"
@@ -96,8 +109,9 @@ export default function ForgotPasswordPage() {
         </form>
       )}
       <p className="recovery-demo">
-        This is a simulated recovery flow. No email delivery or password-reset
-        tokens are available.
+        {API_MODE
+          ? 'Email delivery requires configured infrastructure. If unavailable, no message is sent.'
+          : 'This is a simulated recovery flow. No email delivery or password-reset tokens are available.'}
       </p>
     </AuthLayout>
   );

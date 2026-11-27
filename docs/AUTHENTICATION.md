@@ -45,3 +45,7 @@ Open `http://localhost:5173/login`. Use localhost consistently with the default 
 Vitest covers 28 checks across API, mock-service contract and UI interactions. Playwright runs two end-to-end scenarios at each required viewport (four tests), saving eight page images under ignored `test-results/auth-layouts/`. It checks real lifecycle/navigation, loading, visibility, modal keyboard behavior, refresh guards, empty local/session storage, API status, horizontal overflow, loaded images and browser errors. CI installs Chromium and runs both suites; remote CI execution has not been triggered by this task.
 
 Onboarding screenshots are provisional visual evidence. See [reference comparison](design/BLOCK1_VISUAL_REVIEW.md). No final financial Home, database schema, email provider or real authorization was introduced.
+
+## Block 10D identity extension
+
+Block 10D adds password-reset and email-verification proof lifecycles, account security events, shared database throttling and supporting React forms. Real email delivery remains explicitly unavailable; only isolated in-process test transports are supported. The original 34-table foundation is preserved with three additive identity tables. API startup now requires the server-only `IDENTITY_RATE_SECRET`; fresh CI bootstrap generates it. See [Block 10D identity security](BLOCK10D_IDENTITY_SECURITY.md) for contracts, migration/grants, security boundaries, validation results and production blockers. Prior block reports are historical results, not evidence for this block.

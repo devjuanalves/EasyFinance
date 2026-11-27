@@ -37,3 +37,7 @@ Existing opaque session/CSRF/role mechanisms protect all collaboration endpoints
 ## Block 10C security review
 
 Opaque sessions, Argon2id, strict cookies, CSRF and server-side membership checks are preserved. Authentication outcome logs now use a fixed action/status/request-ID allowlist, without account identifiers or credentials. Proxy trust is explicitly disabled. Recovery still returns the same unavailable response for known/unknown accounts and generates no token; no email provider or verification lifecycle was added. Existing reset-token fields alone do not establish a safe delivered and durably audited recovery flow. See [Block 10C](BLOCK10C_SECURITY_OPERATIONS.md) for lifecycle requirements, tested boundaries and production blockers.
+
+## Block 10D identity extension
+
+Block 10D adds password-reset and email-verification proof lifecycles, account security events, shared database throttling and supporting React forms. Real email delivery remains explicitly unavailable; only isolated in-process test transports are supported. The original 34-table foundation is preserved with three additive identity tables. API startup now requires the server-only `IDENTITY_RATE_SECRET`; fresh CI bootstrap generates it. See [Block 10D identity security](BLOCK10D_IDENTITY_SECURITY.md) for contracts, migration/grants, security boundaries, validation results and production blockers. Prior block reports are historical results, not evidence for this block.

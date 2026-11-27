@@ -100,3 +100,7 @@ After verifying the same approved disposable target, `node database/scripts/invo
 ## Block 9B.2 — 20 November 2026
 
 Block 9B.2 uses database/scripts/import-runtime-grants.js as an explicit guarded administrator operation to grant the existing restricted API role SELECT/INSERT on import_batches only. No migration, reset or reseed is required. See BLOCK9B2_IMPORT_RECONCILIATION.md.
+
+## Block 10D identity extension
+
+Block 10D adds password-reset and email-verification proof lifecycles, account security events, shared database throttling and supporting React forms. Real email delivery remains explicitly unavailable; only isolated in-process test transports are supported. The original 34-table foundation is preserved with three additive identity tables. API startup now requires the server-only `IDENTITY_RATE_SECRET`; fresh CI bootstrap generates it. See [Block 10D identity security](BLOCK10D_IDENTITY_SECURITY.md) for contracts, migration/grants, security boundaries, validation results and production blockers. Prior block reports are historical results, not evidence for this block.

@@ -8,7 +8,12 @@ import { headers } from './security/http.js';
 import { ApiError } from './validation/contracts.js';
 import { authEvents } from './security/operations.js';
 import { readiness } from './controllers/readiness.js';
-export function createApp({ db = null, config = env, isStopping } = {}) {
+export function createApp({
+  db = null,
+  config = env,
+  isStopping,
+  identityTransport,
+} = {}) {
   const app = express();
   app.disable('x-powered-by');
   app.set('trust proxy', false);
@@ -31,7 +36,7 @@ export function createApp({ db = null, config = env, isStopping } = {}) {
   app.use(
     '/api/v1',
     db
-      ? v1Router(db, config)
+      ? v1Router(db, config, identityTransport)
       : (_req, _res, next) =>
           next(
             new ApiError(

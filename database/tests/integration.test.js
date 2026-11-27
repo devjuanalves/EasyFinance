@@ -119,10 +119,16 @@ test('seed reruns without duplicate records or credentials', async () => {
   assert.equal(user.passwordHash, null);
   assert.equal(user.status, 'disabled');
 });
-test('migration creates 34 domain tables, checks, indexes and deferred triggers', async () => {
+test('migration preserves 34 domain tables and adds 3 identity tables, checks, indexes and deferred triggers', async () => {
   const tables =
     await db.$queryRaw`SELECT tablename FROM pg_tables WHERE schemaname='public' AND tablename <> '_prisma_migrations'`;
-  assert.equal(tables.length, 34);
+  assert.equal(tables.length, 37);
+  for (const name of [
+    'email_verification_tokens',
+    'account_security_events',
+    'identity_rate_buckets',
+  ])
+    assert.ok(tables.some((t) => t.tablename === name));
   const constraints =
     await db.$queryRaw`SELECT count(*)::int AS count FROM pg_constraint WHERE connamespace='public'::regnamespace AND contype='c'`;
   assert.ok(constraints[0].count >= 35);

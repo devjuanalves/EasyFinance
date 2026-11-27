@@ -49,7 +49,12 @@ const sql = readFileSync(
 test('generated client covers all 34 verified dictionary tables', () => {
   assert.deepEqual(
     Prisma.dmmf.datamodel.models.map((m) => m.dbName).sort(),
-    expected.sort(),
+    [
+      ...expected,
+      'email_verification_tokens',
+      'account_security_events',
+      'identity_rate_buckets',
+    ].sort(),
   );
   assert.equal((sql.match(/CREATE TABLE /g) || []).length, 34);
 });

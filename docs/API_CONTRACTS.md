@@ -97,3 +97,7 @@ All routes below use `/api/v1/workspaces/:wid`, authenticated active membership,
 | Archive category | POST `/categories/:id/archive` | updatedAt                                           | Preserved historical category and atomic audit; archived/stale command 409                                                                                                  |
 
 Report currency is AUD/EUR/USD, dates inclusive, no future end, maximum 366 days. Report collection limits fail explicitly with 409 REPORT_LIMIT. Authorization errors remain 401/403/404; malformed input is 400. Assignment reuses the existing transaction category endpoint. See [definitions, reconciliation and limits](BLOCK10A_DASHBOARD_CATEGORIES.md).
+
+## Block 10D identity extension
+
+Block 10D adds password-reset and email-verification proof lifecycles, account security events, shared database throttling and supporting React forms. Real email delivery remains explicitly unavailable; only isolated in-process test transports are supported. The original 34-table foundation is preserved with three additive identity tables. API startup now requires the server-only `IDENTITY_RATE_SECRET`; fresh CI bootstrap generates it. See [Block 10D identity security](BLOCK10D_IDENTITY_SECURITY.md) for contracts, migration/grants, security boundaries, validation results and production blockers. Prior block reports are historical results, not evidence for this block.

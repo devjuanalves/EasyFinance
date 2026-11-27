@@ -22,6 +22,11 @@ export function parseEnv(source = process.env) {
     (apiMode !== 'api' || url.protocol !== 'https:')
   )
     throw new Error('Production requires API mode and HTTPS origin');
-  return { port, nodeEnv, webOrigin, apiMode };
+  const identityRateSecret = source.IDENTITY_RATE_SECRET;
+  if (apiMode === 'api' && !/^[a-f0-9]{64}$/.test(identityRateSecret || ''))
+    throw new Error(
+      'API mode requires IDENTITY_RATE_SECRET (32 random bytes encoded as hexadecimal)',
+    );
+  return { port, nodeEnv, webOrigin, apiMode, identityRateSecret };
 }
 export const env = parseEnv();

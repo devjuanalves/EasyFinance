@@ -1,0 +1,31 @@
+// Block 10D additive identity models. User FKs are enforced by the additive SQL
+// migration, keeping the original 34-model schema byte-for-byte unchanged.
+model EmailVerificationToken {
+  id String @id @default(uuid()) @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  tokenHash String @unique @map("token_hash")
+  userId String @map("user_id") @db.Uuid
+  email String
+  originalEmail String @map("original_email")
+  purpose String
+  expiresAt DateTime @map("expires_at") @db.Timestamptz(6)
+  usedAt DateTime? @map("used_at") @db.Timestamptz(6)
+  @@index([userId, expiresAt])
+  @@map("email_verification_tokens")
+}
+model AccountSecurityEvent {
+  id String @id @default(uuid()) @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  userId String? @map("user_id") @db.Uuid
+  action String
+  @@index([userId, createdAt])
+  @@index([createdAt])
+  @@map("account_security_events")
+}
+model IdentityRateBucket {
+  key String @id
+  count Int
+  expiresAt DateTime @map("expires_at") @db.Timestamptz(6)
+  @@index([expiresAt])
+  @@map("identity_rate_buckets")
+}

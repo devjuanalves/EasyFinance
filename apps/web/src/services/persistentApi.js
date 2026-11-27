@@ -26,7 +26,7 @@ export async function api(path, { method = 'GET', body, signal } = {}) {
   if (!response.ok) {
     if (
       response.status === 401 &&
-      !['/auth/login', '/auth/password'].includes(path)
+      !['/auth/login', '/auth/password', '/auth/email-change'].includes(path)
     )
       onUnauthorized();
     const error = new Error(

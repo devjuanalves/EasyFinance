@@ -1,3 +1,4 @@
+import { securityEvent } from '../repositories/security-events.js';
 import { randomBytes } from 'node:crypto';
 import { hashPassword, verifyPassword } from '../security/passwords.js';
 import { tokenHash } from '../security/http.js';
@@ -26,12 +27,14 @@ export function authentication(db) {
     async login(input) {
       const user = await db.user.findUnique({ where: { email: input.email } });
       const ok = await verifyPassword(input.password, user?.passwordHash);
-      if (!ok || user.status !== 'active')
+      if (!ok || user.status !== 'active') {
+        await securityEvent(db, 'login_failed', user?.id);
         throw new ApiError(
           401,
           'INVALID_CREDENTIALS',
           'Email or password is incorrect.',
         );
+      }
       return db.$transaction(async (tx) => {
         await tx.$queryRaw`SELECT id FROM users WHERE id=${user.id}::uuid FOR UPDATE`;
         const current = await tx.user.findUnique({ where: { id: user.id } });
@@ -50,6 +53,7 @@ export function authentication(db) {
             ),
           },
         });
+        await securityEvent(tx, 'login_succeeded', user.id);
         return { token, user: await sessionUser(tx, current) };
       });
     },
@@ -66,6 +70,7 @@ export function authentication(db) {
           where: { tokenHash: auth.hash },
           data: { revokedAt: new Date() },
         });
+        await securityEvent(tx, 'session_revoked', auth.userId);
         return { revoked: true };
       }),
     password: (auth, input) =>
@@ -85,6 +90,16 @@ export function authentication(db) {
           where: { userId: u.id, revokedAt: null },
           data: { revokedAt: new Date() },
         });
+        await tx.passwordResetToken.updateMany({
+          where: { userId: u.id, usedAt: null },
+          data: { usedAt: new Date() },
+        });
+        await tx.emailVerificationToken.updateMany({
+          where: { userId: u.id, usedAt: null },
+          data: { usedAt: new Date() },
+        });
+        await securityEvent(tx, 'password_changed', u.id);
+        await securityEvent(tx, 'session_revoked', u.id);
         return { changed: true };
       }),
   };

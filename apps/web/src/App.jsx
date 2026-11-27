@@ -60,6 +60,7 @@ const InvoiceDetails = lazy(
   () => import('./features/income/InvoiceDetails.jsx'),
 );
 const ClientsPage = lazy(() => import('./features/income/ClientsPage.jsx'));
+import IdentityPage from './features/auth/pages/IdentityPage.jsx';
 import LoginPage from './features/auth/pages/LoginPage.jsx';
 import SignUpPage from './features/auth/pages/SignUpPage.jsx';
 import ForgotPasswordPage from './features/auth/pages/ForgotPasswordPage.jsx';
@@ -83,6 +84,9 @@ const titles = {
   '/login': 'Sign in',
   '/signup': 'Create account',
   '/forgot-password': 'Password recovery',
+  '/reset-password': 'Reset password',
+  '/verify-email': 'Verify email',
+  '/account-security': 'Account security',
   '/onboarding': 'Workspace setup',
   '/': 'AI Assistant',
   '/dashboard': 'Financial Overview',
@@ -94,7 +98,7 @@ export default function App() {
   useEffect(() => {
     if (API_MODE && (!session || session.sessionError)) queryClient.clear();
   }, [session, queryClient]);
-  const { pathname, search } = useLocation();
+  const { pathname, search, hash } = useLocation();
   useEffect(() => {
     document.title = `${titles[pathname] || (pathname.startsWith('/settings') ? 'Settings' : pathname.startsWith('/investments') ? 'Investments' : pathname.startsWith('/income') ? 'Income & Invoices' : pathname.startsWith('/expenses') ? 'Expenses' : 'Page not found')} · EasyFinance`;
     window.scrollTo(0, 0);
@@ -108,6 +112,22 @@ export default function App() {
       }
     >
       <Routes>
+        <Route
+          path="/reset-password"
+          element={<IdentityPage key={'reset' + hash} mode="reset" />}
+        />
+        <Route
+          path="/verify-email"
+          element={<IdentityPage key={'verify' + hash} mode="verify" />}
+        />
+        <Route
+          path="/account-security"
+          element={
+            <SessionRoute>
+              <IdentityPage mode="account" />
+            </SessionRoute>
+          }
+        />
         <Route
           path="/login"
           element={

@@ -61,3 +61,7 @@ F19–F21 now use `PersistentSettings.jsx` over the existing React components. U
 ## Block 10A mapping — 26 November 2026
 
 F05/F06 API adapters now query authorized Transaction/TransactionSplit, FinancialAccount, Category, Invoice/PaymentAllocation and the established investment replay through GET workspace/dashboard. F15 now persists Category creation, versioned metadata edit and archive with ActivityLog; transaction assignment reuses the existing command. No new tables, fields, migration or seed changes. Minor units serialize as strings; cash, current receivables and manually valued holdings have separate scope labels. Demo adapters remain available only in demo mode. See [metric inventory](BLOCK10A_DASHBOARD_CATEGORIES.md).
+
+## Block 10D identity extension
+
+Block 10D adds password-reset and email-verification proof lifecycles, account security events, shared database throttling and supporting React forms. Real email delivery remains explicitly unavailable; only isolated in-process test transports are supported. The original 34-table foundation is preserved with three additive identity tables. API startup now requires the server-only `IDENTITY_RATE_SECRET`; fresh CI bootstrap generates it. See [Block 10D identity security](BLOCK10D_IDENTITY_SECURITY.md) for contracts, migration/grants, security boundaries, validation results and production blockers. Prior block reports are historical results, not evidence for this block.

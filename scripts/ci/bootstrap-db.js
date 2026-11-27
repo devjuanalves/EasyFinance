@@ -35,7 +35,7 @@ try {
   } = await db.query(
     "SELECT (SELECT count(*) FROM pg_tables WHERE schemaname='public' AND tablename<>'_prisma_migrations')::int AS tables, (SELECT count(*) FROM users)::int AS users, (SELECT count(*) FROM workspaces)::int AS workspaces",
   );
-  if (counts.tables !== 34 || counts.users || counts.workspaces)
+  if (counts.tables !== 37 || counts.users || counts.workspaces)
     throw new Error('Provision only a freshly migrated empty CI database.');
   if (
     (
@@ -45,6 +45,7 @@ try {
     ).rowCount
   )
     throw new Error('Runtime role already exists; no replacement permitted.');
+  const identitySecret = randomBytes(32).toString('hex');
   const password = randomBytes(32).toString('hex');
   await db.query('BEGIN');
   await db.query(
@@ -65,6 +66,15 @@ try {
     'GRANT INSERT ON import_batches, investment_accounts TO easyfinance_9a_app',
   );
   await db.query('GRANT DELETE ON invoice_items TO easyfinance_9a_app');
+  await db.query(
+    'GRANT SELECT, INSERT, UPDATE ON password_reset_tokens, email_verification_tokens TO easyfinance_9a_app',
+  );
+  await db.query(
+    'GRANT SELECT, INSERT ON account_security_events TO easyfinance_9a_app',
+  );
+  await db.query(
+    'GRANT SELECT, INSERT, UPDATE, DELETE ON identity_rate_buckets TO easyfinance_9a_app',
+  );
   await db.query("ALTER ROLE easyfinance_9a_app SET statement_timeout='10s'");
   await db.query(
     "ALTER ROLE easyfinance_9a_app SET idle_in_transaction_session_timeout='15s'",
@@ -74,9 +84,14 @@ try {
   url.password = password;
   if (process.env.GITHUB_ACTIONS === 'true') {
     console.log(`::add-mask::${password}`);
+    console.log(`::add-mask::${identitySecret}`);
     console.log(`::add-mask::${url.toString()}`);
   }
-  appendFileSync(destination, `API_DATABASE_URL=${url}\n`, { mode: 0o600 });
+  appendFileSync(
+    destination,
+    `API_DATABASE_URL=${url}\nIDENTITY_RATE_SECRET=${identitySecret}\n`,
+    { mode: 0o600 },
+  );
   console.log(
     'Fresh CI runtime role provisioned; connection written only to the explicit environment file.',
   );

@@ -15,7 +15,19 @@ export function operation(
   const record = { event };
   if (typeof requestId === 'string' && /^[a-f0-9-]{36}$/.test(requestId))
     record.requestId = requestId;
-  if (['register', 'login', 'logout', 'password', 'recovery'].includes(action))
+  if (
+    [
+      'register',
+      'login',
+      'logout',
+      'password',
+      'recovery',
+      'reset',
+      'verify',
+      'verification',
+      'email-change',
+    ].includes(action)
+  )
     record.action = action;
   if (Number.isInteger(status) && status >= 100 && status <= 599)
     record.status = status;
@@ -23,7 +35,7 @@ export function operation(
 }
 export function authEvents(req, res, next) {
   const match =
-    /^\/api\/v1\/auth\/(register|login|logout|password|recovery)\/?$/i.exec(
+    /^\/api\/v1\/auth\/(register|login|logout|password|recovery|reset|verify|verification|email-change)\/?$/i.exec(
       req.path,
     );
   if (match && req.method === 'POST')

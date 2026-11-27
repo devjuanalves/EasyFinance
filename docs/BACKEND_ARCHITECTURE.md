@@ -49,3 +49,7 @@ The runtime now also serves clients, invoices, payment allocations and income su
 ## Block 10C operational hardening
 
 Added `controllers/readiness.js` and `security/operations.js`: bounded/coalesced database readiness and allowlisted operational/authentication outcomes. Runtime credentials reject common defaults; pooling and HTTP timeouts are explicit; startup diagnostics reject replication privileges. Graceful shutdown marks readiness unavailable before draining. The API remains loopback/disposable-only. No financial service, schema, migration, seed or runtime grant changed. See [security/operations evidence](BLOCK10C_SECURITY_OPERATIONS.md) and the new guarded fictional backup rehearsal under `scripts/operations/`.
+
+## Block 10D identity extension
+
+Block 10D adds password-reset and email-verification proof lifecycles, account security events, shared database throttling and supporting React forms. Real email delivery remains explicitly unavailable; only isolated in-process test transports are supported. The original 34-table foundation is preserved with three additive identity tables. API startup now requires the server-only `IDENTITY_RATE_SECRET`; fresh CI bootstrap generates it. See [Block 10D identity security](BLOCK10D_IDENTITY_SECURITY.md) for contracts, migration/grants, security boundaries, validation results and production blockers. Prior block reports are historical results, not evidence for this block.

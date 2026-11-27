@@ -40,6 +40,7 @@ it('requires explicit API and HTTPS production configuration', () => {
       NODE_ENV: 'production',
       API_MODE: 'api',
       WEB_ORIGIN: 'https://example.test',
+      IDENTITY_RATE_SECRET: 'a'.repeat(64),
     }).apiMode,
   ).toBe('api');
 });

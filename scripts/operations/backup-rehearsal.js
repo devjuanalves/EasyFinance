@@ -43,8 +43,11 @@ const snapshot = async (name) => {
       counts[tablename] = (
         await db.query(`SELECT count(*)::int AS n FROM "${tablename}"`)
       ).rows[0].n;
-      const rows = (await db.query(`SELECT * FROM "${tablename}" ORDER BY id`))
-        .rows;
+      const rows = (
+        await db.query(
+          `SELECT * FROM "${tablename}" ORDER BY "${tablename === 'identity_rate_buckets' ? 'key' : 'id'}"`,
+        )
+      ).rows;
       dataHashes[tablename] = createHash('sha256')
         .update(JSON.stringify(rows))
         .digest('hex');
@@ -59,7 +62,7 @@ const snapshot = async (name) => {
         "SELECT count(*)::int AS n FROM users WHERE email NOT LIKE '%@example.test' OR password_hash IS NOT NULL",
       )
     ).rows[0].n;
-    if (invalid || counts.users !== 1 || tables.length !== 35)
+    if (invalid || counts.users !== 1 || tables.length !== 38)
       throw new Error('Fictional fixture or table verification failed.');
     const definitions = (
       await db.query(
@@ -147,7 +150,7 @@ try {
     { mode: 0o600 },
   );
   console.log(
-    'Fictional backup/restore passed: distinct fresh databases, 34 domain tables, all row counts and constraint counts match. Evidence:',
+    'Fictional backup/restore passed: distinct fresh databases, 34 original plus 3 identity tables, all row counts and constraint counts match. Evidence:',
     directory,
   );
 } catch {

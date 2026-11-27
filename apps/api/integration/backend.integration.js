@@ -386,7 +386,7 @@ test('recovery is honestly unavailable and never returns a token', async () => {
   const r = await call(null, 'post', '/auth/recovery', {
     email: owner.email,
   }).expect(503);
-  assert.equal(r.body.error.code, 'RECOVERY_UNAVAILABLE');
+  assert.equal(r.body.error.code, 'DELIVERY_UNAVAILABLE');
   assert.ok(!r.body.token);
 });
 test('auth rate limit applies to repeated unknown account attempts', async () => {
@@ -567,16 +567,19 @@ test('identical concurrent retries commit exactly one transaction and one audit 
   );
 });
 
-test('10C runtime has no broad DELETE, TRUNCATE or recovery-token grants', async () => {
+test('runtime has only reviewed DELETE privileges and cannot truncate identity history', async () => {
   const rows =
     await db.$queryRaw`SELECT tablename, has_table_privilege(current_user, quote_ident(schemaname)||'.'||quote_ident(tablename),'DELETE') AS can_delete, has_table_privilege(current_user, quote_ident(schemaname)||'.'||quote_ident(tablename),'TRUNCATE') AS can_truncate FROM pg_tables WHERE schemaname='public'`;
   assert.deepEqual(
-    rows.filter((r) => r.can_delete).map((r) => r.tablename),
-    ['invoice_items'],
+    rows
+      .filter((r) => r.can_delete)
+      .map((r) => r.tablename)
+      .sort(),
+    ['identity_rate_buckets', 'invoice_items'],
   );
   assert.ok(rows.every((r) => !r.can_truncate));
   await assert.rejects(
-    db.$queryRaw`SELECT token_hash FROM password_reset_tokens LIMIT 0`,
+    db.$executeRaw`DELETE FROM account_security_events WHERE false`,
   );
 });
 test('10C recovery remains equally unavailable for existing and unknown identities without generating tokens', async () => {
